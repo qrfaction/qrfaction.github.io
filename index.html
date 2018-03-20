@@ -182,7 +182,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -192,7 +192,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -258,7 +258,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-20T23:17:21+08:00">
                 2018-03-20
@@ -309,14 +309,13 @@
 <li>天时地利人和</li>
 </ul>
 </blockquote>
-<p>##特征工程</p>
-<blockquote>
-<p>###表示学习<br>在比赛以及各种任务中我们经常会接触到一些非数值特征<br>而该类特征对于神经网络等模型无法直接利用<br>于是通过表示学习挖取信息成为了kaggle竞赛的一大杀器</p>
+<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><blockquote>
+<h3 id="表示学习"><a href="#表示学习" class="headerlink" title="表示学习"></a>表示学习</h3><p>在比赛以及各种任务中我们经常会接触到一些非数值特征<br>而该类特征对于神经网络等模型无法直接利用<br>于是通过表示学习挖取信息成为了kaggle竞赛的一大杀器</p>
 <p>谈起表示学习，最著名的属word2vec了<br>word2vec，glove，fasttext，tfidf等属于word向量化的一大利器<br>究其本质就是利用结点共现概率来将序列向量化<br>但是序列是图结构中一个很简单的结构<br>在一些树结构，环等复杂结构中这些算法便无能为力<br>于是出现了随机游走算法,通过在图结构上随机采样将图转化为序列<br>推荐node2vec，SDNE<br>其基本思路其实很简单，抓重点就是通过图-&gt;序列<br>举一反三  树结构便可通过先序后序等特征等方式序列化</p>
 <p>图结构向量化的另一大神助就是利用邻接矩阵<br>除了基础的SVD分解获得结点向量表示外推荐TADW</p>
 <p>表示学习我也涉足不深，只是在了解推荐系统时看过一点<br>现实中的问题应该远比这些复杂，例如社交网络中的各种关系，三角结构，结点附带的说明信息(图片/文本)等</p>
 <p>还有一些如<br>先验概率特征，stacking得到的label预测，树节点索引等 </p>
-<p>###距离特征<br>本质时将特征之间的关系作为特征<br>常见的有<br>条件概率特征，推荐问题中常见的(用户&amp;商品)相似度特征<br>以上都只涉及两个特征的相关性<br>我认为他们的升级版便是聚类特征<br>常见有LDA,LSA,Kmean(注意用距离替代类不要带入稀疏性问题)等</p>
+<h3 id="距离特征"><a href="#距离特征" class="headerlink" title="距离特征"></a>距离特征</h3><p>本质时将特征之间的关系作为特征<br>常见的有<br>条件概率特征，推荐问题中常见的(用户&amp;商品)相似度特征<br>以上都只涉及两个特征的相关性<br>我认为他们的升级版便是聚类特征<br>常见有LDA,LSA,Kmean(注意用距离替代类不要带入稀疏性问题)等</p>
 <h3 id="迁移特征"><a href="#迁移特征" class="headerlink" title="迁移特征"></a>迁移特征</h3><p>用相关任务训练得到的模型给当前任务打上label作为特征</p>
 <h3 id="其他特征"><a href="#其他特征" class="headerlink" title="其他特征"></a>其他特征</h3><p>对连续特征，其实感觉很不好办<br>连续特征的话基本没见过什么衍生<br>对于树模型他的各种四则运算组合拳还是有用的</p>
 </blockquote>
@@ -415,7 +414,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-20T21:12:50+08:00">
                 2018-03-20
@@ -548,7 +547,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
@@ -598,7 +597,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
