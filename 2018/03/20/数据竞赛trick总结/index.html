@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="感觉现在kaggle竞赛的trick的文章有很多但是大部分(我看到的)都局限于基本流程的介绍其实并没有介绍具体如何上分先给个大家都知道的kaggle四大神助   特征工程 模型集成 数据增强 天时地利人和   特征工程 表示学习在比赛以及各种任务中我们经常会接触到一些非数值特征而该类特征对于神经网络等模型无法直接利用于是通过表示学习挖取信息成为了kaggle竞赛的一大杀器 谈起表示学习，最著名的属">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-21T04:42:03.646Z">
+<meta property="og:updated_time" content="2018-03-21T12:53:25.721Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="数据竞赛trick总结">
 <meta name="twitter:description" content="感觉现在kaggle竞赛的trick的文章有很多但是大部分(我看到的)都局限于基本流程的介绍其实并没有介绍具体如何上分先给个大家都知道的kaggle四大神助   特征工程 模型集成 数据增强 天时地利人和   特征工程 表示学习在比赛以及各种任务中我们经常会接触到一些非数值特征而该类特征对于神经网络等模型无法直接利用于是通过表示学习挖取信息成为了kaggle竞赛的一大杀器 谈起表示学习，最著名的属">
@@ -328,7 +328,7 @@
 <p>数据增强其实也不是很懂<br>只知道图像中通过各种图片操作缓解过拟合<br>文本中可通过google翻译api获取文本数据<br>恩 还有文本和图像的各种加噪操作<br>尝试GAN,smote等算法的样本生成</p>
 <p>这里顺带讨论一下数据规范化<br>我最喜欢的就是用 (x-min)/(max-min)<br>然后max和min自然不是简单的通过特征中的max,min获得<br>因为数据中往往带着一些异常值<br>我一般采用如下方式解决<br>max = mean + 3<em>std<br>min = mean - 3</em>std<br>or<br>max = q3 + 1.5 <em> ( q3 - q1 )<br>min = q1 - 1.5 </em> ( q3 - q1 )<br>这里的的q3,q1是四等分点<br>恩，然后举一反三……</p>
 <p>缺失值填充<br>缺失值填充其实主要不是填的准<br>而在于不要改变数据分布<br>该丢的还是丢掉吧，留着难道当噪声？<br>平均值和中位数众数等已能解决大部分问题<br>部分明显可用拟合解决的就拟合解决吧<br>其实不要乱用拟合，感觉大部分问题拟合效果其实都不太好<br>有个好一点的例子就是用户评分矩阵中的缺失值利用矩阵相关算法填充  </p>
-<p>压缩降维去噪等</p>
+<p>半监督学习<br>压缩降维去噪等</p>
 </blockquote>
 <p>其实上面说的有点泛泛，还是要具体任务具体分析的<br>例如很多问题如<br>优化目标选择<br>特征筛选<br>数据去噪<br>模型结构设计<br>验证方式设计<br>具体任务下的特征(这个不好讲的，如时序问题的过去信息)</p>
 <h2 id="天时地利人和"><a href="#天时地利人和" class="headerlink" title="天时地利人和"></a>天时地利人和</h2><blockquote>
