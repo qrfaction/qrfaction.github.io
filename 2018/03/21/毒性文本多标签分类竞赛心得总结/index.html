@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="数据竞赛," />
 
 
 
@@ -80,13 +80,14 @@
 
 
 <meta name="description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
+<meta name="keywords" content="数据竞赛">
 <meta property="og:type" content="article">
 <meta property="og:title" content="毒性文本多标签分类竞赛心得总结">
 <meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/03/21/毒性文本多标签分类竞赛心得总结/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-28T06:33:17.006Z">
+<meta property="og:updated_time" content="2018-03-28T12:56:21.236Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="毒性文本多标签分类竞赛心得总结">
 <meta name="twitter:description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
@@ -185,7 +186,37 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            About
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            Categories
           </a>
         </li>
       
@@ -195,7 +226,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -259,7 +290,7 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               
-                <span class="post-meta-item-text">Veröffentlicht am</span>
+                <span class="post-meta-item-text">Posted on</span>
               
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-21T17:42:21+08:00">
                 2018-03-21
@@ -280,7 +311,7 @@
                 <i class="fa fa-folder-o"></i>
               </span>
               
-                <span class="post-meta-item-text">in</span>
+                <span class="post-meta-item-text">In</span>
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
@@ -408,6 +439,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/数据竞赛/" rel="tag"># 数据竞赛</a>
+          
+        </div>
+      
 
       
       
@@ -483,10 +520,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            Inhaltsverzeichnis
+            Table of Contents
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            Übersicht
+            Overview
           </li>
         </ul>
       
@@ -507,7 +544,7 @@
                 <a href="/archives/">
               
                   <span class="site-state-item-count">3</span>
-                  <span class="site-state-item-name">Artikel</span>
+                  <span class="site-state-item-name">posts</span>
                 </a>
               </div>
             
@@ -518,11 +555,20 @@
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
                   <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">Kategorien</span>
+                  <span class="site-state-item-name">categories</span>
                 </a>
               </div>
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">tags</span>
+                </a>
+              </div>
             
 
           </nav>
@@ -582,7 +628,7 @@
 </div>
 
 
-  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
 
 
 
