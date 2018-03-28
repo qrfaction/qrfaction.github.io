@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="数据竞赛," />
 
 
 
@@ -79,13 +79,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="qrfaction的博客">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/index.html">
+<meta name="description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
+<meta name="keywords" content="数据竞赛">
+<meta property="og:type" content="article">
+<meta property="og:title" content="毒性文本多标签分类竞赛心得总结">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/毒性文本多标签分类竞赛心得总结/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
+<meta property="og:description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-03-28T13:43:34.931Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="qrfaction的博客">
+<meta name="twitter:title" content="毒性文本多标签分类竞赛心得总结">
+<meta name="twitter:description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
 
 
 
@@ -115,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/毒性文本多标签分类竞赛心得总结/"/>
 
 
 
 
 
-  <title>qrfaction的博客</title>
+  <title>毒性文本多标签分类竞赛心得总结 | qrfaction的博客</title>
   
 
 
@@ -140,8 +145,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -244,199 +248,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/03/20/数据竞赛trick总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/20/数据竞赛trick总结/" itemprop="url">数据竞赛trick总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-20T20:10:17+08:00">
-                2018-03-20
-              </time>
-            
-
-            
-              <span class="post-meta-divider">|</span>
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-check-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">更新于&#58;</span>
-              
-              <time title="更新于" itemprop="dateModified" datetime="2018-03-28T21:44:05+08:00">
-                2018-03-28
-              </time>
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">数据竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>感觉现在kaggle竞赛的trick的文章有很多<br>但是大部分(我看到的)都局限于基本流程的介绍<br>其实并没有介绍具体如何上分<br>先给个大家都知道的kaggle四大神助</p>
-<blockquote>
-<ul>
-<li>特征工程</li>
-<li>模型集成</li>
-<li>数据增强</li>
-<li>天时地利人和</li>
-</ul>
-</blockquote>
-<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><blockquote>
-<h3 id="表示学习"><a href="#表示学习" class="headerlink" title="表示学习"></a>表示学习</h3><p>在比赛以及各种任务中我们经常会接触到一些非数值特征<br>而该类特征对于神经网络等模型无法直接利用<br>于是通过表示学习挖取信息成为了kaggle竞赛的一大杀器</p>
-<p>谈起表示学习，最著名的属word2vec了<br>word2vec，glove，fasttext，tfidf等属于word向量化的一大利器<br>究其本质就是利用结点共现概率来将序列向量化<br>但是序列是图结构中一个很简单的结构<br>在一些树结构，环等复杂结构中这些算法便无能为力<br>于是出现了随机游走算法,通过在图结构上随机采样将图转化为序列<br>推荐node2vec，SDNE<br>其基本思路其实很简单，抓重点就是通过图-&gt;序列<br>举一反三  树结构便可通过先序后序等特征等方式序列化</p>
-<p>图结构向量化的另一大神助就是利用邻接矩阵<br>除了基础的SVD分解获得结点向量表示外推荐TADW</p>
-<p>表示学习我也涉足不深，只是在了解推荐系统时看过一点<br>现实中的问题应该远比这些复杂，例如社交网络中的各种关系，三角结构，结点附带的说明信息(图片/文本)等</p>
-<p>还有一些如<br>先验概率特征，stacking得到的label预测，树节点索引等 </p>
-<h3 id="距离特征"><a href="#距离特征" class="headerlink" title="距离特征"></a>距离特征</h3><p>本质时将特征之间的关系作为特征<br>常见的有<br>条件概率特征，推荐问题中常见的(用户&amp;商品)相似度特征<br>以上都只涉及两个特征的相关性<br>我认为他们的升级版便是聚类特征<br>常见有LDA,LSA,Kmean(注意用距离替代类不要带入稀疏性问题)等</p>
-<h3 id="迁移特征"><a href="#迁移特征" class="headerlink" title="迁移特征"></a>迁移特征</h3><p>用相关任务训练得到的模型给当前任务打上label作为特征</p>
-<h3 id="其他特征"><a href="#其他特征" class="headerlink" title="其他特征"></a>其他特征</h3><p>对连续特征，其实感觉很不好办<br>连续特征的话基本没见过什么衍生<br>对于树模型他的各种四则运算组合拳还是有用的</p>
-</blockquote>
-<h2 id="模型集成"><a href="#模型集成" class="headerlink" title="模型集成"></a>模型集成</h2><blockquote>
-<p>模型集成其实是我一个很大的弱项，不过这次比赛下来还是感受颇多还是简要讨论一下<br>集成方式主要有average/boost/stacking/bagging<br>模型集成拿取得好结果其实主要在于制造模型差异性(疑惑的可以自行查询相关信息有问题简化版的证明)<br>那么如何制造差异性？<br>这里做个个人排序，求同存异吧<br>数据输入差异性 &gt; loss函数差异性 &gt; 模型结构差异性<br>后面两个主要针对神经网络<br>我们主要谈谈数据输入差异性<br>例如树模型中的列采样和行采样，文本问题中的更换词向量，数据加噪等等</p>
-<p>谈起loss差异  其实神经网络就是用函数族拟合目标函数<br>不同的loss代表了一个不同的目标函数<br>既然是不同的目标函数自然能带来目标函数的差异性<br>而模型结构只是用来拟合目标函数的，如果都拟合的很好<br>不论是cnn还是rnn其实差异性应该不会有loss差异带来的大</p>
-<p>如果制造差异性的过程中，由于不同的差异性带来了不同的结果<br>建议低分的先集成到高分再和高分集成（请自备小号）<br>还有不要调权重过分了，妥妥过拟合，略调就可以，能取平均最好</p>
-<p>数据差异性的话<br>这在迁移学习中也很重要<br>如果数据输入不一致任务迁移其实很困难的<br>例如用的不是同一份词向量<br>顺带讲讲迁移<br>可以通过相关任务下训练模型作为一个不错的初始化权重</p>
-</blockquote>
-<h2 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h2><blockquote>
-<p>数据增强其实也不是很懂<br>只知道图像中通过各种图片操作缓解过拟合<br>文本中可通过google翻译api获取文本数据<br>恩 还有文本和图像的各种加噪操作<br>尝试GAN,smote等算法的样本生成</p>
-<p>这里顺带讨论一下数据规范化<br>我最喜欢的就是用 (x-min)/(max-min)<br>然后max和min自然不是简单的通过特征中的max,min获得<br>因为数据中往往带着一些异常值<br>我一般采用如下方式解决<br>max = mean + 3<em>std<br>min = mean - 3</em>std<br>or<br>max = q3 + 1.5 <em> ( q3 - q1 )<br>min = q1 - 1.5 </em> ( q3 - q1 )<br>这里的的q3,q1是四等分点<br>恩，然后举一反三……</p>
-<p>缺失值填充<br>缺失值填充其实主要不是填的准<br>而在于不要改变数据分布<br>该丢的还是丢掉吧，留着难道当噪声？<br>平均值和中位数众数等已能解决大部分问题<br>部分明显可用拟合解决的就拟合解决吧<br>其实不要乱用拟合，感觉大部分问题拟合效果其实都不太好<br>有个好一点的例子就是用户评分矩阵中的缺失值利用矩阵相关算法填充  </p>
-<p>半监督学习<br>压缩降维去噪等</p>
-</blockquote>
-<p>其实上面说的有点泛泛，还是要具体任务具体分析的<br>例如很多问题如<br>优化目标选择<br>特征筛选<br>数据去噪<br>模型结构设计<br>验证方式设计<br>具体任务下的特征(这个不好讲的，如时序问题的过去信息)</p>
-<h2 id="天时地利人和"><a href="#天时地利人和" class="headerlink" title="天时地利人和"></a>天时地利人和</h2><blockquote>
-<p>所谓天时就是知难而退，尽量少在高峰期打比赛</p>
-<p>所谓地利<br>如果数据量过大你需要一台还算不错的设备<br>你需要提前准备两至三个小号<br>因为你可能在比赛快结束时还有一堆idea没有尝试 …<br>选择一个尽可能破事少的比赛<br>比如先看看讨论版块和kernel里  看看线上线下分布是否一致，是否容易作弊<br>非CV方向的问题数据量不过万的分布大概率有问题<br>或者有问题官方及时解决的也可以去试水<br>如果出问题了官方还一副这就是你的问题，你自己过拟合了<br>那咱们只能 :) ， :) 对不对 </p>
-<p>所谓人和<br>如果你选择组团，一定要分工合理<br>如果你选择单撸，在你没把握时一定不要采取互相伤害<br>互利共赢才是多方角逐的生存法则<br>和差不多分数的人组队<br>一方面防止最后你的分数被人家挤下去，你的牌子可能就掉档次了<br>一方面集思广益求同存异往往能让你们的排名更上一层</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
 
   
 
@@ -466,9 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/19/毒性文本多标签分类竞赛心得总结/" itemprop="url">毒性文本多标签分类竞赛心得总结</a></h1>
+          <h1 class="post-title" itemprop="name headline">毒性文本多标签分类竞赛心得总结</h1>
         
 
         <div class="post-meta">
@@ -552,9 +364,7 @@
       
 
       
-        
-          
-            <p>废话不多说 直接正题</p>
+        <p>废话不多说 直接正题</p>
 <h3 id="1-数据清洗"><a href="#1-数据清洗" class="headerlink" title="1. 数据清洗"></a>1. 数据清洗</h3><blockquote>
 <ul>
 <li>统计文本中出现单词词频，统计oov word词频</li>
@@ -627,8 +437,6 @@
 </ol>
 <p>这次的比赛还是很遗憾的<br>考虑到约两千的非英文文本分数浮动太大于是全转成英文<br>结果反而被坑…<br>感觉两个月的努力付之东流…<br>十有八九不如意，只能今年再努力<br>恩，如果运气比别人差，看来那就只能多来几次了 hh</p>
 
-          
-        
       
     </div>
     
@@ -643,14 +451,36 @@
 
     <footer class="post-footer">
       
-
+        <div class="post-tags">
+          
+            <a href="/tags/数据竞赛/" rel="tag"># 数据竞赛</a>
+          
+        </div>
       
 
       
+      
+      
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/20/数据竞赛trick总结/" rel="prev" title="数据竞赛trick总结">
+                数据竞赛trick总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
       
-        <div class="post-eof"></div>
+
+      
       
     </footer>
   </div>
@@ -660,10 +490,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -671,6 +502,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -691,8 +526,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -752,6 +596,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据清洗"><span class="nav-number">1.</span> <span class="nav-text">1. 数据清洗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-特征工程"><span class="nav-number">2.</span> <span class="nav-text">2. 特征工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-模型设计"><span class="nav-number">3.</span> <span class="nav-text">3. 模型设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-迁移学习"><span class="nav-number">4.</span> <span class="nav-text">4. 迁移学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-数据增强"><span class="nav-number">5.</span> <span class="nav-text">5. 数据增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-模型集成"><span class="nav-number">6.</span> <span class="nav-text">6. 模型集成</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -885,6 +745,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
