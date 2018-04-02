@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="数据竞赛," />
+  <meta name="keywords" content="DL," />
 
 
 
@@ -79,18 +79,35 @@
 
 
 
-<meta name="description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
-<meta name="keywords" content="数据竞赛">
+<meta name="description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
+<meta name="keywords" content="DL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="毒性文本多标签分类竞赛心得总结">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/毒性文本多标签分类竞赛心得总结/index.html">
+<meta property="og:title" content="END2END优化AUC &amp;&amp; F-Score">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
+<meta property="og:description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-03-28T13:43:34.931Z">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/1.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/2.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/3.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/4.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/5.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/6.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/7.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/8.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/9.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/10.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/11.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/12.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/13.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/14.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/15.jpeg">
+<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/16.jpeg">
+<meta property="og:updated_time" content="2018-04-02T11:37:05.133Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="毒性文本多标签分类竞赛心得总结">
-<meta name="twitter:description" content="废话不多说 直接正题 1. 数据清洗  统计文本中出现单词词频，统计oov word词频 根据kernel里的各种EDA滤去不必要的单词 根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的) 正则+替换修正一些拼写错误 emoij表情用good,bad,happy等替代 将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从">
+<meta name="twitter:title" content="END2END优化AUC &amp;&amp; F-Score">
+<meta name="twitter:description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
+<meta name="twitter:image" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/1.jpeg">
 
 
 
@@ -120,13 +137,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/毒性文本多标签分类竞赛心得总结/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/"/>
 
 
 
 
 
-  <title>毒性文本多标签分类竞赛心得总结 | qrfaction的博客</title>
+  <title>END2END优化AUC && F-Score | qrfaction的博客</title>
   
 
 
@@ -263,7 +280,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/毒性文本多标签分类竞赛心得总结/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -280,7 +297,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">毒性文本多标签分类竞赛心得总结</h1>
+          <h1 class="post-title" itemprop="name headline">END2END优化AUC && F-Score</h1>
         
 
         <div class="post-meta">
@@ -292,8 +309,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:10:33+08:00">
-                2018-03-19
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T19:28:53+08:00">
+                2018-04-02
               </time>
             
 
@@ -315,8 +332,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">数据竞赛</span>
+                  <a href="/categories/DL/" itemprop="url" rel="index">
+                    <span itemprop="name">DL</span>
                   </a>
                 </span>
 
@@ -352,78 +369,25 @@
       
 
       
-        <p>废话不多说 直接正题</p>
-<h3 id="1-数据清洗"><a href="#1-数据清洗" class="headerlink" title="1. 数据清洗"></a>1. 数据清洗</h3><blockquote>
-<ul>
-<li>统计文本中出现单词词频，统计oov word词频</li>
-<li>根据kernel里的各种EDA滤去不必要的单词</li>
-<li>根据oov word统计的词频修正高频拼写错误(不要用相关算法,oov会越来越多的)</li>
-<li>正则+替换修正一些拼写错误</li>
-<li>emoij表情用good,bad,happy等替代</li>
-<li>将测试集中约两千的非英文文本翻译成英文(在我比赛结束后意识到他并重新跑了几次测试后，恩，他让我从top2%调到top10%气坏了 = =)</li>
-</ul>
-<p>重点</p>
-<ol>
-<li>千万不要提取词干，单词的不同形式在不同标签下有不同分布，提取了等于丢失信息</li>
-<li>“_”,”-“这种一定要去掉，否则oov太多</li>
-<li>滤掉词频＜4的单词</li>
-</ol>
+        <p>##AUC与F-score的直接梯度优化</p>
+<p><endl><br>此博文为 本人 CSDN博客迁移过来<br>原文链接 <a href="https://mp.csdn.net/mdeditor/79218697" target="_blank" rel="noopener">https://mp.csdn.net/mdeditor/79218697</a></endl></p>
+<p><endl><br>AUC与F-score作为分类问题竞赛中热门的评估指标<br>对于他们的优化往往都是通过间接方法<br>例如样本不平衡中的代价敏感学习</endl></p>
+<p>对于auc与F-score的介绍不在展开<br>附上网上找的一个链接<a href="https://www.jianshu.com/p/498ea0d8017d" target="_blank" rel="noopener">https://www.jianshu.com/p/498ea0d8017d</a></p>
+<p>一个论文中提到的方法<br>论文链接 <a href="http://proceedings.mlr.press/v54/eban17a/eban17a.pdf" target="_blank" rel="noopener">http://proceedings.mlr.press/v54/eban17a/eban17a.pdf</a></p>
+<blockquote>
+<p>这里f-score的优化方式是<strong>约束精准率的下限</strong>来最大化召回率实现的<br>论文里废话比较多  挑些重点放 详细看论文吧</p>
+<p><endl><br>以F1-score为例<br> 优化目标与精准率召回率公式：<br>`<img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/1.jpeg" alt="优化目标"><br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/2.jpeg" alt="这里写图片描述"></endl></p>
+<p>等价转换<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/3.jpeg" alt="这里写图片描述"><br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/4.jpeg" alt="这里写图片描述"></p>
+<p>将零一损失替换会hinge损失便于优化&emsp;&emsp;&emsp;这里的L<sub>h</sub>  是hinge损失<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/5.jpeg" alt="这里写图片描述"><br>优化目标变为<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/6.jpeg" alt="这里写图片描述"><br>再等价转换<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/7.jpeg" alt="这里写图片描述"><br>拉格朗日函数<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/8.jpeg" alt="这里写图片描述"><br>梯度优化法<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/9.jpeg" alt="这里写图片描述"></p>
+<p>其基本想法其实是用Hinge替代了零一损失<br>所以直接优化f-score的关键点在于找到一个可凸优化的loss来替代召回率精准率<br>而固定精准率最大化召回率等比较次要<br>找到了这个loss后直接使用框架带有自动求导机制梯度优化即可</p>
 </blockquote>
-<h3 id="2-特征工程"><a href="#2-特征工程" class="headerlink" title="2. 特征工程"></a>2. 特征工程</h3><blockquote>
-<ul>
-<li>利用ConvAI数据集训练一个模型给我这个数据的样本打上label(那个任务和我这个强相关)效果不错</li>
-<li>词性标注然后获得各词性在句子中概率分布得到一个(samples，tags)矩阵 ，然后在samples这个维度pca降维，<br>  即可得到各词性的向量表示，和word进行concat，效果不佳</li>
-<li>句法分析，通过获得句子的语法结构树，通过先序后序遍历获得树结构的近似序列表示，丢入word2vec，得到语法      结构的矩阵表示，效果不明显</li>
-<li>LDA聚类，效果不明显</li>
-<li>tfidf获取character级信息，然后压缩降维至32/128维度（效果不明显）</li>
-<li>通过两步训练处理oov单词<pre><code>1. 首先用训练测试文本预训练character级的字符(3-gram)
-2. 再用上述所得到的来拟合公开预训练的词向量(例如输入是(hap,app,ppy) 输出是(happy)
-3. 这一方面就可以通过得到的character级的字符来处理oov单词，另一方面还可以捕捉单词之间的相似性
-想法很美好，代码也写好了，但是放入模型中有很多小细节要改，于是我并没有使用(懒癌犯了)
-</code></pre></li>
-<li>统计类特征：统计感叹号个数，平均字长，文本长度，句子个数，大写字母个数，字母分布等等等等(有点效果)</li>
-</ul>
+<p>AUC的优化</p>
+<blockquote>
+<p>auc是一个基于rank的评价指标<br>下面先给出auc的计算公式<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/10.jpeg" alt="这里写图片描述"><br>基于上面论文的思路   我们只需要将里面不可微的部分用一个函数去平滑他即可 </p>
+<p><endl><br>观察下图<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/11.jpeg" alt="这里写图片描述"><br>正例 &lt; 负例   &emsp;&emsp;   loss =1<br>正例 = 负例   &emsp;&emsp;    loss=0.5<br>正例 &gt; 负例   &emsp;&emsp;   loss=0<br>可以用对数loss , 指数loss , 均方误差等loss替代<br>但是不是所有loss替代后和原AUC的优化有一致性</endl></p>
+<p><a href="https://arxiv.org/pdf/1208.0645.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1208.0645.pdf</a><br>这篇论文指出 有如下与auc有一致性的loss<br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/12.jpeg" alt="这里写图片描述"><br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/13.jpeg" alt="这里写图片描述"><br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/14.jpeg" alt="这里写图片描述"><br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/15.jpeg" alt="这里写图片描述"><br><img src="/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/16.jpeg" alt="这里写图片描述"> </p>
 </blockquote>
-<h3 id="3-模型设计"><a href="#3-模型设计" class="headerlink" title="3. 模型设计"></a>3. 模型设计</h3><blockquote>
-<ul>
-<li>多标签其实就是多任务，自然而然想到了任务的梯度平衡，loss加权是个很简单方式，但是调参需求功底过高，而且不同label收敛难度不一致所以设计了一个可梯度更新的自适应权重来平衡梯度(效果不明显)</li>
-<li>除上面之外加了个可梯度更新的可自适应正负样本的权重，效果同不明显…</li>
-<li>使用了ranking loss (相当于直接优化auc)，但是这个loss对一个batchsize中的正负比例太敏感效果比普通的celoss,focalloss差很多</li>
-<li>优化上一个想法，通过rankingLoss * ceLoss作为loss，和普通celoss相比效果不明显…</li>
-<li>同上，通过样本平衡采样来解决rankingloss的样本比例问题，收敛速度大大提高，上限仍然不是很好…</li>
-<li>尝试注意力机制效果很不好…</li>
-<li><p>模型都搭的很简单，textcnn改动和两层双向GRU，but我的cnn分数上不去</p>
-<p>其实我还调了各种各样的模型结构，都不如上述的简单结构强 … </p>
-</li>
-</ul>
-</blockquote>
-<h3 id="4-迁移学习"><a href="#4-迁移学习" class="headerlink" title="4. 迁移学习"></a>4. 迁移学习</h3><blockquote>
-<ul>
-<li>第一次使用google翻译API替换文本，再用替换后的训练一次模型，作为英文文本的初始化效果不如随机初始化…</li>
-<li><p>后来意识到上述行为等价于替换词向量，后意识到输入端替换后迁移很难实现好效果，于是乎现在ConvAI的数据集上的强相关任务下训练一次模型，再在当前任务下funetune，收敛速度快很多，上限没提高…</p>
-<p>在这里意识到了数据差异性的重要性，想到用不同词向量去拟合再集成，但是因为不停更换机子的缘故，为了数据传快点删掉了好多份词向量…然后就没回去下载尝试了</p>
-</li>
-</ul>
-</blockquote>
-<h3 id="5-数据增强"><a href="#5-数据增强" class="headerlink" title="5. 数据增强"></a>5. 数据增强</h3><blockquote>
-<ul>
-<li>通过google翻译API编码解码获得多份训练集…然后训练，其他人靠这个分数提高了不少，但我训练集拿是拿到了多次翻译版，但一直没用多份，总感觉怪怪的，可能是脑子进水了.</li>
-<li>通过替换词的位置增加噪声，分数没怎么变，但是这个至少制造了一点点差异性，对集成有好处</li>
-</ul>
-</blockquote>
-<h3 id="6-模型集成"><a href="#6-模型集成" class="headerlink" title="6. 模型集成"></a>6. 模型集成</h3><blockquote>
-<ul>
-<li>简单的加权平均，恩感觉实惠舒服简单(其实是懒)</li>
-</ul>
-</blockquote>
-<p>从冠军那里看到了利用半监督学习的思路，很强，效果也很棒</p>
-<p>总的来说这次比赛做了很多事情<br>做的很多事情都是无用功，觉得效果会不错但是实际并没有<br>结果最终还是回到原点<br>上一个比赛做的事情不算太多，但是重点基本抓到了…<br>总得来说还是要抓住主要问题…</p>
-<ol>
-<li>重点数据清洗的几个重点</li>
-<li>模型容量</li>
-<li>迁移特征</li>
-</ol>
-<p>这次的比赛还是很遗憾的<br>考虑到约两千的非英文文本分数浮动太大于是全转成英文<br>结果反而被坑…<br>感觉两个月的努力付之东流…<br>十有八九不如意，只能今年再努力<br>恩，如果运气比别人差，看来那就只能多来几次了 hh</p>
+<p>综上 我们知道了NN可以 end-to-end的优化auc与f-score了<br>可是基于GBDT及其改版的梯度树似乎没有什么好的办法直接优化?<br>梯度树将样本的一阶至二阶梯度信息替代了信息熵和基尼指数来作为评分函数<br>梯度信息将决定样本归于哪个叶节点<br>而这里的优化方式是计算了样本总体的一个loss<br>无法区分到各样本上<br>貌似树模型的auc与F-score优化还是只能靠剪枝？</p>
 
       
     </div>
@@ -441,7 +405,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/数据竞赛/" rel="tag"># 数据竞赛</a>
+            <a href="/tags/DL/" rel="tag"># DL</a>
           
         </div>
       
@@ -454,15 +418,15 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2018/03/20/数据竞赛trick总结/" rel="next" title="数据竞赛trick总结">
+                <i class="fa fa-chevron-left"></i> 数据竞赛trick总结
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/03/20/数据竞赛trick总结/" rel="prev" title="数据竞赛trick总结">
-                数据竞赛trick总结 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -514,17 +478,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -584,22 +539,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-数据清洗"><span class="nav-number">1.</span> <span class="nav-text">1. 数据清洗</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-特征工程"><span class="nav-number">2.</span> <span class="nav-text">2. 特征工程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-模型设计"><span class="nav-number">3.</span> <span class="nav-text">3. 模型设计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-迁移学习"><span class="nav-number">4.</span> <span class="nav-text">4. 迁移学习</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-数据增强"><span class="nav-number">5.</span> <span class="nav-text">5. 数据增强</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-模型集成"><span class="nav-number">6.</span> <span class="nav-text">6. 模型集成</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
