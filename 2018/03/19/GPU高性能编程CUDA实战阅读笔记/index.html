@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="DL," />
+  <meta name="keywords" content="高性能编程," />
 
 
 
@@ -79,35 +79,18 @@
 
 
 
-<meta name="description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
-<meta name="keywords" content="DL">
+<meta name="description" content="闲暇的时候花了一点时间翻了一下这本书当初一直犹豫到底要不要学(最终还是学了hh) 在看这本书之前推荐看个文章https://zhuanlan.zhihu.com/p/34587739从这里我们可以基本了解到GPU是依靠堆积并行线程数量实现加速使用SM(流式处理器),使用单指令多线程架构来调度block至grid级的线程 这本书里除去一些api的调用介绍重点有以下概念总结 1. 常量内存 在数百个乃">
+<meta name="keywords" content="高性能编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="END2END优化AUC &amp;&amp; F-Score">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/index.html">
+<meta property="og:title" content="GPU高性能编程CUDA实战阅读笔记">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/GPU高性能编程CUDA实战阅读笔记/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
+<meta property="og:description" content="闲暇的时候花了一点时间翻了一下这本书当初一直犹豫到底要不要学(最终还是学了hh) 在看这本书之前推荐看个文章https://zhuanlan.zhihu.com/p/34587739从这里我们可以基本了解到GPU是依靠堆积并行线程数量实现加速使用SM(流式处理器),使用单指令多线程架构来调度block至grid级的线程 这本书里除去一些api的调用介绍重点有以下概念总结 1. 常量内存 在数百个乃">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/1.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/2.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/3.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/4.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/5.jpg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/6.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/7.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/8.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/9.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/10.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/11.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/12.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/13.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/14.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/15.jpeg">
-<meta property="og:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/16.jpeg">
-<meta property="og:updated_time" content="2018-04-02T11:55:47.754Z">
+<meta property="og:updated_time" content="2018-04-09T13:54:09.513Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="END2END优化AUC &amp;&amp; F-Score">
-<meta name="twitter:description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
-<meta name="twitter:image" content="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/1.jpeg">
+<meta name="twitter:title" content="GPU高性能编程CUDA实战阅读笔记">
+<meta name="twitter:description" content="闲暇的时候花了一点时间翻了一下这本书当初一直犹豫到底要不要学(最终还是学了hh) 在看这本书之前推荐看个文章https://zhuanlan.zhihu.com/p/34587739从这里我们可以基本了解到GPU是依靠堆积并行线程数量实现加速使用SM(流式处理器),使用单指令多线程架构来调度block至grid级的线程 这本书里除去一些api的调用介绍重点有以下概念总结 1. 常量内存 在数百个乃">
 
 
 
@@ -137,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/GPU高性能编程CUDA实战阅读笔记/"/>
 
 
 
 
 
-  <title>END2END优化AUC && F-Score | qrfaction的博客</title>
+  <title>GPU高性能编程CUDA实战阅读笔记 | qrfaction的博客</title>
   
 
 
@@ -280,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/02/END2END优化AUC-F-Score/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/03/19/GPU高性能编程CUDA实战阅读笔记/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -297,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">END2END优化AUC && F-Score</h1>
+          <h1 class="post-title" itemprop="name headline">GPU高性能编程CUDA实战阅读笔记</h1>
         
 
         <div class="post-meta">
@@ -309,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-02T19:28:53+08:00">
-                2018-04-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-19T18:10:33+08:00">
+                2018-03-19
               </time>
             
 
@@ -332,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DL/" itemprop="url" rel="index">
-                    <span itemprop="name">DL</span>
+                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能编程</span>
                   </a>
                 </span>
 
@@ -369,25 +352,44 @@
       
 
       
-        <p>##AUC与F-score的直接梯度优化</p>
-<p><endl><br>此博文为 本人 CSDN博客迁移过来<br>原文链接 <a href="https://mp.csdn.net/mdeditor/79218697" target="_blank" rel="noopener">https://mp.csdn.net/mdeditor/79218697</a></endl></p>
-<p><endl><br>AUC与F-score作为分类问题竞赛中热门的评估指标<br>对于他们的优化往往都是通过间接方法<br>例如样本不平衡中的代价敏感学习</endl></p>
-<p>对于auc与F-score的介绍不在展开<br>附上网上找的一个链接<a href="https://www.jianshu.com/p/498ea0d8017d" target="_blank" rel="noopener">https://www.jianshu.com/p/498ea0d8017d</a></p>
-<p>一个论文中提到的方法<br>论文链接 <a href="http://proceedings.mlr.press/v54/eban17a/eban17a.pdf" target="_blank" rel="noopener">http://proceedings.mlr.press/v54/eban17a/eban17a.pdf</a></p>
-<blockquote>
-<p>这里f-score的优化方式是<strong>约束精准率的下限</strong>来最大化召回率实现的<br>论文里废话比较多  挑些重点放 详细看论文吧</p>
-<p><endl><br>以F1-score为例<br> 优化目标与精准率召回率公式：<br>`<img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/1.jpeg" alt="优化目标"><br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/2.jpeg" alt="这里写图片描述"></endl></p>
-<p>等价转换<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/3.jpeg" alt="这里写图片描述"><br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/4.jpeg" alt="这里写图片描述"></p>
-<p>将零一损失替换会hinge损失便于优化&emsp;&emsp;&emsp;这里的L<sub>h</sub>  是hinge损失<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/5.jpg" alt="这里写图片描述"><br>优化目标变为<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/6.jpeg" alt="这里写图片描述"><br>再等价转换<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/7.jpeg" alt="这里写图片描述"><br>拉格朗日函数<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/8.jpeg" alt="这里写图片描述"><br>梯度优化法<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/9.jpeg" alt="这里写图片描述"></p>
-<p>其基本想法其实是用Hinge替代了零一损失<br>所以直接优化f-score的关键点在于找到一个可凸优化的loss来替代召回率精准率<br>而固定精准率最大化召回率等比较次要<br>找到了这个loss后直接使用框架带有自动求导机制梯度优化即可</p>
+        <p>闲暇的时候花了一点时间翻了一下这本书<br>当初一直犹豫到底要不要学(最终还是学了hh)</p>
+<p>在看这本书之前推荐看个文章<br><a href="https://zhuanlan.zhihu.com/p/34587739" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/34587739</a><br>从这里我们可以基本了解到GPU是依靠堆积并行线程数量实现加速<br>使用SM(流式处理器),使用单指令多线程架构来调度block至grid级的线程</p>
+<p>这本书里除去一些api的调用介绍<br>重点有以下概念总结</p>
+<h3 id="1-常量内存"><a href="#1-常量内存" class="headerlink" title="1. 常量内存"></a>1. 常量内存</h3><blockquote>
+<p>在数百个乃至上千的并行线程的任务中,性能瓶颈不一定在数学计算吞吐量,而在于芯片的内存带宽<br>声明常量内存只需要在变量前面加上 __constant__ 修饰符</p>
+<p>常量内存的特性:</p>
+<ol>
+<li>可读不可写</li>
+<li>常量内存的读取请求是串行化处理的</li>
+<li>当一个线程束中多个线程从常量内存的相同地址上读取数据时,常量内存会通过广播机制来处理<br>  &emsp;即一次读取请求得,到结果后广播至其他线程  (最多半个线程束,故只需处理两次读取请求)</li>
+<li>由于该内存内容不会发生变化,在读取常量内存时,硬件将主动将其缓存至GPU,这将进一步减少内存流量</li>
+</ol>
+<p>但我们仍需注意,如果线程束中经常出现读取常量内存中不同的数据,将会导致这些读取请求串行处理,而读取全局内存是并行的,这时候会出现慢于从全局内存中读取的情况</p>
 </blockquote>
-<p>AUC的优化</p>
-<blockquote>
-<p>auc是一个基于rank的评价指标<br>下面先给出auc的计算公式<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/10.jpeg" alt="这里写图片描述"><br>基于上面论文的思路   我们只需要将里面不可微的部分用一个函数去平滑他即可 </p>
-<p><endl><br>观察下图<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/11.jpeg" alt="这里写图片描述"><br>正例 &lt; 负例   &emsp;&emsp;   loss =1<br>正例 = 负例   &emsp;&emsp;    loss=0.5<br>正例 &gt; 负例   &emsp;&emsp;   loss=0<br>可以用对数loss , 指数loss , 均方误差等loss替代<br>但是不是所有loss替代后和原AUC的优化有一致性</endl></p>
-<p><a href="https://arxiv.org/pdf/1208.0645.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1208.0645.pdf</a><br>这篇论文指出 有如下与auc有一致性的loss<br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/12.jpeg" alt="这里写图片描述"><br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/13.jpeg" alt="这里写图片描述"><br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/14.jpeg" alt="这里写图片描述"><br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/15.jpeg" alt="这里写图片描述"><br><img src="https://github.com/qrfaction/qrfaction.github.io/tree/master/2018/04/02/END2END%E4%BC%98%E5%8C%96AUC-F-Score/16.jpeg" alt="这里写图片描述"> </p>
+<h3 id="2-共享内存"><a href="#2-共享内存" class="headerlink" title="2. 共享内存"></a>2. 共享内存</h3><blockquote>
+<p>共享内存作用于块级线程的通信的共享是块级的,当把一个变量声明为共享内存时<br>声明共享内存只需要在变量前面加上 __shared__  修饰符</p>
+<p>共享内存的特性:</p>
+<ol>
+<li>对于GPU上启动的每个线程块,CUDA C编译器都将创建该变量的一个副本</li>
+<li>单个线程块中可依靠这个变量进行通信,但这不会影响其他线程块中的变量副本</li>
+<li>共享内存缓冲区驻留在物理GPU上,非GPU之外的系统内存,访问他的延迟远低于访问普通缓冲区的延迟</li>
+</ol>
 </blockquote>
-<p>综上 我们知道了NN可以 end-to-end的优化auc与f-score了<br>可是基于GBDT及其改版的梯度树似乎没有什么好的办法直接优化?<br>梯度树将样本的一阶至二阶梯度信息替代了信息熵和基尼指数来作为评分函数<br>梯度信息将决定样本归于哪个叶节点<br>而这里的优化方式是计算了样本总体的一个loss<br>无法区分到各样本上<br>貌似树模型的auc与F-score优化还是只能靠剪枝？</p>
+<h3 id="3-纹理内存"><a href="#3-纹理内存" class="headerlink" title="3. 纹理内存"></a>3. 纹理内存</h3><blockquote>
+<p>纹理内存同样用于减小内存带宽压力</p>
+<p>纹理内存的特性:</p>
+<ol>
+<li>对于内存访问模式中具有强空间局部性的可获得较好的加速效果 (如卷积运算)</li>
+<li>只读不可写</li>
+</ol>
+</blockquote>
+<h3 id="4-页锁定主机内存与流"><a href="#4-页锁定主机内存与流" class="headerlink" title="4. 页锁定主机内存与流"></a>4. 页锁定主机内存与流</h3><blockquote>
+<p> 页锁定内存也称固定内存或不可分页内存,他有一个重要的属性,OS不会对这块内存进行分页并交换至磁盘上,从而确保该内存始终驻留在物理内存</p>
+<p> 在GPU与主机之间的数据拷贝时,复制操作将执行两次,一次是将可分页内存中的数据复制到临时的页锁定内存,第二次再将这个页锁定内存中的数据复制到GPU上<br> 从上述特性可以看出可分页内存的数据拷贝将比页锁定内存的拷贝多耗一倍时间</p>
+<p> 零拷贝内存<br> 固定内存保证了该内存不会被交换出去或者重新定位<br> 使得GPU直接访问该内存得以实现,而非需要先进行拷贝数据至显存上<br> CUDA有个”合并式写入(write-combined)”模式,可提高GPU读取该内存的速度但会降低CPU访问他的速度<br> 由于集显的内存是和主机共享的所以集显一般能获得性能提升<br> 零拷贝内存的主要作用就是避免不必要的数据复制<br> 如果该内存会被多次读取不如一开始就将数据复制到GPU上,因为GPU与CPU的通信带宽会限制程序性能</p>
+<p> CUDA流<br> CUDA流表示一个GPU操作队列,同个流中的操作将串行执行,而不同流中的操作可并行执行<br> CUDA提供一个异步数据拷贝的API,但该操作需要在固定缓冲区执行,这要求该内存是页锁定内存<br> 在支持设备重叠的机子上,内存的复制和核函数的执行可以并行执行<br> 即存在内存复制引擎和核函数执行引擎分别执行这两个函数<br> 虽说是异步执行,但是这些异步操作是只有这两个引擎在那处理的<br> 所以防止第一个流中的操作阻塞第二个流中的操作最好放入队列时应采用广度优先而非深度优先</p>
+<p> 页锁定内存的特性是只有分配他的正在使用的cpu线程可以享有<br> 需要设定cudaHostAllocPortable才可在多线程中使用</p>
+</blockquote>
 
       
     </div>
@@ -405,7 +407,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/DL/" rel="tag"># DL</a>
+            <a href="/tags/高性能编程/" rel="tag"># 高性能编程</a>
           
         </div>
       
@@ -418,8 +420,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/20/数据竞赛trick总结/" rel="next" title="数据竞赛trick总结">
-                <i class="fa fa-chevron-left"></i> 数据竞赛trick总结
+              <a href="/2018/03/19/毒性文本多标签分类竞赛心得总结/" rel="next" title="毒性文本多标签分类竞赛心得总结">
+                <i class="fa fa-chevron-left"></i> 毒性文本多标签分类竞赛心得总结
               </a>
             
           </div>
@@ -428,8 +430,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/04/04/博客迁移之RCNN简单回顾/" rel="prev" title="博客迁移之RCNN简单回顾">
-                博客迁移之RCNN简单回顾 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/03/20/数据竞赛trick总结/" rel="prev" title="数据竞赛trick总结">
+                数据竞赛trick总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -482,8 +484,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -543,6 +554,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-常量内存"><span class="nav-number">1.</span> <span class="nav-text">1. 常量内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-共享内存"><span class="nav-number">2.</span> <span class="nav-text">2. 共享内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-纹理内存"><span class="nav-number">3.</span> <span class="nav-text">3. 纹理内存</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-页锁定主机内存与流"><span class="nav-number">4.</span> <span class="nav-text">4. 页锁定主机内存与流</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
