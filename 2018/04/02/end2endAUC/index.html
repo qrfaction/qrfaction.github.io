@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/2.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/3.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/4.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/5.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/5.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/6.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/7.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/8.jpeg">
@@ -103,7 +103,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/14.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/15.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/16.jpeg">
-<meta property="og:updated_time" content="2018-04-25T13:29:45.485Z">
+<meta property="og:updated_time" content="2018-04-25T14:28:34.552Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="END2END优化AUC &amp;&amp; F-Score">
 <meta name="twitter:description" content="##AUC与F-score的直接梯度优化 此博文为 本人 CSDN博客迁移过来原文链接 https://mp.csdn.net/mdeditor/79218697 AUC与F-score作为分类问题竞赛中热门的评估指标对于他们的优化往往都是通过间接方法例如样本不平衡中的代价敏感学习 对于auc与F-score的介绍不在展开附上网上找的一个链接https://www.jianshu.com/p/49">
@@ -378,7 +378,7 @@
 <p>这里f-score的优化方式是<strong>约束精准率的下限</strong>来最大化召回率实现的<br>论文里废话比较多  挑些重点放 详细看论文吧</p>
 <p><endl><br>以F1-score为例<br> 优化目标与精准率召回率公式：<br>`<img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/1.jpeg" alt="优化目标"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/2.jpeg" alt="这里写图片描述"></endl></p>
 <p>等价转换<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/3.jpeg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/4.jpeg" alt="这里写图片描述"></p>
-<p>将零一损失替换会hinge损失便于优化&emsp;&emsp;&emsp;这里的L<sub>h</sub>  是hinge损失<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/5.jpg" alt="这里写图片描述"><br>优化目标变为<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/6.jpeg" alt="这里写图片描述"><br>再等价转换<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/7.jpeg" alt="这里写图片描述"><br>拉格朗日函数<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/8.jpeg" alt="这里写图片描述"><br>梯度优化法<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/9.jpeg" alt="这里写图片描述"></p>
+<p>将零一损失替换会hinge损失便于优化&emsp;&emsp;&emsp;这里的L<sub>h</sub>  是hinge损失<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/5.jpeg" alt="这里写图片描述"><br>优化目标变为<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/6.jpeg" alt="这里写图片描述"><br>再等价转换<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/7.jpeg" alt="这里写图片描述"><br>拉格朗日函数<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/8.jpeg" alt="这里写图片描述"><br>梯度优化法<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/9.jpeg" alt="这里写图片描述"></p>
 <p>其基本想法其实是用Hinge替代了零一损失<br>所以直接优化f-score的关键点在于找到一个可凸优化的loss来替代召回率精准率<br>而固定精准率最大化召回率等比较次要<br>找到了这个loss后直接使用框架带有自动求导机制梯度优化即可</p>
 </blockquote>
 <p>AUC的优化</p>
@@ -498,7 +498,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

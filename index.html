@@ -259,6 +259,125 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/25/siamfc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/siamfc/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T22:22:28+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/22/Thrust简单入门/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1445,7 +1564,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
 <p>这里f-score的优化方式是<strong>约束精准率的下限</strong>来最大化召回率实现的<br>论文里废话比较多  挑些重点放 详细看论文吧</p>
 <p><endl><br>以F1-score为例<br> 优化目标与精准率召回率公式：<br>`<img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/1.jpeg" alt="优化目标"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/2.jpeg" alt="这里写图片描述"></endl></p>
 <p>等价转换<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/3.jpeg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/4.jpeg" alt="这里写图片描述"></p>
-<p>将零一损失替换会hinge损失便于优化&emsp;&emsp;&emsp;这里的L<sub>h</sub>  是hinge损失<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/5.jpg" alt="这里写图片描述"><br>优化目标变为<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/6.jpeg" alt="这里写图片描述"><br>再等价转换<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/7.jpeg" alt="这里写图片描述"><br>拉格朗日函数<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/8.jpeg" alt="这里写图片描述"><br>梯度优化法<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/9.jpeg" alt="这里写图片描述"></p>
+<p>将零一损失替换会hinge损失便于优化&emsp;&emsp;&emsp;这里的L<sub>h</sub>  是hinge损失<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/5.jpeg" alt="这里写图片描述"><br>优化目标变为<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/6.jpeg" alt="这里写图片描述"><br>再等价转换<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/7.jpeg" alt="这里写图片描述"><br>拉格朗日函数<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/8.jpeg" alt="这里写图片描述"><br>梯度优化法<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/02/end2endAUC/9.jpeg" alt="这里写图片描述"></p>
 <p>其基本想法其实是用Hinge替代了零一损失<br>所以直接优化f-score的关键点在于找到一个可凸优化的loss来替代召回率精准率<br>而固定精准率最大化召回率等比较次要<br>找到了这个loss后直接使用框架带有自动求导机制梯度优化即可</p>
 </blockquote>
 <p>AUC的优化</p>
@@ -1927,7 +2046,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
