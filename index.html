@@ -353,9 +353,7 @@
         
           
             <p>OpenMP基于共享内存的线程级并行计算<br>支持的编程语言包括C、C++和Fortran<br>只需要在适当的位置添加pragma就可以将程序自动并行处理<br>当编译器不支持OpenMP时，程序会退化成普通(串行)程序</p>
-<p>##并行指令</p>
-<p>###parallel指令</p>
-<pre><code>#include &quot;omp.h&quot;
+<h2 id="并行指令"><a href="#并行指令" class="headerlink" title="并行指令"></a>并行指令</h2><h3 id="parallel指令"><a href="#parallel指令" class="headerlink" title="parallel指令"></a>parallel指令</h3><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &quot;stdlib.h&quot;
 
@@ -375,8 +373,7 @@ hello world
 hello worldhello world
 </code></pre><p>使用OpenMP必加 #pragma omp 前缀<br>parallel可以使得后续代码块并行执行,默认是机器核心数,若加了num_threads(6)语句则开启6个线程</p>
 <p>OpenMP采用fork-join执行模型<br>在进入代码块前开启多个线程,最后再阻塞等待所有线程执行结束退出代码块</p>
-<p>###prallel for指令</p>
-<pre><code>#include &quot;omp.h&quot;
+<h3 id="prallel-for指令"><a href="#prallel-for指令" class="headerlink" title="prallel for指令"></a>prallel for指令</h3><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &lt;stdlib.h&gt; 
 
@@ -400,8 +397,7 @@ int main(){
 2. for循环中比较操作符必须是&lt;, &lt;=, &gt;, &gt;= ,如!=等会编译不通过
 3. 第三个表达式必须是循环变量的加减,且似乎只能++i, i++, -–i, 或i-–
 4. 循环体内部不许出现到达循环体外的跳转语句如break,goto,但exit除外
-</code></pre><p>##数据共享</p>
-<pre><code>#include &quot;omp.h&quot;
+</code></pre><h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &lt;stdlib.h&gt; 
 
@@ -429,8 +425,7 @@ int main(){
 </code></pre><p>子句 private(val1, val2, …)<br>声明私有变量,但值与外部变量不同,全部初始化为0</p>
 <p>子句 last_private(val1, val2, …)<br>将会把并行区域中最后一次执行对val1的操作后的值将会拷贝到相应外部变量中</p>
 <p>shared(val1, val2, …)<br>声明这些变量共享(其实并行区域外的变量默认是共享的)</p>
-<p>###reduction子句</p>
-<pre><code>#include &quot;omp.h&quot;
+<h3 id="reduction子句"><a href="#reduction子句" class="headerlink" title="reduction子句"></a>reduction子句</h3><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &lt;stdlib.h&gt; 
 
