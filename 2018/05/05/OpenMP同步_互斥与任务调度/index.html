@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta name="description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
 <meta name="keywords" content="高性能编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenMP实例学习之数据共享与任务并行">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/index.html">
+<meta property="og:title" content="OpenMP同步&amp;互斥与任务调度">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta property="og:description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-05T09:35:11.382Z">
+<meta property="og:updated_time" content="2018-05-05T09:42:49.731Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenMP实例学习之数据共享与任务并行">
-<meta name="twitter:description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta name="twitter:title" content="OpenMP同步&amp;互斥与任务调度">
+<meta name="twitter:description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/"/>
 
 
 
 
 
-  <title>OpenMP实例学习之数据共享与任务并行 | qrfaction的博客</title>
+  <title>OpenMP同步&互斥与任务调度 | qrfaction的博客</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenMP实例学习之数据共享与任务并行</h1>
+          <h1 class="post-title" itemprop="name headline">OpenMP同步&互斥与任务调度</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T20:12:54+08:00">
-                2018-05-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T16:37:13+08:00">
+                2018-05-05
               </time>
             
 
@@ -352,28 +352,8 @@
       
 
       
-        <p>OpenMP基于共享内存的线程级并行计算<br>支持的编程语言包括C、C++和Fortran<br>只需要在适当的位置添加pragma就可以将程序自动并行处理<br>当编译器不支持OpenMP时，程序会退化成普通(串行)程序</p>
-<h2 id="并行指令"><a href="#并行指令" class="headerlink" title="并行指令"></a>并行指令</h2><h3 id="parallel指令"><a href="#parallel指令" class="headerlink" title="parallel指令"></a>parallel指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &quot;stdlib.h&quot;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel num_threads(6)
-    {
-        cout&lt;&lt;&quot;hello world&quot;&lt;&lt;endl;
-    }
-}
-</code></pre><p>编译运行 g++ test.cpp -fopenmp -lpthread<br>代码输出如下</p>
-<pre><code>hello world
-hello worldhello world
-hello world
-hello worldhello world
-</code></pre><p>使用OpenMP必加 #pragma omp 前缀<br>parallel可以使得后续代码块并行执行,默认是机器核心数,若加了num_threads(6)语句则开启6个线程</p>
-<p>OpenMP采用fork-join执行模型<br>在进入代码块前开启多个线程,最后再阻塞等待所有线程执行结束退出代码块</p>
-<h3 id="prallel-for指令"><a href="#prallel-for指令" class="headerlink" title="prallel for指令"></a>prallel for指令</h3><pre><code>#include &quot;omp.h&quot;
+        <p>多线程编程需要考虑的资源竞争问题而引入互斥与同步<br>为提高并行率而需要任务调度分配</p>
+<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &lt;stdlib.h&gt; 
 
@@ -381,94 +361,161 @@ using namespace std;
 
 int main(){
 
-    #pragma omp parallel for
-    for(int i=0;i&lt;omp_get_num_procs();++i)
-        cout&lt;&lt;&quot;thread id : &quot;
-            &lt;&lt;omp_get_thread_num()&lt;&lt;endl;
-}
-</code></pre><p>代码输出如下</p>
-<pre><code>thread id : thread id : thread id : thread id : 21
+    int sum=0;
 
-0
-3
-</code></pre><p>int omp_get_num_procs()  返回机器核心数<br>int omp_get_thread_num()  返回当前线程id(话说这名字起的…)</p>
-<p>其中parallel for 指令并非能并行所有for循环,要满足如下条件</p>
-<pre><code>1. for循环中的循环变量必须是有int 即int i
-2. for循环中比较操作符必须是&lt;, &lt;=, &gt;, &gt;= ,如!=等会编译不通过
-3. 第三个表达式必须是循环变量的加减,且似乎只能++i, i++, -–i, 或i-–
-4. 循环体内部不许出现到达循环体外的跳转语句如break,goto,但exit除外
-</code></pre><h3 id="sections指令"><a href="#sections指令" class="headerlink" title="sections指令"></a>sections指令</h3><pre><code>int main(){
-    #pragma omp parallel sections
-    {
-        #pragma omp section
-        {
-            for(int i=0;i&lt;4;++i)
-                printf(&quot;i:%i \t id:%d\n&quot;,i,omp_get_thread_num());
-        }
-
-        #pragma omp section
-        {
-            for(int i=0;i&lt;4;++i)
-                printf(&quot;i:%i \t id:%d\n&quot;,i,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序执行结果如下</p>
-<pre><code>i:0      id:1
-i:1      id:1
-i:2      id:1
-i:3      id:1
-i:0      id:3
-i:1      id:3
-i:2      id:3
-i:3      id:3
-</code></pre><p>sections指令中的section指定的代码块将会并行执行</p>
-<h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int a=10;
-
-    #pragma omp parallel for firstprivate(a)
-    for(int i=0;i&lt;10;++i)
-        cout &lt;&lt; a*i &lt;&lt; endl;
-}
-</code></pre><p>firstprivate子句在每个线程中声明了a变量,并以外部的a变量的值进行初始化<br>代码运行结果如下</p>
-<pre><code>30
-40
-50
-80
-90
-0
-10
-20
-60
-70
-</code></pre><p>子句 private(val1, val2, …)<br>声明私有变量,但值与外部变量不同,全部初始化为0</p>
-<p>子句 last_private(val1, val2, …)<br>将会把并行区域中最后一次执行对val1的操作后的值将会拷贝到相应外部变量中</p>
-<p>shared(val1, val2, …)<br>声明这些变量共享(其实并行区域外的变量默认是共享的)</p>
-<h3 id="reduction子句"><a href="#reduction子句" class="headerlink" title="reduction子句"></a>reduction子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=10;
-
-    #pragma omp parallel for reduction(+:sum)
+    #pragma omp parallel for 
     for(int i=0;i&lt;10;++i){
-        sum +=i;
-        cout &lt;&lt; sum &lt;&lt; endl;
+
+        #pragma omp critical
+        {
+            sum +=i;
+        }
     }
     cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
 }
-</code></pre><p>在这里每个线程首先拷贝了一份外部的sum并各自计算<br>最后以指定的运算”+”进行归约(reduction),将各线程的结果求和<br>最后退出代码块将值拷贝到外部的sum</p>
+</code></pre><p>critical可以将指定的代码块加锁<br>使得任何时候只有一个线程可访问这块区域</p>
+<h3 id="atomic指令-原子操作"><a href="#atomic指令-原子操作" class="headerlink" title="atomic指令(原子操作)"></a>atomic指令(原子操作)</h3><p> 将上面代码中的</p>
+<pre><code>#pragma omp critical
+           {
+               sum +=i;
+           }
+</code></pre><p> 替换为</p>
+<pre><code>#pragma omp atomic
+           sum +=i;
+</code></pre><p>也可以实现加锁<br>与之不同的是atomic是对单个指令加锁</p>
+<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="barrier指令"><a href="#barrier指令" class="headerlink" title="barrier指令"></a>barrier指令</h3><pre><code>#include &quot;omp.h&quot;
+#include &quot;iostream&quot;
+#include &lt;stdio.h&gt;
+
+using namespace std;
+
+int main(){
+
+    int sum=0;
+
+    #pragma omp parallel
+    {
+        for(int i=0;i&lt;10;++i){
+            sum +=i;
+        }
+        #pragma omp barrier
+        printf(&quot;sum: %d\n&quot;,sum);
+    }
+
+}
+</code></pre><p>程序输出如下</p>
+<pre><code>sum: 105
+sum: 105
+sum: 105
+sum: 105
+</code></pre><p>如果不加 #pragma omp parallel<br>输出为</p>
+<pre><code>sum: 73
+sum: 45
+sum: 90
+sum: 45
+</code></pre><p>barrier指令使得各线程同步访问sum变量使得输出一致</p>
+<p>OpenMP采用的是fork-join执行模式<br>故在每个并行的线程块结束后都会隐式同步(等效barrier)<br>可以使用nowait子句取消<br>如(都没有parallel)</p>
+<pre><code>#pragma omp for nowait
+#pragma omp sections nowait
+</code></pre><h3 id="ordered子句"><a href="#ordered子句" class="headerlink" title="ordered子句"></a>ordered子句</h3><pre><code>#include &quot;omp.h&quot;
+#include &quot;iostream&quot;
+#include &lt;stdio.h&gt;
+
+using namespace std;
+
+int main(){
+
+    #pragma omp parallel for ordered
+    for(int i=0;i&lt;4;++i){
+
+        #pragma omp ordered
+        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
+    }
+
+}
+</code></pre><p>运行结果如下</p>
+<pre><code>id: 0
+id: 1
+id: 2
+id: 3
+</code></pre><p>在parallel for后加上ordered子句后<br>就可以在代码块中使用 #pragma omp ordered 同步执行</p>
+<h3 id="master子句"><a href="#master子句" class="headerlink" title="master子句"></a>master子句</h3><pre><code>int main(){
+
+    #pragma omp parallel 
+    {
+
+        #pragma omp master
+        {
+            printf(&quot;id: %d\n&quot;,omp_get_thread_num());
+        }
+    }
+}
+</code></pre><p>程序输出如下</p>
+<pre><code>id: 0
+</code></pre><p>这个子句保证了这块代码只由主线程执行</p>
+<h2 id="任务分配"><a href="#任务分配" class="headerlink" title="任务分配"></a>任务分配</h2><h3 id="schedule子句"><a href="#schedule子句" class="headerlink" title="schedule子句"></a>schedule子句</h3><h4 id="static-静态调度"><a href="#static-静态调度" class="headerlink" title="static 静态调度"></a>static 静态调度</h4><pre><code>int main(){
+
+    #pragma omp parallel for schedule(static,3)
+    for(int i=0;i&lt;8;++i)
+    {
+        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
+    }
+
+}
+</code></pre><p>输出如下</p>
+<pre><code>id: 0
+id: 0
+id: 0
+id: 2
+id: 2
+id: 1
+id: 1
+id: 1
+</code></pre><h4 id="dynamic-动态调度"><a href="#dynamic-动态调度" class="headerlink" title="dynamic 动态调度"></a>dynamic 动态调度</h4><pre><code>int main(){
+
+    #pragma omp parallel for schedule(dynamic,2)
+    for(int i=0;i&lt;12;++i)
+    {
+        printf(&quot;result: %d\tid:%d\n&quot;,
+                i*i*i*i*i*i,
+                omp_get_thread_num());
+    }
+
+}
+</code></pre><p>执行结果如下</p>
+<pre><code>result: 64    id:0
+result: 729    id:0
+result: 262144    id:0
+result: 531441    id:0
+result: 1000000    id:0
+result: 1771561    id:0
+result: 4096    id:2
+result: 15625    id:2
+result: 46656    id:3
+result: 117649    id:3
+result: 0    id:1
+result: 1    id:1
+</code></pre><p>(dynamic,2) 每次分配给线程2个任务<br>谁先完成谁继续接受任务<br>使得能达到核心的高占用率</p>
+<h4 id="guided调度"><a href="#guided调度" class="headerlink" title="guided调度"></a>guided调度</h4><p>一开始给每个线程分配多于size个任务<br>然后分配的任务数指数级下降<br>直到分配任务数下降到size后不变</p>
+<h4 id="runtime调度"><a href="#runtime调度" class="headerlink" title="runtime调度"></a>runtime调度</h4><p>根据环境变量OMP_SCHEDULE选择调度方式<br>最终还是落实到上面三个的其中一个</p>
+<h3 id="single指令"><a href="#single指令" class="headerlink" title="single指令"></a>single指令</h3><pre><code>int main(){
+
+    #pragma omp parallel 
+    {
+        #pragma omp single
+        {
+            printf(&quot;hello world\n&quot;);
+        }
+        printf(&quot;nice to meet you\n&quot;);
+    }
+}
+</code></pre><p>程序执行如下</p>
+<pre><code>hello world
+nice to meet you
+nice to meet you
+nice to meet you
+nice to meet you
+</code></pre><p>被single指定的线程块只会被执行一次</p>
 
       
     </div>
@@ -499,8 +546,8 @@ int main(){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/02/数据竞赛之完备思考/" rel="next" title="数据竞赛之完备思考">
-                <i class="fa fa-chevron-left"></i> 数据竞赛之完备思考
+              <a href="/2018/05/04/OpenMP实例学习之数据共享/" rel="next" title="OpenMP实例学习之数据共享与任务并行">
+                <i class="fa fa-chevron-left"></i> OpenMP实例学习之数据共享与任务并行
               </a>
             
           </div>
@@ -508,10 +555,6 @@ int main(){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/OpenMP同步_互斥与任务调度/" rel="prev" title="OpenMP同步&互斥与任务调度">
-                OpenMP同步&互斥与任务调度 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -643,7 +686,7 @@ int main(){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并行指令"><span class="nav-number">1.</span> <span class="nav-text">并行指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parallel指令"><span class="nav-number">1.1.</span> <span class="nav-text">parallel指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prallel-for指令"><span class="nav-number">1.2.</span> <span class="nav-text">prallel for指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sections指令"><span class="nav-number">1.3.</span> <span class="nav-text">sections指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据共享"><span class="nav-number">2.</span> <span class="nav-text">数据共享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reduction子句"><span class="nav-number">2.1.</span> <span class="nav-text">reduction子句</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#互斥"><span class="nav-number">1.</span> <span class="nav-text">互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#critical指令"><span class="nav-number">1.1.</span> <span class="nav-text">critical指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#atomic指令-原子操作"><span class="nav-number">1.2.</span> <span class="nav-text">atomic指令(原子操作)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">2.</span> <span class="nav-text">同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#barrier指令"><span class="nav-number">2.1.</span> <span class="nav-text">barrier指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ordered子句"><span class="nav-number">2.2.</span> <span class="nav-text">ordered子句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#master子句"><span class="nav-number">2.3.</span> <span class="nav-text">master子句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分配"><span class="nav-number">3.</span> <span class="nav-text">任务分配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#schedule子句"><span class="nav-number">3.1.</span> <span class="nav-text">schedule子句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#static-静态调度"><span class="nav-number">3.1.1.</span> <span class="nav-text">static 静态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dynamic-动态调度"><span class="nav-number">3.1.2.</span> <span class="nav-text">dynamic 动态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#guided调度"><span class="nav-number">3.1.3.</span> <span class="nav-text">guided调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runtime调度"><span class="nav-number">3.1.4.</span> <span class="nav-text">runtime调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#single指令"><span class="nav-number">3.2.</span> <span class="nav-text">single指令</span></a></li></ol></li></ol></div>
             
 
           </div>

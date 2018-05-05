@@ -259,7 +259,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步-互斥与任务调度/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -278,7 +278,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/05/05/OpenMP同步-互斥与任务调度/" itemprop="url">OpenMP同步/互斥与任务调度</a></h1>
+                <a class="post-title-link" href="/2018/05/05/OpenMP同步_互斥与任务调度/" itemprop="url">OpenMP同步&互斥与任务调度</a></h1>
         
 
         <div class="post-meta">
@@ -300,6 +300,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -330,8 +352,8 @@
       
         
           
-            <p>##互斥</p>
-<h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
+            <p>多线程编程需要考虑的资源竞争问题而引入互斥与同步<br>为提高并行率而需要任务调度分配</p>
+<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &lt;stdlib.h&gt; 
 
@@ -394,7 +416,7 @@ sum: 45
 </code></pre><p>barrier指令使得各线程同步访问sum变量使得输出一致</p>
 <p>OpenMP采用的是fork-join执行模式<br>故在每个并行的线程块结束后都会隐式同步(等效barrier)<br>可以使用nowait子句取消<br>如(都没有parallel)</p>
 <pre><code>#pragma omp for nowait
-#pragma omp sections nowait    
+#pragma omp sections nowait
 </code></pre><h3 id="ordered子句"><a href="#ordered子句" class="headerlink" title="ordered子句"></a>ordered子句</h3><pre><code>#include &quot;omp.h&quot;
 #include &quot;iostream&quot;
 #include &lt;stdio.h&gt;
