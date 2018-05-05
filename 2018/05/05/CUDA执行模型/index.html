@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="目标检测," />
+  <meta name="keywords" content="高性能编程," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="本博客于本人1.20号在csdn发布csdn链接 https://blog.csdn.net/qrfaction/article/details/79112431 简单回顾只挑重点RCNN  大致步骤:  selective search选框 裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符 送入SVM分类 区域回归冗余计算太多。。。没啥好说的吧毕竟是初版   Fast-RCNN  变动有：">
-<meta name="keywords" content="目标检测">
+<meta name="description" content="高性能CUDA应用设计与开发第四章阅读笔记###CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)">
+<meta name="keywords" content="高性能编程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客迁移之RCNN简单回顾">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/index.html">
+<meta property="og:title" content="CUDA执行模型">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/CUDA执行模型/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="本博客于本人1.20号在csdn发布csdn链接 https://blog.csdn.net/qrfaction/article/details/79112431 简单回顾只挑重点RCNN  大致步骤:  selective search选框 裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符 送入SVM分类 区域回归冗余计算太多。。。没啥好说的吧毕竟是初版   Fast-RCNN  变动有：">
+<meta property="og:description" content="高性能CUDA应用设计与开发第四章阅读笔记###CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-04-04T05:15:58.353Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/05/CUDA执行模型/f-sm.png">
+<meta property="og:updated_time" content="2018-05-05T13:10:19.232Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客迁移之RCNN简单回顾">
-<meta name="twitter:description" content="本博客于本人1.20号在csdn发布csdn链接 https://blog.csdn.net/qrfaction/article/details/79112431 简单回顾只挑重点RCNN  大致步骤:  selective search选框 裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符 送入SVM分类 区域回归冗余计算太多。。。没啥好说的吧毕竟是初版   Fast-RCNN  变动有：">
+<meta name="twitter:title" content="CUDA执行模型">
+<meta name="twitter:description" content="高性能CUDA应用设计与开发第四章阅读笔记###CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/05/CUDA执行模型/f-sm.png">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/CUDA执行模型/"/>
 
 
 
 
 
-  <title>博客迁移之RCNN简单回顾 | qrfaction的博客</title>
+  <title>CUDA执行模型 | qrfaction的博客</title>
   
 
 
@@ -263,7 +265,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/CUDA执行模型/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -280,7 +282,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">博客迁移之RCNN简单回顾</h1>
+          <h1 class="post-title" itemprop="name headline">CUDA执行模型</h1>
         
 
         <div class="post-meta">
@@ -292,8 +294,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T13:14:39+08:00">
-                2018-04-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T21:08:17+08:00">
+                2018-05-05
               </time>
             
 
@@ -315,8 +317,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/目标检测/" itemprop="url" rel="index">
-                    <span itemprop="name">目标检测</span>
+                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能编程</span>
                   </a>
                 </span>
 
@@ -352,52 +354,37 @@
       
 
       
-        <p>本博客于本人1.20号在csdn发布<br>csdn链接 <a href="https://blog.csdn.net/qrfaction/article/details/79112431" target="_blank" rel="noopener">https://blog.csdn.net/qrfaction/article/details/79112431</a></p>
-<p>简单回顾只挑重点<br>RCNN</p>
+        <h2 id="高性能CUDA应用设计与开发第四章阅读笔记"><a href="#高性能CUDA应用设计与开发第四章阅读笔记" class="headerlink" title="高性能CUDA应用设计与开发第四章阅读笔记"></a>高性能CUDA应用设计与开发第四章阅读笔记</h2><p>###CUDA调度层次结构<br>千兆全局调度器 -&gt; 流式处理器(SM) -&gt; wrap调度器 -&gt; SIMD处理器核心 -&gt; 线程</p>
+<p>以GF100流多处理器距离为例</p>
 <blockquote>
-<p>大致步骤:</p>
-<ol>
-<li>selective search选框</li>
-<li>裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符</li>
-<li>送入SVM分类</li>
-<li>区域回归<br><br><br>冗余计算太多。。。没啥好说的吧毕竟是初版</li>
-</ol>
+<p>  2个wrap调度器:给SIMD核心分配任务<br>    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程<br>    16个存取单元(LD/ST)<br>    4个特殊运算单元(SFU)</p>
 </blockquote>
-<p>Fast-RCNN</p>
 <blockquote>
-<p>变动有：</p>
-<ol>
-<li>将图像先送入卷积网络，SS选框后获得proposal的坐标，从而可以直接从特征图筛选区域</li>
-<li>提出ROI Pooling将ROI大小统一</li>
-<li>end2end训练<br> <br><br> 去除了RCNN的proposal冗余的CNN计算</li>
-</ol>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/05/CUDA执行模型/f-sm.png" alt="这里写图片描述"><br><br></p>
 </blockquote>
-<p>Faster-RCNN</p>
-<blockquote>
-<p>变动有：</p>
-<ol>
-<li>提出PRN网络替代selective search选框(对特征图上的每个点进行前后景分类,坐标回归,配合anchor)<br><br><br>selective search那种图像筛选方式效率太低  PRN在特征图上分类回归生成proposal要强不少</li>
-</ol>
+<h3 id="wrap指令分配"><a href="#wrap指令分配" class="headerlink" title="wrap指令分配"></a>wrap指令分配</h3><p>GF100有两个wrap调度器和两个指令分配单元<br>这使得两个wrap调度器可以并行执行<br>wrap调度器的大部分指令都可以双发射并行处理<br>如整型,浮点型,加载,存储的混合与SFU混合的指令(双精度不支持)</p>
+<p>SFU,LD/ST以及SIMD核心都是彼此独立的,所以他们可以并行执行<br><br></p>
+<h3 id="wrap分歧"><a href="#wrap分歧" class="headerlink" title="wrap分歧"></a>wrap分歧</h3><p>一个wrap内的线程各条件分支子句间是串行执行的,例如</p>
+<pre><code>if p:
+    ...
+else:
+    ...
+</code></pre><p>其中进入第一个分支的线程会首先执行,非这个分支的线程会挂起<br>之后第二个分支的线程执行,其他线程挂起<br>毕竟SIMD要求的是单指令多线程<br>所以条件分支过多,会导致运行速度成倍减少…<br><br></p>
+<h4 id="Fermi架构GPU的分支预测技术"><a href="#Fermi架构GPU的分支预测技术" class="headerlink" title="Fermi架构GPU的分支预测技术:"></a>Fermi架构GPU的分支预测技术:</h4><blockquote>
+<p>在使用分支预测时,所有分支会并行执行<br>但条件为假的指令不会被写回结果,计算地址或读取操作数(这些开销没了)<br><br><br>只有条件分支的数量小于一个阈值的时候才会使用分支预测(分支太多并行开销也会比较大)<br>编译器在推断条件会导致产生许多有分歧的wrap时阈值为7,否则阈值为4</p>
 </blockquote>
-<p>Mask RCNN</p>
-<blockquote>
-<p>变动有：</p>
-<ol>
-<li>基础网络的强化  ResNeXt-101+FPN</li>
-<li>加入了mask分支,同时做了分割任务</li>
-<li>ROI Align 替代ROI Pooling<br> 　　ROI Pooling的操作会对分割任务带来微小的偏移<br> 　　ROI Align通过双线性插值减小了这个影响<br><br><br>感觉变化不如前两个大  就加强了基础网络以及多做了个分割任务</li>
-</ol>
+<h4 id="wrap表决"><a href="#wrap表决" class="headerlink" title="wrap表决"></a>wrap表决</h4><blockquote>
+<p>分支中代码过长,nvcc编译器还会插入代码执行wrap表决,检查wrap内所有线程是否执行相同的分支<br><br><br><strong>all(int predicate)：如果当前线程所在的Wrap所有线程的predicate不为0，则返回1。
+</strong>any(int predicate)：如果当前线程所在的Wrap有一个线程的predicate值不为0，则返回1。<br>__ballot(int predicate)：Wrap中第N个线程的predicate值不为0，则将整数0的第N位进行置位。<br><br><br>通过此方式决定是否要进行分支预测<br>某些情况编译器能够在编译时确定wrap内所有分支是否会执行相同路径<br>例如将一个共享变量作为分支变量,此时所有线程将进入同一分支没有开销</p>
 </blockquote>
-<p>Light-Head RCNN</p>
-<blockquote>
-<p>变动有：</p>
-<ol>
-<li>指出faster-rcnn后接的两个fc计算量过大</li>
-<li>指出R-FCN的position-sensitive scores map channel过多导致PSROI计算量过大</li>
-<li>faster-rcnn 与 R-FCN结合  用separable convolution缩减特征图通道，在这里由于通道缩减 无法直接投票，接上一个全连接层回归分类</li>
-<li>去掉了全局池化利于回归<br><br></li>
-</ol>
+<p><br></p>
+<h3 id="线程级并行-TLP"><a href="#线程级并行-TLP" class="headerlink" title="线程级并行(TLP)"></a>线程级并行(TLP)</h3><p>书上说了很多…其实就一个意思,多添线程块提高占用率,保持各种单元(存储,执行,特殊运算)繁忙<br><br></p>
+<h3 id="指令级并行-ILP"><a href="#指令级并行-ILP" class="headerlink" title="指令级并行(ILP)"></a>指令级并行(ILP)</h3><p>高占用率不一定是最佳应用性能<br>使用ILP的原因:使用较少的线程意味着每个线程可以使用更多的寄存器<br>为每个线程多分配一点寄存器可以防止寄存器溢出并保持高性能</p>
+<p><br></p>
+<h3 id="pragma-unroll-预编译指令"><a href="#pragma-unroll-预编译指令" class="headerlink" title="pragma unroll 预编译指令"></a>pragma unroll 预编译指令</h3><blockquote>
+<p>pragma unroll 16可以将for循环内的代码展开16次<br>这样就减少了for循环中的比较与分支操作<br>更多的独立指令可以提高ILP并隐藏流水线与内存访问的延迟</p>
 </blockquote>
+<p>总而言之言而总之<br>所有的存储器中只有寄存器能够满足GPU数以万计的计算要求的存储带宽需求<br>寄存器很重要!!!<br>然后wrap分歧问题需要十分重视!!!<br>尽量以等价形式的代码减少wrap分歧!!!</p>
 
       
     </div>
@@ -415,7 +402,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/目标检测/" rel="tag"># 目标检测</a>
+            <a href="/tags/高性能编程/" rel="tag"># 高性能编程</a>
           
         </div>
       
@@ -428,8 +415,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/02/end2endAUC/" rel="next" title="END2END优化AUC && F-Score">
-                <i class="fa fa-chevron-left"></i> END2END优化AUC && F-Score
+              <a href="/2018/05/05/OpenMP同步_互斥与任务调度/" rel="next" title="OpenMP同步&互斥与任务调度">
+                <i class="fa fa-chevron-left"></i> OpenMP同步&互斥与任务调度
               </a>
             
           </div>
@@ -437,10 +424,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/09/GPU高性能编程CUDA实战阅读笔记/" rel="prev" title="GPU高性能编程CUDA实战阅读笔记">
-                GPU高性能编程CUDA实战阅读笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -492,8 +475,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -553,6 +545,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能CUDA应用设计与开发第四章阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">高性能CUDA应用设计与开发第四章阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wrap指令分配"><span class="nav-number">1.1.</span> <span class="nav-text">wrap指令分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wrap分歧"><span class="nav-number">1.2.</span> <span class="nav-text">wrap分歧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fermi架构GPU的分支预测技术"><span class="nav-number">1.2.1.</span> <span class="nav-text">Fermi架构GPU的分支预测技术:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wrap表决"><span class="nav-number">1.2.2.</span> <span class="nav-text">wrap表决</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程级并行-TLP"><span class="nav-number">1.3.</span> <span class="nav-text">线程级并行(TLP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令级并行-ILP"><span class="nav-number">1.4.</span> <span class="nav-text">指令级并行(ILP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pragma-unroll-预编译指令"><span class="nav-number">1.5.</span> <span class="nav-text">pragma unroll 预编译指令</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
