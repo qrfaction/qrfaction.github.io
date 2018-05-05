@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="高性能CUDA应用设计与开发第四章阅读笔记###CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)">
+<meta name="description" content="高性能CUDA应用设计与开发第四章阅读笔记CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)    4">
 <meta name="keywords" content="高性能编程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CUDA执行模型">
 <meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/CUDA执行模型/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="高性能CUDA应用设计与开发第四章阅读笔记###CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)">
+<meta property="og:description" content="高性能CUDA应用设计与开发第四章阅读笔记CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)    4">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/05/CUDA执行模型/f-sm.png">
-<meta property="og:updated_time" content="2018-05-05T13:10:19.232Z">
+<meta property="og:updated_time" content="2018-05-05T13:15:02.842Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CUDA执行模型">
-<meta name="twitter:description" content="高性能CUDA应用设计与开发第四章阅读笔记###CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)">
+<meta name="twitter:description" content="高性能CUDA应用设计与开发第四章阅读笔记CUDA调度层次结构千兆全局调度器 -&amp;gt; 流式处理器(SM) -&amp;gt; wrap调度器 -&amp;gt; SIMD处理器核心 -&amp;gt; 线程 以GF100流多处理器距离为例    2个wrap调度器:给SIMD核心分配任务    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程    16个存取单元(LD/ST)    4">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/05/CUDA执行模型/f-sm.png">
 
 
@@ -354,7 +354,7 @@
       
 
       
-        <h2 id="高性能CUDA应用设计与开发第四章阅读笔记"><a href="#高性能CUDA应用设计与开发第四章阅读笔记" class="headerlink" title="高性能CUDA应用设计与开发第四章阅读笔记"></a>高性能CUDA应用设计与开发第四章阅读笔记</h2><p>###CUDA调度层次结构<br>千兆全局调度器 -&gt; 流式处理器(SM) -&gt; wrap调度器 -&gt; SIMD处理器核心 -&gt; 线程</p>
+        <h2 id="高性能CUDA应用设计与开发第四章阅读笔记"><a href="#高性能CUDA应用设计与开发第四章阅读笔记" class="headerlink" title="高性能CUDA应用设计与开发第四章阅读笔记"></a>高性能CUDA应用设计与开发第四章阅读笔记</h2><h3 id="CUDA调度层次结构"><a href="#CUDA调度层次结构" class="headerlink" title="CUDA调度层次结构"></a>CUDA调度层次结构</h3><p>千兆全局调度器 -&gt; 流式处理器(SM) -&gt; wrap调度器 -&gt; SIMD处理器核心 -&gt; 线程</p>
 <p>以GF100流多处理器距离为例</p>
 <blockquote>
 <p>  2个wrap调度器:给SIMD核心分配任务<br>    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程<br>    16个存取单元(LD/ST)<br>    4个特殊运算单元(SFU)</p>
@@ -555,7 +555,7 @@ else:
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能CUDA应用设计与开发第四章阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">高性能CUDA应用设计与开发第四章阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wrap指令分配"><span class="nav-number">1.1.</span> <span class="nav-text">wrap指令分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wrap分歧"><span class="nav-number">1.2.</span> <span class="nav-text">wrap分歧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fermi架构GPU的分支预测技术"><span class="nav-number">1.2.1.</span> <span class="nav-text">Fermi架构GPU的分支预测技术:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wrap表决"><span class="nav-number">1.2.2.</span> <span class="nav-text">wrap表决</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程级并行-TLP"><span class="nav-number">1.3.</span> <span class="nav-text">线程级并行(TLP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令级并行-ILP"><span class="nav-number">1.4.</span> <span class="nav-text">指令级并行(ILP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pragma-unroll-预编译指令"><span class="nav-number">1.5.</span> <span class="nav-text">pragma unroll 预编译指令</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#高性能CUDA应用设计与开发第四章阅读笔记"><span class="nav-number">1.</span> <span class="nav-text">高性能CUDA应用设计与开发第四章阅读笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CUDA调度层次结构"><span class="nav-number">1.1.</span> <span class="nav-text">CUDA调度层次结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wrap指令分配"><span class="nav-number">1.2.</span> <span class="nav-text">wrap指令分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wrap分歧"><span class="nav-number">1.3.</span> <span class="nav-text">wrap分歧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fermi架构GPU的分支预测技术"><span class="nav-number">1.3.1.</span> <span class="nav-text">Fermi架构GPU的分支预测技术:</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wrap表决"><span class="nav-number">1.3.2.</span> <span class="nav-text">wrap表决</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程级并行-TLP"><span class="nav-number">1.4.</span> <span class="nav-text">线程级并行(TLP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令级并行-ILP"><span class="nav-number">1.5.</span> <span class="nav-text">指令级并行(ILP)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pragma-unroll-预编译指令"><span class="nav-number">1.6.</span> <span class="nav-text">pragma unroll 预编译指令</span></a></li></ol></li></ol></div>
             
 
           </div>

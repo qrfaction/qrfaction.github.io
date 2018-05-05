@@ -352,7 +352,7 @@
       
         
           
-            <h2 id="高性能CUDA应用设计与开发第四章阅读笔记"><a href="#高性能CUDA应用设计与开发第四章阅读笔记" class="headerlink" title="高性能CUDA应用设计与开发第四章阅读笔记"></a>高性能CUDA应用设计与开发第四章阅读笔记</h2><p>###CUDA调度层次结构<br>千兆全局调度器 -&gt; 流式处理器(SM) -&gt; wrap调度器 -&gt; SIMD处理器核心 -&gt; 线程</p>
+            <h2 id="高性能CUDA应用设计与开发第四章阅读笔记"><a href="#高性能CUDA应用设计与开发第四章阅读笔记" class="headerlink" title="高性能CUDA应用设计与开发第四章阅读笔记"></a>高性能CUDA应用设计与开发第四章阅读笔记</h2><h3 id="CUDA调度层次结构"><a href="#CUDA调度层次结构" class="headerlink" title="CUDA调度层次结构"></a>CUDA调度层次结构</h3><p>千兆全局调度器 -&gt; 流式处理器(SM) -&gt; wrap调度器 -&gt; SIMD处理器核心 -&gt; 线程</p>
 <p>以GF100流多处理器距离为例</p>
 <blockquote>
 <p>  2个wrap调度器:给SIMD核心分配任务<br>    32个SIMD核心:单指令多线程调度,并发执行一个或半个wrap(32)的线程<br>    16个存取单元(LD/ST)<br>    4个特殊运算单元(SFU)</p>
