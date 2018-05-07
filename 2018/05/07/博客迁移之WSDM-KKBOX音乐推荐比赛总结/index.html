@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="高性能编程," />
+  <meta name="keywords" content="数据竞赛," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
-<meta name="keywords" content="高性能编程">
+<meta name="description" content="本文于本人在2017.12.19于csdn首发现在修改重新复盘回顾 比赛介绍给定用户人口统计特征，歌曲信息，预测用户听了某歌后未来一个月内是否会重新聆听 数据集约三四万的用户约两百多万首歌用户-歌曲对 测试集和训练集共有约一千万个 时间分配时间上的分配:印象中开始打了两周左右就丢那里了吧,结尾一周多又去打了…中间没去搞犯懒癌不过最后还是拿到了一个比较满意的成绩，13名。不过差一点就金牌了呀!!!">
+<meta name="keywords" content="数据竞赛">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenMP同步&amp;互斥与任务调度">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/index.html">
+<meta property="og:title" content="博客迁移之WSDM-KKBOX音乐推荐比赛总结">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/07/博客迁移之WSDM-KKBOX音乐推荐比赛总结/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
+<meta property="og:description" content="本文于本人在2017.12.19于csdn首发现在修改重新复盘回顾 比赛介绍给定用户人口统计特征，歌曲信息，预测用户听了某歌后未来一个月内是否会重新聆听 数据集约三四万的用户约两百多万首歌用户-歌曲对 测试集和训练集共有约一千万个 时间分配时间上的分配:印象中开始打了两周左右就丢那里了吧,结尾一周多又去打了…中间没去搞犯懒癌不过最后还是拿到了一个比较满意的成绩，13名。不过差一点就金牌了呀!!!">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-05T09:42:49.731Z">
+<meta property="og:updated_time" content="2018-05-07T13:23:58.878Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenMP同步&amp;互斥与任务调度">
-<meta name="twitter:description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
+<meta name="twitter:title" content="博客迁移之WSDM-KKBOX音乐推荐比赛总结">
+<meta name="twitter:description" content="本文于本人在2017.12.19于csdn首发现在修改重新复盘回顾 比赛介绍给定用户人口统计特征，歌曲信息，预测用户听了某歌后未来一个月内是否会重新聆听 数据集约三四万的用户约两百多万首歌用户-歌曲对 测试集和训练集共有约一千万个 时间分配时间上的分配:印象中开始打了两周左右就丢那里了吧,结尾一周多又去打了…中间没去搞犯懒癌不过最后还是拿到了一个比较满意的成绩，13名。不过差一点就金牌了呀!!!">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/07/博客迁移之WSDM-KKBOX音乐推荐比赛总结/"/>
 
 
 
 
 
-  <title>OpenMP同步&互斥与任务调度 | qrfaction的博客</title>
+  <title>博客迁移之WSDM-KKBOX音乐推荐比赛总结 | qrfaction的博客</title>
   
 
 
@@ -263,7 +263,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/07/博客迁移之WSDM-KKBOX音乐推荐比赛总结/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -280,7 +280,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenMP同步&互斥与任务调度</h1>
+          <h1 class="post-title" itemprop="name headline">博客迁移之WSDM-KKBOX音乐推荐比赛总结</h1>
         
 
         <div class="post-meta">
@@ -292,8 +292,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T16:37:13+08:00">
-                2018-05-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T21:23:14+08:00">
+                2018-05-07
               </time>
             
 
@@ -315,8 +315,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
                   </a>
                 </span>
 
@@ -352,170 +352,33 @@
       
 
       
-        <p>多线程编程需要考虑的资源竞争问题而引入互斥与同步<br>为提高并行率而需要任务调度分配</p>
-<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel for 
-    for(int i=0;i&lt;10;++i){
-
-        #pragma omp critical
-        {
-            sum +=i;
-        }
-    }
-    cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
-}
-</code></pre><p>critical可以将指定的代码块加锁<br>使得任何时候只有一个线程可访问这块区域</p>
-<h3 id="atomic指令-原子操作"><a href="#atomic指令-原子操作" class="headerlink" title="atomic指令(原子操作)"></a>atomic指令(原子操作)</h3><p> 将上面代码中的</p>
-<pre><code>#pragma omp critical
-           {
-               sum +=i;
-           }
-</code></pre><p> 替换为</p>
-<pre><code>#pragma omp atomic
-           sum +=i;
-</code></pre><p>也可以实现加锁<br>与之不同的是atomic是对单个指令加锁</p>
-<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="barrier指令"><a href="#barrier指令" class="headerlink" title="barrier指令"></a>barrier指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel
-    {
-        for(int i=0;i&lt;10;++i){
-            sum +=i;
-        }
-        #pragma omp barrier
-        printf(&quot;sum: %d\n&quot;,sum);
-    }
-
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>sum: 105
-sum: 105
-sum: 105
-sum: 105
-</code></pre><p>如果不加 #pragma omp parallel<br>输出为</p>
-<pre><code>sum: 73
-sum: 45
-sum: 90
-sum: 45
-</code></pre><p>barrier指令使得各线程同步访问sum变量使得输出一致</p>
-<p>OpenMP采用的是fork-join执行模式<br>故在每个并行的线程块结束后都会隐式同步(等效barrier)<br>可以使用nowait子句取消<br>如(都没有parallel)</p>
-<pre><code>#pragma omp for nowait
-#pragma omp sections nowait
-</code></pre><h3 id="ordered子句"><a href="#ordered子句" class="headerlink" title="ordered子句"></a>ordered子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel for ordered
-    for(int i=0;i&lt;4;++i){
-
-        #pragma omp ordered
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>运行结果如下</p>
-<pre><code>id: 0
-id: 1
-id: 2
-id: 3
-</code></pre><p>在parallel for后加上ordered子句后<br>就可以在代码块中使用 #pragma omp ordered 同步执行</p>
-<h3 id="master子句"><a href="#master子句" class="headerlink" title="master子句"></a>master子句</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-
-        #pragma omp master
-        {
-            printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>id: 0
-</code></pre><p>这个子句保证了这块代码只由主线程执行</p>
-<h2 id="任务分配"><a href="#任务分配" class="headerlink" title="任务分配"></a>任务分配</h2><h3 id="schedule子句"><a href="#schedule子句" class="headerlink" title="schedule子句"></a>schedule子句</h3><h4 id="static-静态调度"><a href="#static-静态调度" class="headerlink" title="static 静态调度"></a>static 静态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(static,3)
-    for(int i=0;i&lt;8;++i)
-    {
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>输出如下</p>
-<pre><code>id: 0
-id: 0
-id: 0
-id: 2
-id: 2
-id: 1
-id: 1
-id: 1
-</code></pre><h4 id="dynamic-动态调度"><a href="#dynamic-动态调度" class="headerlink" title="dynamic 动态调度"></a>dynamic 动态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(dynamic,2)
-    for(int i=0;i&lt;12;++i)
-    {
-        printf(&quot;result: %d\tid:%d\n&quot;,
-                i*i*i*i*i*i,
-                omp_get_thread_num());
-    }
-
-}
-</code></pre><p>执行结果如下</p>
-<pre><code>result: 64    id:0
-result: 729    id:0
-result: 262144    id:0
-result: 531441    id:0
-result: 1000000    id:0
-result: 1771561    id:0
-result: 4096    id:2
-result: 15625    id:2
-result: 46656    id:3
-result: 117649    id:3
-result: 0    id:1
-result: 1    id:1
-</code></pre><p>(dynamic,2) 每次分配给线程2个任务<br>谁先完成谁继续接受任务<br>使得能达到核心的高占用率</p>
-<h4 id="guided调度"><a href="#guided调度" class="headerlink" title="guided调度"></a>guided调度</h4><p>一开始给每个线程分配多于size个任务<br>然后分配的任务数指数级下降<br>直到分配任务数下降到size后不变</p>
-<h4 id="runtime调度"><a href="#runtime调度" class="headerlink" title="runtime调度"></a>runtime调度</h4><p>根据环境变量OMP_SCHEDULE选择调度方式<br>最终还是落实到上面三个的其中一个</p>
-<h3 id="single指令"><a href="#single指令" class="headerlink" title="single指令"></a>single指令</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-        #pragma omp single
-        {
-            printf(&quot;hello world\n&quot;);
-        }
-        printf(&quot;nice to meet you\n&quot;);
-    }
-}
-</code></pre><p>程序执行如下</p>
-<pre><code>hello world
-nice to meet you
-nice to meet you
-nice to meet you
-nice to meet you
-</code></pre><p>被single指定的线程块只会被执行一次</p>
+        <p>本文于本人在2017.12.19于csdn首发<br>现在修改重新复盘回顾</p>
+<h3 id="比赛介绍"><a href="#比赛介绍" class="headerlink" title="比赛介绍"></a>比赛介绍</h3><p>给定用户人口统计特征，歌曲信息，预测用户听了某歌后未来一个月内是否会重新聆听</p>
+<h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h3><p>约三四万的用户<br>约两百多万首歌<br>用户-歌曲对 测试集和训练集共有约一千万个</p>
+<h3 id="时间分配"><a href="#时间分配" class="headerlink" title="时间分配"></a>时间分配</h3><p>时间上的分配:印象中开始打了两周左右就丢那里了吧,结尾一周多又去打了…<br>中间没去搞犯懒癌<br>不过最后还是拿到了一个比较满意的成绩，13名。<br>不过差一点就金牌了呀!!! emmmm…</p>
+<h3 id="自己的trick"><a href="#自己的trick" class="headerlink" title="自己的trick"></a>自己的trick</h3><p>挑一些比较重要的</p>
+<blockquote>
+</blockquote>
+<ol>
+<li>计数特征 : 比如歌曲被播放次数，用户听歌次数，歌手被听次数等等,就是一些热度特征 活跃度等等重要指标</li>
+<li>条件概率特征 : 批量生成 P(歌曲|用户）  P（用户|歌曲）  P（作词人|用户）  等等等等</li>
+<li>相似度 : 将用户，歌曲，歌手的网络结构拓扑图丢给node2vec对用户，歌曲，歌手进行编码，再计算他们的皮尔森相关系数作为他们的相似度</li>
+<li>按时间轴加权,离当前时间越近的权重越高</li>
+<li>依赖时间的计数/条件概率特征依照时间窗口滑窗生成</li>
+<li>试过神经网络embedding，歌手歌曲用户进行词嵌入来学习，搭了一个1D的类DesnseNet结构，分数最高也就68点多。于是乎放弃(其实现在看来初始化不行,那时候应该先node2vec预训练的,无论对树和神经网络效果都应该很bug</li>
+<li>尝试过数据集分历史数据和当前两部分，lgbm对历史数据进行训练再对当前数据预测输出样本的叶子节点信息，一般般</li>
+</ol>
+<h3 id="top1-top3的做法"><a href="#top1-top3的做法" class="headerlink" title="top1,top3的做法"></a>top1,top3的做法</h3><blockquote>
+</blockquote>
+<ol>
+<li>生成用户歌曲对特征，SVD分解获得用户歌曲对向量，将向量整个作为特征显著提升<br> 这个当时没做,那时候好像因为最后一两周才回来搞没啥时间了,也不敢svd直接分内存太大了<br> 讲道理node2vec也可以替代的不是</li>
+<li>top1使用了样本的上下文信息(过去与未来的log)<br> 现在看来无论top1还是top3上下文信息的利用的不够干脆<br> 样本非独立,除了用户上下文信息可以用,歌曲上个时间点被谁听了,下个时间点等…<br> 神经网络讲道理也可以用的</li>
+<li>top1尝试了伪标签但效果不好<br> 话说这里那次比赛就有人用伪标签…居然被我忽略了,我那时候眼神不好吧…<br> 这里效果不好很显然,上次毒性分类比赛效果好是因为模型生成的伪标签质量高噪声小<br> 这里平均只有七十多的正确率的标签噪声太多…</li>
+<li>top3数据全转为数字保存为hdf这种图片格式，貌似比csv读写快？</li>
+<li>top3也将数据分成了历史信息和当前信息,将数据索引作为时间轴<br> (1)上下文信息<br> (2)统计了一堆历史信息中和label相关的特征放到当前信息中,最终将当前的数据样本放进去训练<br> 现在感觉这种操作比较冗余</li>
+</ol>
+<h3 id="其他体会"><a href="#其他体会" class="headerlink" title="其他体会"></a>其他体会</h3><p>高性能编程超级超级超级重要,从那次和之后的比赛看出多核,GPU的优势必须用出来<br>有些复杂的特征必须要快速造出来</p>
+<h3 id="没干的事"><a href="#没干的事" class="headerlink" title="没干的事"></a>没干的事</h3><p>集成最后也比较草草的直接加权，毕竟没啥时间了。<br>调参也没调，不过正好说明了老生常谈的论特征的重要性<br>恩，最后….以后一定得大胆想大胆试，人有多大胆地有多大产hh</p>
 
       
     </div>
@@ -533,7 +396,7 @@ nice to meet you
       
         <div class="post-tags">
           
-            <a href="/tags/高性能编程/" rel="tag"># 高性能编程</a>
+            <a href="/tags/数据竞赛/" rel="tag"># 数据竞赛</a>
           
         </div>
       
@@ -546,8 +409,8 @@ nice to meet you
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/04/OpenMP实例学习之数据共享/" rel="next" title="OpenMP数据共享与任务并行">
-                <i class="fa fa-chevron-left"></i> OpenMP数据共享与任务并行
+              <a href="/2018/05/05/博客迁移之弃赛总结/" rel="next" title="博客迁移之弃赛总结">
+                <i class="fa fa-chevron-left"></i> 博客迁移之弃赛总结
               </a>
             
           </div>
@@ -555,10 +418,6 @@ nice to meet you
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/CUDA执行模型/" rel="prev" title="CUDA执行模型">
-                CUDA执行模型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -690,7 +549,7 @@ nice to meet you
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#互斥"><span class="nav-number">1.</span> <span class="nav-text">互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#critical指令"><span class="nav-number">1.1.</span> <span class="nav-text">critical指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#atomic指令-原子操作"><span class="nav-number">1.2.</span> <span class="nav-text">atomic指令(原子操作)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">2.</span> <span class="nav-text">同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#barrier指令"><span class="nav-number">2.1.</span> <span class="nav-text">barrier指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ordered子句"><span class="nav-number">2.2.</span> <span class="nav-text">ordered子句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#master子句"><span class="nav-number">2.3.</span> <span class="nav-text">master子句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分配"><span class="nav-number">3.</span> <span class="nav-text">任务分配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#schedule子句"><span class="nav-number">3.1.</span> <span class="nav-text">schedule子句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#static-静态调度"><span class="nav-number">3.1.1.</span> <span class="nav-text">static 静态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dynamic-动态调度"><span class="nav-number">3.1.2.</span> <span class="nav-text">dynamic 动态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#guided调度"><span class="nav-number">3.1.3.</span> <span class="nav-text">guided调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runtime调度"><span class="nav-number">3.1.4.</span> <span class="nav-text">runtime调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#single指令"><span class="nav-number">3.2.</span> <span class="nav-text">single指令</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#比赛介绍"><span class="nav-number">1.</span> <span class="nav-text">比赛介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据集"><span class="nav-number">2.</span> <span class="nav-text">数据集</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间分配"><span class="nav-number">3.</span> <span class="nav-text">时间分配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自己的trick"><span class="nav-number">4.</span> <span class="nav-text">自己的trick</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top1-top3的做法"><span class="nav-number">5.</span> <span class="nav-text">top1,top3的做法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#其他体会"><span class="nav-number">6.</span> <span class="nav-text">其他体会</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#没干的事"><span class="nav-number">7.</span> <span class="nav-text">没干的事</span></a></li></ol></div>
             
 
           </div>
