@@ -259,6 +259,198 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/11/CUDA存储器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/11/CUDA存储器/" itemprop="url">CUDA存储器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-11T13:42:19+08:00">
+                2018-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>高性能CUDA应用设计与开发第五章阅读笔记</p>
+<h2 id="GPU存储器层次结构"><a href="#GPU存储器层次结构" class="headerlink" title="GPU存储器层次结构"></a>GPU存储器层次结构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/mem.jpg" alt="这里写图片描述"></p>
+<p>在GPU高速计算的过程中,GPU的性能极大受限于存储器的带宽<br>只有流多处理器的寄存器带宽满足流多处理器全速运转需求</p>
+<p>不同类型GPU存储器的带宽如下</p>
+<blockquote>
+</blockquote>
+<p>寄存器&emsp;&emsp;&emsp;约8T/s<br>共享内存&emsp;&emsp;约1.6T/s<br>全局内存&emsp;&emsp;约而0.1 - 0.2T/s<br>内存映射&emsp;&emsp;约0.01T/s  &emsp; (主机内存映射到GPU显存)</p>
+<p>实现程序的高性能必须在流多处理器内实现数据重用<br>因为经常访问的数据会被放入高速缓存之中<br>从而减少了从全局内存中读取数据的次数</p>
+<h2 id="L2缓存"><a href="#L2缓存" class="headerlink" title="L2缓存"></a>L2缓存</h2><ul>
+<li>由图知由各SM共享</li>
+<li>L2缓存采用LRU(least recently used)调度方式</li>
+<li>由L2缓存调度方式可知,L2对非规则内存的访问具有良好的加速效果</li>
+<li>所有数据的加载与存储都经过L2缓存(包括GPU与CPU之间的数据互传)<br> 所以GPU与CPU之间的数据传输会影响缓存命中率与程序性能</li>
+</ul>
+<h2 id="L1缓存"><a href="#L1缓存" class="headerlink" title="L1缓存"></a>L1缓存</h2><ul>
+<li>L1缓存基于空间重用而非像L2的时间</li>
+<li>L1缓存并不影响全局内存的写操作,这些操作会越过L1</li>
+<li>L1缓存用于两种作用<br> 1.动态缓存<br> &emsp;&emsp;(1)记录线程的局部数据结构,如线程栈(栈最多占用1KB的内存)<br> &emsp;&emsp;(2)局域内存(用于存放从寄存器溢出的局部数据)<br> 2.用于共享内存</li>
+<li>广播数据<br> condition1:  一致访问  (同一个 线程块 内的线程均访问 同一地址)<br> condition2:  若使用的指针是const类型的<br> 编译器将会识别出一致访问并生成LDU指令访问L1缓存,实现数据广播</li>
+</ul>
+<h3 id="局域内存"><a href="#局域内存" class="headerlink" title="局域内存"></a>局域内存</h3><p>对自动变量的操作会访问到局域内存<br>所谓自动变量就是设备端代码中申请的,不包含<strong>device</strong>,<strong>shared</strong>,<strong>constant</strong>限定符的变量<br>通常自动变量会存放于寄存器中,但以下情况除外</p>
+<ol>
+<li>编译器无法通过常量索引元素的数组</li>
+<li>体积较大,导致寄存器资源消耗过多的数组或结构体</li>
+<li>寄存器溢出</li>
+<li>全局内存和L1缓存都有用做局域内存的部分</li>
+</ol>
+<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><h4 id="bank冲突"><a href="#bank冲突" class="headerlink" title="bank冲突"></a>bank冲突</h4><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.jpg" alt="这里写图片描述"></p>
+<p>如图,当申请一块共享内存时,共享内存会被组织成32/16个bank(早期的GPU是16个)<br>不同的线程访问同一个bank会产生bank冲突,会被串行执行<br>早期double双精度数据也会引起bank冲突,因为他是分成两个32位数据放于共享内存中</p>
+<p>在共享内存中填充空数据,可以避免bank冲突<br>如 __share__ tile[32][33]<br>这样即可使得一个warp访问同一列数据时发生错位,使得避免了bank冲突</p>
+<h4 id="共享内存的多播能力"><a href="#共享内存的多播能力" class="headerlink" title="共享内存的多播能力"></a>共享内存的多播能力</h4><p>若一个wrap内的多个线程同时访问同一个字,则硬件上只产生一次共享内存的读取操作</p>
+<h4 id="线程通信的注意事项"><a href="#线程通信的注意事项" class="headerlink" title="线程通信的注意事项"></a>线程通信的注意事项</h4><p>若共享内存用于线程块内的wrap通信,则共享内存声明时必须使用volatile前缀<br>避免误读缓存数据带来的错误 (否则,如数据被缓存到寄存器中,将读入旧数据)</p>
+<h2 id="常量内存"><a href="#常量内存" class="headerlink" title="常量内存"></a>常量内存</h2><ol>
+<li>只有64KB,使用专用的常量缓存(per-SM)</li>
+<li>具有数据广播能力</li>
+<li>线程间并发访问常量内存不同地址时,采用串行执行</li>
+</ol>
+<p>L1的一致访问其实也可以多播,不过当数据过多时,广播数据或许会被挤出缓存<br>这时候常量内存仍可利用</p>
+<h2 id="纹理内存"><a href="#纹理内存" class="headerlink" title="纹理内存"></a>纹理内存</h2><ol>
+<li>纹理内存驻留在显存中，并且使用一个只读cache（per-SM）,访问显存数据需经过cache</li>
+<li>当访问一个数据时,该数据的周围局部数据也会被加载到缓存中,这对数据访问具有局部相关性的模式具有加速效果</li>
+<li>每个流多处理器仅含8KB缓存空间</li>
+<li>具有一定数据存储能力,高效拆解和广播数据</li>
+<li>当数据的访问发生越界时,支持各种插值算法处理越界数据  (这个是指卷积/滤波时发生矩阵越界访问?)</li>
+</ol>
+<h2 id="全局内存"><a href="#全局内存" class="headerlink" title="全局内存"></a>全局内存</h2><p>全局内存的读取方式</p>
+<ol>
+<li>缓存读取<br>&emsp;&emsp;内存逻辑首先从L1缓存中寻找数据,接着是L2缓存,若都没找到再从全局内存读取<br>&emsp;&emsp;全局内存的读取粒度其中一次读取128字节<br>&emsp;&emsp;这个应该是考虑到减少IO请求的次数,可能存在冗余读取的情况<br>&emsp;&emsp;这个时候内存对齐是十分重要的东西 (cudaMalloc申请的空间保证了至少256字节的对齐)</li>
+<li>非缓存读取<br>&emsp;&emsp;当读取大量数据且又不存在于连续地址时,建议使用nvcc的命令行参数 -Xptxas-dlcm=gc关闭L1缓存<br>&emsp;&emsp;这时SM不会从L1中寻找数据,全局内存的读取粒度由128变为32减少冗余读取</li>
+</ol>
+<p>内存对齐与冗余读取详细请看该博客<br><a href="https://blog.csdn.net/qq_17239003/article/details/79038333" target="_blank" rel="noopener">https://blog.csdn.net/qq_17239003/article/details/79038333</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/10/kcf/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2319,169 +2511,6 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/16/博客迁移之pytorch神坑记录/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/16/博客迁移之pytorch神坑记录/" itemprop="url">博客迁移之pytorch神坑记录</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T19:48:59+08:00">
-                2018-04-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DL/" itemprop="url" rel="index">
-                    <span itemprop="name">DL</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文由本人于2018.02.03于<a href="https://blog.csdn.net/qrfaction/article/details/79249831发布" target="_blank" rel="noopener">https://blog.csdn.net/qrfaction/article/details/79249831发布</a></p>
-<p>前天由于需要<br>翻起pytorch文档直接撸<br>然后今天记录一下这两天一路踩下来的神坑</p>
-<p>pytorch3.0 </p>
-<ol>
-<li><p>Tensor  和  Variable不能自动互转…</p>
-</li>
-<li><p>Tensor各种类型之间不支持自动互转…</p>
-</li>
-<li><p>Tensor的布尔索引不支持 list</p>
-</li>
-<li><p>循环单元的初始隐藏状态得自己设置,最好在传播时生成,因为他的batchsize大小会固定…</p>
-</li>
-<li><p>放在GPU上跑的时候记得把循环单元的初始隐藏状态 .cuda() ,因为GPU上的变量类型和CPU上的不能互转…</p>
-</li>
-<li><p>推断模式  一定要把变量设置成volatile = True，否则他会有一部份内存不会释放掉…<br> 我这里反正是由于验证集太大  有快百个G没释放掉 … 开了这个之后内存占用一直没超过12G…</p>
-</li>
-<li><p>使用dropout ,batchnorm 时记得使用 train() 和 eval()</p>
-</li>
-<li><p>模型 .cuda()转到GPU上后 参数也会改变  所以优化器一定要在这个之后用…</p>
-</li>
-<li>pytorch3.0在开Data parallel后跑两个程序会导致进程死锁(kill不掉,以及尝试各类方法)  唯一的解决方案是重启</li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2532,7 +2561,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
