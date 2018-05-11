@@ -88,8 +88,8 @@
 <meta property="og:description" content="高性能CUDA应用设计与开发第五章阅读笔记 GPU存储器层次结构 在GPU高速计算的过程中,GPU的性能极大受限于存储器的带宽只有流多处理器的寄存器带宽满足流多处理器全速运转需求 不同类型GPU存储器的带宽如下   寄存器&amp;emsp;&amp;emsp;&amp;emsp;约8T/s共享内存&amp;emsp;&amp;emsp;约1.6T/s全局内存&amp;emsp;&amp;emsp;约而0.1 - 0.2T/s内存映射&amp;emsp;&amp;em">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/mem.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.jpg">
-<meta property="og:updated_time" content="2018-05-11T05:46:47.241Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.png">
+<meta property="og:updated_time" content="2018-05-11T05:47:26.761Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CUDA存储器">
 <meta name="twitter:description" content="高性能CUDA应用设计与开发第五章阅读笔记 GPU存储器层次结构 在GPU高速计算的过程中,GPU的性能极大受限于存储器的带宽只有流多处理器的寄存器带宽满足流多处理器全速运转需求 不同类型GPU存储器的带宽如下   寄存器&amp;emsp;&amp;emsp;&amp;emsp;约8T/s共享内存&amp;emsp;&amp;emsp;约1.6T/s全局内存&amp;emsp;&amp;emsp;约而0.1 - 0.2T/s内存映射&amp;emsp;&amp;em">
@@ -382,7 +382,7 @@
 <li>寄存器溢出</li>
 <li>全局内存和L1缓存都有用做局域内存的部分</li>
 </ol>
-<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><h4 id="bank冲突"><a href="#bank冲突" class="headerlink" title="bank冲突"></a>bank冲突</h4><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.jpg" alt="这里写图片描述"></p>
+<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><h4 id="bank冲突"><a href="#bank冲突" class="headerlink" title="bank冲突"></a>bank冲突</h4><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.png" alt="这里写图片描述"></p>
 <p>如图,当申请一块共享内存时,共享内存会被组织成32/16个bank(早期的GPU是16个)<br>不同的线程访问同一个bank会产生bank冲突,会被串行执行<br>早期double双精度数据也会引起bank冲突,因为他是分成两个32位数据放于共享内存中</p>
 <p>在共享内存中填充空数据,可以避免bank冲突<br>如 __share__ tile[32][33]<br>这样即可使得一个warp访问同一列数据时发生错位,使得避免了bank冲突</p>
 <h4 id="共享内存的多播能力"><a href="#共享内存的多播能力" class="headerlink" title="共享内存的多播能力"></a>共享内存的多播能力</h4><p>若一个wrap内的多个线程同时访问同一个字,则硬件上只产生一次共享内存的读取操作</p>

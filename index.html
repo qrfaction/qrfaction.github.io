@@ -379,7 +379,7 @@
 <li>寄存器溢出</li>
 <li>全局内存和L1缓存都有用做局域内存的部分</li>
 </ol>
-<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><h4 id="bank冲突"><a href="#bank冲突" class="headerlink" title="bank冲突"></a>bank冲突</h4><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.jpg" alt="这里写图片描述"></p>
+<h3 id="共享内存"><a href="#共享内存" class="headerlink" title="共享内存"></a>共享内存</h3><h4 id="bank冲突"><a href="#bank冲突" class="headerlink" title="bank冲突"></a>bank冲突</h4><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/11/CUDA存储器/bank.png" alt="这里写图片描述"></p>
 <p>如图,当申请一块共享内存时,共享内存会被组织成32/16个bank(早期的GPU是16个)<br>不同的线程访问同一个bank会产生bank冲突,会被串行执行<br>早期double双精度数据也会引起bank冲突,因为他是分成两个32位数据放于共享内存中</p>
 <p>在共享内存中填充空数据,可以避免bank冲突<br>如 __share__ tile[32][33]<br>这样即可使得一个warp访问同一列数据时发生错位,使得避免了bank冲突</p>
 <h4 id="共享内存的多播能力"><a href="#共享内存的多播能力" class="headerlink" title="共享内存的多播能力"></a>共享内存的多播能力</h4><p>若一个wrap内的多个线程同时访问同一个字,则硬件上只产生一次共享内存的读取操作</p>
