@@ -79,21 +79,22 @@
 
 
 
-<meta name="description" content="2018的CVPR浏览过五六篇的2018CVPR tracking的工作介绍个人感觉这篇质量还不错自己其实也有很多想法这篇文章让我的想法有了另一种实现方式   注意力机制本质就是给相关运算进行加权运算而加权运算被分解成了三个attention mechanisms进行参数剪枝参数从mnd减少为m*n+d  通道注意力β&amp;emsp; &amp;emsp;    (类似SEnet)这个部件今年很多文章都有提到">
+<meta name="description" content="2018的CVPR浏览过五六篇的2018CVPR tracking的工作介绍个人感觉这篇质量还不错自己其实也有很多想法这篇文章让我的想法有了另一种实现方式   注意力机制本质就是给相关运算进行加权运算而加权运算被分解成了三个attention mechanisms进行参数剪枝参数从mnd减少为m*n+d    通道注意力β&amp;emsp; &amp;emsp;    (类似SEnet)这个部件今年很多文章都有">
 <meta name="keywords" content="tracking">
 <meta property="og:type" content="article">
 <meta property="og:title" content="2018CVPR之RASNet">
 <meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/12/2018CVPR之RASNet/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="2018的CVPR浏览过五六篇的2018CVPR tracking的工作介绍个人感觉这篇质量还不错自己其实也有很多想法这篇文章让我的想法有了另一种实现方式   注意力机制本质就是给相关运算进行加权运算而加权运算被分解成了三个attention mechanisms进行参数剪枝参数从mnd减少为m*n+d  通道注意力β&amp;emsp; &amp;emsp;    (类似SEnet)这个部件今年很多文章都有提到">
+<meta property="og:description" content="2018的CVPR浏览过五六篇的2018CVPR tracking的工作介绍个人感觉这篇质量还不错自己其实也有很多想法这篇文章让我的想法有了另一种实现方式   注意力机制本质就是给相关运算进行加权运算而加权运算被分解成了三个attention mechanisms进行参数剪枝参数从mnd减少为m*n+d    通道注意力β&amp;emsp; &amp;emsp;    (类似SEnet)这个部件今年很多文章都有">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/model.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f.jpeg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f_1.jpeg">
-<meta property="og:updated_time" content="2018-05-12T12:09:08.910Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/w.jpeg">
+<meta property="og:updated_time" content="2018-05-12T12:12:28.825Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="2018CVPR之RASNet">
-<meta name="twitter:description" content="2018的CVPR浏览过五六篇的2018CVPR tracking的工作介绍个人感觉这篇质量还不错自己其实也有很多想法这篇文章让我的想法有了另一种实现方式   注意力机制本质就是给相关运算进行加权运算而加权运算被分解成了三个attention mechanisms进行参数剪枝参数从mnd减少为m*n+d  通道注意力β&amp;emsp; &amp;emsp;    (类似SEnet)这个部件今年很多文章都有提到">
+<meta name="twitter:description" content="2018的CVPR浏览过五六篇的2018CVPR tracking的工作介绍个人感觉这篇质量还不错自己其实也有很多想法这篇文章让我的想法有了另一种实现方式   注意力机制本质就是给相关运算进行加权运算而加权运算被分解成了三个attention mechanisms进行参数剪枝参数从mnd减少为m*n+d    通道注意力β&amp;emsp; &amp;emsp;    (类似SEnet)这个部件今年很多文章都有">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/model.jpeg">
 
 
@@ -359,6 +360,8 @@
         <p>2018的CVPR<br>浏览过五六篇的2018CVPR tracking的工作介绍<br>个人感觉这篇质量还不错<br>自己其实也有很多想法<br>这篇文章让我的想法有了另一种实现方式</p>
 <p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/model.jpeg" alt="这里写图片描述"> </p>
 <h3 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f.jpeg" alt="这里写图片描述"><br>本质就是给相关运算进行加权运算<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f_1.jpeg" alt="这里写图片描述"><br>而加权运算被分解成了三个attention mechanisms进行参数剪枝<br>参数从m<em>n</em>d减少为m*n+d</p>
+<er>
+
 <ol>
 <li><p>通道注意力β<br>&emsp; &emsp;    (类似SEnet)这个部件今年很多文章都有提到</p>
 </li>
@@ -366,13 +369,16 @@
 </li>
 </ol>
 <p>个人感觉dual attention的机制还是很棒的,一般残差拟合的难度小于整体拟合<br>这里其实还有办法利用一些先验给search area使用attention mechanism<br>这就属于个人idea了hh</p>
+<p><er></er></p>
 <h3 id="离线预训练"><a href="#离线预训练" class="headerlink" title="离线预训练"></a>离线预训练</h3><p>作者利用ILSVRC15比赛的数据集进行预训练<br>对于每个target 选择target时刻i的图像,以及和时刻j的帧组成一个samples进行加权拟合<br>权重公式如下    时间相差越近,权重越高</p>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/w.jpeg" alt="这里写图片描述"> </p>
+<p><er></er></p>
 <h3 id="details"><a href="#details" class="headerlink" title="details"></a>details</h3><ol>
 <li>注意力权重的推断仅在第一帧进行,接下来一直使用同一个注意力权重有助于高速推断</li>
 <li>离线预训练中的样本对从相邻的100帧中选取</li>
 <li>尺度搜索选择了3个尺度,尺度缩放比例为1.03</li>
 </ol>
-
+</er>
       
     </div>
     
