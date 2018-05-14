@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="optical flow," />
 
 
 
@@ -79,17 +79,23 @@
 
 
 
-<meta name="description" content="##互斥 critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma omp parallel for      for(int i=0;i&amp;l">
+<meta name="description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 前者是像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1)">
+<meta name="keywords" content="optical flow">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenMP同步&#x2F;互斥与任务调度">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步-互斥与任务调度/index.html">
+<meta property="og:title" content="光流介绍与FlowNet">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/光流介绍与FlowNet/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="##互斥 critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma omp parallel for      for(int i=0;i&amp;l">
+<meta property="og:description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 前者是像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1)">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-05T08:37:50.297Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/flow.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/corr.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/kernel.jpeg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/refine.jpeg">
+<meta property="og:updated_time" content="2018-05-14T06:21:10.919Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenMP同步&#x2F;互斥与任务调度">
-<meta name="twitter:description" content="##互斥 critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma omp parallel for      for(int i=0;i&amp;l">
+<meta name="twitter:title" content="光流介绍与FlowNet">
+<meta name="twitter:description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 前者是像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1)">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/flow.jpeg">
 
 
 
@@ -119,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步-互斥与任务调度/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/光流介绍与FlowNet/"/>
 
 
 
 
 
-  <title>OpenMP同步/互斥与任务调度 | qrfaction的博客</title>
+  <title>光流介绍与FlowNet | qrfaction的博客</title>
   
 
 
@@ -262,7 +268,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步-互斥与任务调度/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/光流介绍与FlowNet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -279,7 +285,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenMP同步/互斥与任务调度</h1>
+          <h1 class="post-title" itemprop="name headline">光流介绍与FlowNet</h1>
         
 
         <div class="post-meta">
@@ -291,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T16:37:13+08:00">
-                2018-05-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T14:07:56+08:00">
+                2018-05-14
               </time>
             
 
@@ -301,6 +307,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -329,170 +357,22 @@
       
 
       
-        <p>##互斥</p>
-<h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel for 
-    for(int i=0;i&lt;10;++i){
-
-        #pragma omp critical
-        {
-            sum +=i;
-        }
-    }
-    cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
-}
-</code></pre><p>critical可以将指定的代码块加锁<br>使得任何时候只有一个线程可访问这块区域</p>
-<h3 id="atomic指令-原子操作"><a href="#atomic指令-原子操作" class="headerlink" title="atomic指令(原子操作)"></a>atomic指令(原子操作)</h3><p> 将上面代码中的</p>
-<pre><code>#pragma omp critical
-           {
-               sum +=i;
-           }
-</code></pre><p> 替换为</p>
-<pre><code>#pragma omp atomic
-           sum +=i;
-</code></pre><p>也可以实现加锁<br>与之不同的是atomic是对单个指令加锁</p>
-<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="barrier指令"><a href="#barrier指令" class="headerlink" title="barrier指令"></a>barrier指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel
-    {
-        for(int i=0;i&lt;10;++i){
-            sum +=i;
-        }
-        #pragma omp barrier
-        printf(&quot;sum: %d\n&quot;,sum);
-    }
-
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>sum: 105
-sum: 105
-sum: 105
-sum: 105
-</code></pre><p>如果不加 #pragma omp parallel<br>输出为</p>
-<pre><code>sum: 73
-sum: 45
-sum: 90
-sum: 45
-</code></pre><p>barrier指令使得各线程同步访问sum变量使得输出一致</p>
-<p>OpenMP采用的是fork-join执行模式<br>故在每个并行的线程块结束后都会隐式同步(等效barrier)<br>可以使用nowait子句取消<br>如(都没有parallel)</p>
-<pre><code>#pragma omp for nowait
-#pragma omp sections nowait    
-</code></pre><h3 id="ordered子句"><a href="#ordered子句" class="headerlink" title="ordered子句"></a>ordered子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel for ordered
-    for(int i=0;i&lt;4;++i){
-
-        #pragma omp ordered
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>运行结果如下</p>
-<pre><code>id: 0
-id: 1
-id: 2
-id: 3
-</code></pre><p>在parallel for后加上ordered子句后<br>就可以在代码块中使用 #pragma omp ordered 同步执行</p>
-<h3 id="master子句"><a href="#master子句" class="headerlink" title="master子句"></a>master子句</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-
-        #pragma omp master
-        {
-            printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>id: 0
-</code></pre><p>这个子句保证了这块代码只由主线程执行</p>
-<h2 id="任务分配"><a href="#任务分配" class="headerlink" title="任务分配"></a>任务分配</h2><h3 id="schedule子句"><a href="#schedule子句" class="headerlink" title="schedule子句"></a>schedule子句</h3><h4 id="static-静态调度"><a href="#static-静态调度" class="headerlink" title="static 静态调度"></a>static 静态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(static,3)
-    for(int i=0;i&lt;8;++i)
-    {
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>输出如下</p>
-<pre><code>id: 0
-id: 0
-id: 0
-id: 2
-id: 2
-id: 1
-id: 1
-id: 1
-</code></pre><h4 id="dynamic-动态调度"><a href="#dynamic-动态调度" class="headerlink" title="dynamic 动态调度"></a>dynamic 动态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(dynamic,2)
-    for(int i=0;i&lt;12;++i)
-    {
-        printf(&quot;result: %d\tid:%d\n&quot;,
-                i*i*i*i*i*i,
-                omp_get_thread_num());
-    }
-
-}
-</code></pre><p>执行结果如下</p>
-<pre><code>result: 64    id:0
-result: 729    id:0
-result: 262144    id:0
-result: 531441    id:0
-result: 1000000    id:0
-result: 1771561    id:0
-result: 4096    id:2
-result: 15625    id:2
-result: 46656    id:3
-result: 117649    id:3
-result: 0    id:1
-result: 1    id:1
-</code></pre><p>(dynamic,2) 每次分配给线程2个任务<br>谁先完成谁继续接受任务<br>使得能达到核心的高占用率</p>
-<h4 id="guided调度"><a href="#guided调度" class="headerlink" title="guided调度"></a>guided调度</h4><p>一开始给每个线程分配多于size个任务<br>然后分配的任务数指数级下降<br>直到分配任务数下降到size后不变</p>
-<h4 id="runtime调度"><a href="#runtime调度" class="headerlink" title="runtime调度"></a>runtime调度</h4><p>根据环境变量OMP_SCHEDULE选择调度方式<br>最终还是落实到上面三个的其中一个</p>
-<h3 id="single指令"><a href="#single指令" class="headerlink" title="single指令"></a>single指令</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-        #pragma omp single
-        {
-            printf(&quot;hello world\n&quot;);
-        }
-        printf(&quot;nice to meet you\n&quot;);
-    }
-}
-</code></pre><p>程序执行如下</p>
-<pre><code>hello world
-nice to meet you
-nice to meet you
-nice to meet you
-nice to meet you
-</code></pre><p>被single指定的线程块只会被执行一次</p>
+        <p>主要由于需求原因,需要了解一些Optical Flow相关知识<br>于是写下这篇入门介绍文章</p>
+<h2 id="Optical-Flow-光流-介绍"><a href="#Optical-Flow-光流-介绍" class="headerlink" title="Optical Flow(光流) 介绍"></a>Optical Flow(光流) 介绍</h2><p>segmentation &emsp;: 像素级的分类<br>光流估计 &emsp;&emsp;&emsp; : 前者是像素级的回归</p>
+<p>光流估计 &emsp; 预测连续图片序列中每个像素的速度(大小与方向)</p>
+<blockquote>
+</blockquote>
+<p>例如给定第t帧与t+1帧,求每个像素的运动速度与方向<br>I<sub>t</sub>(x<sub>1</sub>,y<sub>1</sub>) = I<sub>t+1</sub>(x<sub>2</sub>,y<sub>2</sub>) = I<sub>t</sub>(x<sub>1</sub> + v<sub>x</sub>,y<sub>1</sub> + v<sub>y</sub>)<br>(v<sub>x</sub>,v<sub>y</sub>)即为我们要预测的</p>
+<p>光流场 (Optical Flow Field) : 整张图片的光流</p>
+<p>光流场是个双通道图像,尺寸与原图相等</p>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/flow.jpeg" alt="这里写图片描述"> </p>
+<h2 id="FlowNet"><a href="#FlowNet" class="headerlink" title="FlowNet"></a>FlowNet</h2><h3 id="FlowNetCorr"><a href="#FlowNetCorr" class="headerlink" title="FlowNetCorr"></a>FlowNetCorr</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/corr.jpeg" alt="这里写图片描述"> </p>
+<p>如图,网络整体还是很容易理解的<br>灰色箭头是给了一条支路用于concat操作,U-net,densenet等网络中已经屡见不鲜<br>conv_redir是1*1卷积用于压缩至32维</p>
+<p>corr定义如下<br>其实就是拿第二个feature map去卷积 (其实是相关运算) 第一个feature map<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/kernel.jpeg" alt="这里写图片描述"><br>f1:第一个特征图&emsp;&emsp;f2:第二个特征图<br>x1,x2是位置<br>卷积核尺寸 : 以x<sub>2</sub>为中心的 (2k+1)*(2k+1) 的区域 , 通道与原feature map一致<br>卷积核个数 : 即x<sub>2</sub>可选位置的个数<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;x<sub>2</sub>可取x<sub>1</sub>为中心周围 (2k+1)*(2k+1) 的所有位置<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;论文中k取10,即(2*10+1)*(2*10+1)=441个通道</p>
+<h3 id="refinement"><a href="#refinement" class="headerlink" title="refinement"></a>refinement</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/refine.jpeg" alt="这里写图片描述"> </p>
+<p>主要为堆叠deconv和concat操作<br>其实这部分加上Corr运算之后的部分合起来和Unet没啥区别</p>
+<p>其中 flow5/4/3 等是把concat起来的feature map进行预测光流场(conv成双通道再deconv)<br>再和下一个feature map 进行 concat</p>
+<h3 id="final"><a href="#final" class="headerlink" title="final"></a>final</h3><p>总而言之就是 Corr + U-net + flow<br>模型以实验得出为主<br>也是较早的一个模型,好像flow net 2.0也出来了,主要用于我粗略了解这方面的知识</p>
 
       
     </div>
@@ -508,6 +388,12 @@ nice to meet you
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/optical-flow/" rel="tag"># optical flow</a>
+          
+        </div>
+      
 
       
       
@@ -517,8 +403,8 @@ nice to meet you
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/04/OpenMP实例学习之数据共享/" rel="next" title="OpenMP实例学习之数据共享与任务并行">
-                <i class="fa fa-chevron-left"></i> OpenMP实例学习之数据共享与任务并行
+              <a href="/2018/05/12/2018CVPR之RASNet/" rel="next" title="2018CVPR之RASNet">
+                <i class="fa fa-chevron-left"></i> 2018CVPR之RASNet
               </a>
             
           </div>
@@ -602,7 +488,7 @@ nice to meet you
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -624,7 +510,7 @@ nice to meet you
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -657,7 +543,7 @@ nice to meet you
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#critical指令"><span class="nav-number">1.</span> <span class="nav-text">critical指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#atomic指令-原子操作"><span class="nav-number">2.</span> <span class="nav-text">atomic指令(原子操作)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number"></span> <span class="nav-text">同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#barrier指令"><span class="nav-number">1.</span> <span class="nav-text">barrier指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ordered子句"><span class="nav-number">2.</span> <span class="nav-text">ordered子句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#master子句"><span class="nav-number">3.</span> <span class="nav-text">master子句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分配"><span class="nav-number"></span> <span class="nav-text">任务分配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#schedule子句"><span class="nav-number">1.</span> <span class="nav-text">schedule子句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#static-静态调度"><span class="nav-number">1.1.</span> <span class="nav-text">static 静态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dynamic-动态调度"><span class="nav-number">1.2.</span> <span class="nav-text">dynamic 动态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#guided调度"><span class="nav-number">1.3.</span> <span class="nav-text">guided调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runtime调度"><span class="nav-number">1.4.</span> <span class="nav-text">runtime调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#single指令"><span class="nav-number">2.</span> <span class="nav-text">single指令</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Optical-Flow-光流-介绍"><span class="nav-number">1.</span> <span class="nav-text">Optical Flow(光流) 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FlowNet"><span class="nav-number">2.</span> <span class="nav-text">FlowNet</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FlowNetCorr"><span class="nav-number">2.1.</span> <span class="nav-text">FlowNetCorr</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#refinement"><span class="nav-number">2.2.</span> <span class="nav-text">refinement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#final"><span class="nav-number">2.3.</span> <span class="nav-text">final</span></a></li></ol></li></ol></div>
             
 
           </div>
