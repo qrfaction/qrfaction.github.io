@@ -259,6 +259,172 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/2018CVPR之end2end光流相关滤波/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/14/2018CVPR之end2end光流相关滤波/" itemprop="url">2018CVPR之end2end光流相关滤波</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T16:10:57+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这篇文章主要使用了FlowNet和注意力机制利用了当前帧的上下文信息<br>里面的trick还是很多的</p>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/model.jpg" alt="这里写图片描述"> </p>
+<h2 id="Historical-branch"><a href="#Historical-branch" class="headerlink" title="Historical branch"></a>Historical branch</h2><h3 id="FlowNet"><a href="#FlowNet" class="headerlink" title="FlowNet"></a>FlowNet</h3><p>详见我这篇文章<br><a href="https://qrfaction.github.io/2018/05/14/%E5%85%89%E6%B5%81%E4%BB%8B%E7%BB%8D%E4%B8%8EFlowNet/" target="_blank" rel="noopener">https://qrfaction.github.io/2018/05/14/%E5%85%89%E6%B5%81%E4%BB%8B%E7%BB%8D%E4%B8%8EFlowNet/</a></p>
+<p><er></er></p>
+<h3 id="Wrap操作"><a href="#Wrap操作" class="headerlink" title="Wrap操作"></a>Wrap操作</h3><h4 id="光流场的插值使用法"><a href="#光流场的插值使用法" class="headerlink" title="光流场的插值使用法"></a>光流场的插值使用法</h4><p>由光流定义可知I<sub>t+1</sub>(x<sub>2</sub>,y<sub>2</sub>)=I<sub>t</sub>(x<sub>1</sub>+v<sub>x</sub>,y<sub>1</sub>+v<sub>y</sub>)<br>于是我们得到了一个像素间一一对应的关系<br>由于(x<sub>1</sub>+v<sub>x</sub>,y<sub>1</sub>+v<sub>y</sub>)可能是小数<br>所以需要使用双线性插值进行近似计算</p>
+<h4 id="双线性插值嵌入layer"><a href="#双线性插值嵌入layer" class="headerlink" title="双线性插值嵌入layer"></a>双线性插值嵌入layer</h4><p>f(p) = ∑ W(p + δp) * f(p + δp)  &emsp;&emsp; p为位置(x,y)</p>
+<p>其中 W(p + δp) 需要满足以下条件</p>
+<ol>
+<li>若 δp &lt; (1,1) , W(p + δp) = (1-δx) * (1-δy)</li>
+<li>否则为0<br>这样就满足了双线性插值使用最近的四个点以及其权重条件</li>
+</ol>
+<p>W(p,q) = max(0,1-|p<sub>x</sub>-q<sub>x</sub>|) * max(0,1-|p<sub>y</sub>-q<sub>y</sub>|) = max(0,1 - δp<sub>x</sub>) * max(0,1 - δp<sub>y</sub>)</p>
+<h4 id="历史信息封装"><a href="#历史信息封装" class="headerlink" title="历史信息封装"></a>历史信息封装</h4><p>将 I<sub>i</sub> 封装到 I<sub>t-1</sub> 操作的定义如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/wrap.jpg" alt="这里写图片描述"><br>δp 是FlowNet输出的坐标偏移<br>K 是双线性插值权重函数<br>φ<sub>i</sub> 是第i帧图片经过FeatureNet后的特征图<br>m是φ<sub>i</sub>的第m个通道</p>
+<p>这样即可利用双线性插值将 I<sub>i</sub> 的信息融入 I<sub>t-1</sub> 得到 φ<sub>i→t-1</sub></p>
+<h3 id="Spatial-temporal-attention"><a href="#Spatial-temporal-attention" class="headerlink" title="Spatial-temporal attention"></a>Spatial-temporal attention</h3><h4 id="Spatial-attention"><a href="#Spatial-attention" class="headerlink" title="Spatial attention"></a>Spatial attention</h4><p>该注意力计算公式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/attention.jpg" alt="这里写图片描述"><br>使用余弦相似度得出了每个特征图中每个位置p的注意力权重<br>然后再使用softmax对所有历史帧中的p位置的注意力权重进行规范化</p>
+<h4 id="temporal-attention"><a href="#temporal-attention" class="headerlink" title="temporal attention"></a>temporal attention</h4><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/senet.jpg" alt="这里写图片描述"><br>该注意力则是利用了类似SEnet中的模块的结构对时序轴进行加权<br>RASnet中的tracking也有用它</p>
+<h3 id="计算φ-x"><a href="#计算φ-x" class="headerlink" title="计算φ(x)"></a>计算φ(x)</h3><p>定义如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/ux.jpg" alt="这里写图片描述"><br>加权求和</p>
+<h2 id="CFnet框架"><a href="#CFnet框架" class="headerlink" title="CFnet框架"></a>CFnet框架</h2><p>一个将相关滤波end2end实现的结构<br>使用siamese fc的框架,不过效果并没有比siamese fc好多少<br>把他当做 siamese fc也完全没问题的,这里就不细讲了</p>
+<h2 id="other-details"><a href="#other-details" class="headerlink" title="other details"></a>other details</h2><ol>
+<li>使用6帧的历史信息</li>
+<li>使用5个尺度的尺度搜索以及尺度缩放比例为1.025</li>
+<li>使用Gaussian Label</li>
+<li>使用PNR指标和响应图(reponse map)进行选择性更新模型(稀疏更新)</li>
+</ol>
+<h3 id="稀疏更新策略"><a href="#稀疏更新策略" class="headerlink" title="稀疏更新策略"></a>稀疏更新策略</h3><p>PNR (peak-versus-noise ratio)定义见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/pnr.jpg" alt="这里写图片描述"><br>其中R是跟踪模型输出的reponse map<br>当这两个指标超过阈值时更新模型参数<br>其中阈值定义见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/2018CVPR之end2end光流相关滤波/threshold.jpg" alt="这里写图片描述"> </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/光流介绍与FlowNet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1979,151 +2145,6 @@ int main(){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/02/数据竞赛之完备思考/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/02/数据竞赛之完备思考/" itemprop="url">数据竞赛之完备思考</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-02T20:57:33+08:00">
-                2018-05-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">数据竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>讨论班自己做的PPT<br>直接拆成图片发到这里了…<br>才疏学浅<br>希望看官大佬们能提点意见 指点批评</p>
-<blockquote>
-<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_01.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_02.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_03.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_04.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_05.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_06.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_07.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_08.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_09.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_10.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_11.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_12.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_13.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_14.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_15.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_16.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_17.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_18.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_19.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_20.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_21.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_22.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_23.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_24.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_25.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_26.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_27.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_28.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_29.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_30.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/02/数据竞赛之完备思考/0_31.jpg" alt="这里写图片描述"> </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2174,7 +2195,7 @@ int main(){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">18</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
