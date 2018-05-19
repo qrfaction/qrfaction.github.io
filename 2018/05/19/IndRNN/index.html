@@ -91,8 +91,8 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/indrnn.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/rnn.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/ind.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/constjpg">
-<meta property="og:updated_time" content="2018-05-19T15:47:39.623Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/const.jpg">
+<meta property="og:updated_time" content="2018-05-19T15:50:37.890Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IndRNN">
 <meta name="twitter:description" content="这些天的work和循环单元很相关于是看了这篇很早就想看的IndRNN不得不说work很好看简单but略完美传统循环单元一般只能坚持到几百步长而他能坚持到5000!!!!!! emmm还有前天和鹏哥在微博上吹逼,吹错了今天细看文章的时候发现的,真是尴尬hh IndRNN介绍IndRNN和传统RNN的定义式区别见下图 RNNIndRNN  整个区别真的只有矩阵乘法转为hadamard积(对应元素相乘)">
@@ -364,7 +364,7 @@
 <p>RNN<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/rnncell.jpg" alt="这里写图片描述"><br>IndRNN<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/indrnn.jpg" alt="这里写图片描述"> </p>
 <p>整个区别真的只有矩阵乘法转为hadamard积(对应元素相乘)<br>其中每个h<sub>t</sub>使用的是不同的u向量权重<br>然后IndRNN一般采用relu激活<br>改动虽小,作用却大</p>
 <h3 id="梯度分析传统RNN和IndRNN"><a href="#梯度分析传统RNN和IndRNN" class="headerlink" title="梯度分析传统RNN和IndRNN"></a>梯度分析传统RNN和IndRNN</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/rnn.jpg" alt="这里写图片描述"><br>由梯度计算式可知传统RNN的连乘,由于这个原因导致了梯度爆炸和消失…<br>而再来观察IndRNN梯度的表达式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/ind.jpg" alt="这里写图片描述"><br>如果采用relu激活,后面部分的梯度连乘不会造成梯度爆炸<br>而u<sub>n</sub>的大小不会影响到h其他时间步的梯度<br>即由矩阵乘法转为hadamard积将梯度计算在一定程度上隔离开来了<br>u<sub>n</sub>是h<sub>n,t-1</sub>的权重而不会影响到其他时间步</p>
-<p>而u只需约束到一个范围即可完美解决梯度消失与爆炸<br>见下图(其实我觉得没屁用,RNN不也可以这样吗)<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/constjpg" alt="这里写图片描述"> </p>
+<p>而u只需约束到一个范围即可完美解决梯度消失与爆炸<br>见下图(其实我觉得没屁用,RNN不也可以这样吗)<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/19/IndRNN/const.jpg" alt="这里写图片描述"> </p>
 
       
     </div>
