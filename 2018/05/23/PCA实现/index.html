@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OpenMP," />
+  <meta name="keywords" content="矩阵," />
 
 
 
@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
-<meta name="keywords" content="OpenMP">
+<meta name="description" content="由于最近刚好由于要求写了一下PCA其实还是很简单的本篇介绍一个jacobi的方法 令X样本集,行向量为样本,列向量为特征  先对X的特征进行中心化, 即每一列特征减去其期望(均值)  奇异值分解  X = Un,n Σn,m VTm,m 选取奇异值最大的 k 个主成分,即 X ≈ Un,k Σk,k VTk,m &amp;lt;=&amp;gt; X Vm,k ≈ Un,k Σk,k   其中Un,k Σk,k">
+<meta name="keywords" content="矩阵">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenMP数据共享与任务并行">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/index.html">
+<meta property="og:title" content="PCA实现">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/23/PCA实现/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta property="og:description" content="由于最近刚好由于要求写了一下PCA其实还是很简单的本篇介绍一个jacobi的方法 令X样本集,行向量为样本,列向量为特征  先对X的特征进行中心化, 即每一列特征减去其期望(均值)  奇异值分解  X = Un,n Σn,m VTm,m 选取奇异值最大的 k 个主成分,即 X ≈ Un,k Σk,k VTk,m &amp;lt;=&amp;gt; X Vm,k ≈ Un,k Σk,k   其中Un,k Σk,k">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-14T04:53:19.837Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/givens.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g3.png">
+<meta property="og:updated_time" content="2018-05-23T05:31:14.089Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenMP数据共享与任务并行">
-<meta name="twitter:description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta name="twitter:title" content="PCA实现">
+<meta name="twitter:description" content="由于最近刚好由于要求写了一下PCA其实还是很简单的本篇介绍一个jacobi的方法 令X样本集,行向量为样本,列向量为特征  先对X的特征进行中心化, 即每一列特征减去其期望(均值)  奇异值分解  X = Un,n Σn,m VTm,m 选取奇异值最大的 k 个主成分,即 X ≈ Un,k Σk,k VTk,m &amp;lt;=&amp;gt; X Vm,k ≈ Un,k Σk,k   其中Un,k Σk,k">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/givens.jpg">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/23/PCA实现/"/>
 
 
 
 
 
-  <title>OpenMP数据共享与任务并行 | qrfaction的博客</title>
+  <title>PCA实现 | qrfaction的博客</title>
   
 
 
@@ -263,7 +267,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/23/PCA实现/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -280,7 +284,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenMP数据共享与任务并行</h1>
+          <h1 class="post-title" itemprop="name headline">PCA实现</h1>
         
 
         <div class="post-meta">
@@ -292,8 +296,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T20:12:54+08:00">
-                2018-05-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-23T12:46:03+08:00">
+                2018-05-23
               </time>
             
 
@@ -315,8 +319,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
                   </a>
                 </span>
 
@@ -352,123 +356,24 @@
       
 
       
-        <p>OpenMP基于共享内存的线程级并行计算<br>支持的编程语言包括C、C++和Fortran<br>只需要在适当的位置添加pragma就可以将程序自动并行处理<br>当编译器不支持OpenMP时，程序会退化成普通(串行)程序</p>
-<h2 id="并行指令"><a href="#并行指令" class="headerlink" title="并行指令"></a>并行指令</h2><h3 id="parallel指令"><a href="#parallel指令" class="headerlink" title="parallel指令"></a>parallel指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &quot;stdlib.h&quot;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel num_threads(6)
-    {
-        cout&lt;&lt;&quot;hello world&quot;&lt;&lt;endl;
-    }
-}
-</code></pre><p>编译运行 g++ test.cpp -fopenmp -lpthread<br>代码输出如下</p>
-<pre><code>hello world
-hello worldhello world
-hello world
-hello worldhello world
-</code></pre><p>使用OpenMP必加 #pragma omp 前缀<br>parallel可以使得后续代码块并行执行,默认是机器核心数,若加了num_threads(6)语句则开启6个线程</p>
-<p>OpenMP采用fork-join执行模型<br>在进入代码块前开启多个线程,最后再阻塞等待所有线程执行结束退出代码块</p>
-<h3 id="prallel-for指令"><a href="#prallel-for指令" class="headerlink" title="prallel for指令"></a>prallel for指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel for
-    for(int i=0;i&lt;omp_get_num_procs();++i)
-        cout&lt;&lt;&quot;thread id : &quot;
-            &lt;&lt;omp_get_thread_num()&lt;&lt;endl;
-}
-</code></pre><p>代码输出如下</p>
-<pre><code>thread id : thread id : thread id : thread id : 21
-
-0
-3
-</code></pre><p>int omp_get_num_procs()  返回机器核心数<br>int omp_get_thread_num()  返回当前线程id(话说这名字起的…)</p>
-<p>其中parallel for 指令并非能并行所有for循环,要满足如下条件</p>
-<pre><code>1. for循环中的循环变量必须是有int 即int i
-2. for循环中比较操作符必须是&lt;, &lt;=, &gt;, &gt;= ,如!=等会编译不通过
-3. 第三个表达式必须是循环变量的加减,且似乎只能++i, i++, -–i, 或i-–
-4. 循环体内部不许出现到达循环体外的跳转语句如break,goto,但exit除外
-</code></pre><h3 id="sections指令"><a href="#sections指令" class="headerlink" title="sections指令"></a>sections指令</h3><pre><code>int main(){
-    #pragma omp parallel sections
-    {
-        #pragma omp section
-        {
-            for(int i=0;i&lt;4;++i)
-                printf(&quot;i:%i \t id:%d\n&quot;,i,omp_get_thread_num());
-        }
-
-        #pragma omp section
-        {
-            for(int i=0;i&lt;4;++i)
-                printf(&quot;i:%i \t id:%d\n&quot;,i,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序执行结果如下</p>
-<pre><code>i:0      id:1
-i:1      id:1
-i:2      id:1
-i:3      id:1
-i:0      id:3
-i:1      id:3
-i:2      id:3
-i:3      id:3
-</code></pre><p>sections指令中的section指定的代码块将会并行执行</p>
-<h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int a=10;
-
-    #pragma omp parallel for firstprivate(a)
-    for(int i=0;i&lt;10;++i)
-        cout &lt;&lt; a*i &lt;&lt; endl;
-}
-</code></pre><p>firstprivate子句在每个线程中声明了a变量,并以外部的a变量的值进行初始化<br>代码运行结果如下</p>
-<pre><code>30
-40
-50
-80
-90
-0
-10
-20
-60
-70
-</code></pre><p>子句 private(val1, val2, …)<br>声明私有变量,但值与外部变量不同,全部初始化为0</p>
-<p>子句 last_private(val1, val2, …)<br>将会把并行区域中最后一次执行对val1的操作后的值将会拷贝到相应外部变量中</p>
-<p>shared(val1, val2, …)<br>声明这些变量共享(其实并行区域外的变量默认是共享的)</p>
-<h3 id="reduction子句"><a href="#reduction子句" class="headerlink" title="reduction子句"></a>reduction子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=10;
-
-    #pragma omp parallel for reduction(+:sum)
-    for(int i=0;i&lt;10;++i){
-        sum +=i;
-        cout &lt;&lt; sum &lt;&lt; endl;
-    }
-    cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
-}
-</code></pre><p>在这里每个线程首先拷贝了一份外部的sum并各自计算<br>最后以指定的运算”+”进行归约(reduction),将各线程的结果求和<br>最后退出代码块将值拷贝到外部的sum</p>
+        <p>由于最近刚好由于要求写了一下PCA<br>其实还是很简单的<br>本篇介绍一个jacobi的方法</p>
+<p>令X样本集,行向量为样本,列向量为特征</p>
+<ol>
+<li><p>先对X的特征进行中心化, 即每一列特征减去其期望(均值)</p>
+</li>
+<li><p>奇异值分解</p>
+<p> X = U<sub>n,n</sub> Σ<sub>n,m</sub> V<sup>T</sup><sub>m,m</sub><br> 选取奇异值最大的 k 个主成分,即<br> X ≈ U<sub>n,k</sub> Σ<sub>k,k</sub> V<sup>T</sup><sub>k,m</sub><br> &lt;=&gt;<br> X V<sub>m,k</sub> ≈ U<sub>n,k</sub> Σ<sub>k,k</sub> </p>
+<p> 其中U<sub>n,k</sub> Σ<sub>k,k</sub> 即为X的低维空间投影<br> V<sub>m,k</sub>为降维矩阵<br> 至此PCA过程就结束了</p>
+</li>
+<li><p>特征值分解与奇异值分解</p>
+<p> X<sup>T</sup>X = P λ P<sup>T</sup> = V Σ<sup>T</sup>Σ V<sup>T</sup><br> 其中P是正交阵, λ 为特征值对角正阵, 特征值从大到小排序<br> 所以只需令P = V  , Σ<sup>T</sup>Σ = λ 即可<br> 再用U = Σ<sup>T</sup> V X 即可求出 U </p>
+</li>
+<li><p>计算特征向量</p>
+<p> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/givens.jpg" alt="这里写图片描述"><br> 基本想法是通过不断使用givens变换 (初等旋转变换) 将X的非对角元素变为0<br> P = ∏<sub>i</sub> P<sub>i</sub> (P<sub>i</sub> 是givens变换)<br> P<sup>T </sup>X<sup>T</sup>X P = λ<br> 其中P<sub>i</sub>中未知量的选取见下图<br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g2.png" alt="这里写图片描述"><br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g3.png" alt="这里写图片描述"> </p>
+<p> 接着直至收敛<br> 接着将λ中的特征值从大到小排序,P中的特征向量依据λ的顺序进行排序<br> 从而得到了V</p>
+<p> end  很简单hh  从头至尾就是一些矩阵乘法运算<br> givens和X的乘法只涉及到两行两列的元素故为O(n)的复杂度</p>
+</li>
+</ol>
 
       
     </div>
@@ -486,7 +391,7 @@ int main(){
       
         <div class="post-tags">
           
-            <a href="/tags/OpenMP/" rel="tag"># OpenMP</a>
+            <a href="/tags/矩阵/" rel="tag"># 矩阵</a>
           
         </div>
       
@@ -499,8 +404,8 @@ int main(){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/02/数据竞赛之完备思考/" rel="next" title="数据竞赛之完备思考">
-                <i class="fa fa-chevron-left"></i> 数据竞赛之完备思考
+              <a href="/2018/05/19/IndRNN/" rel="next" title="IndRNN">
+                <i class="fa fa-chevron-left"></i> IndRNN
               </a>
             
           </div>
@@ -508,10 +413,6 @@ int main(){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/OpenMP同步_互斥与任务调度/" rel="prev" title="OpenMP同步&互斥与任务调度">
-                OpenMP同步&互斥与任务调度 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -563,17 +464,8 @@ int main(){
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -633,22 +525,6 @@ int main(){
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并行指令"><span class="nav-number">1.</span> <span class="nav-text">并行指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parallel指令"><span class="nav-number">1.1.</span> <span class="nav-text">parallel指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prallel-for指令"><span class="nav-number">1.2.</span> <span class="nav-text">prallel for指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sections指令"><span class="nav-number">1.3.</span> <span class="nav-text">sections指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据共享"><span class="nav-number">2.</span> <span class="nav-text">数据共享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reduction子句"><span class="nav-number">2.1.</span> <span class="nav-text">reduction子句</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

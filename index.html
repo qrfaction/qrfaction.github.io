@@ -259,6 +259,165 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/23/PCA实现/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/23/PCA实现/" itemprop="url">PCA实现</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-23T12:46:03+08:00">
+                2018-05-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>由于最近刚好由于要求写了一下PCA<br>其实还是很简单的<br>本篇介绍一个jacobi的方法</p>
+<p>令X样本集,行向量为样本,列向量为特征</p>
+<ol>
+<li><p>先对X的特征进行中心化, 即每一列特征减去其期望(均值)</p>
+</li>
+<li><p>奇异值分解</p>
+<p> X = U<sub>n,n</sub> Σ<sub>n,m</sub> V<sup>T</sup><sub>m,m</sub><br> 选取奇异值最大的 k 个主成分,即<br> X ≈ U<sub>n,k</sub> Σ<sub>k,k</sub> V<sup>T</sup><sub>k,m</sub><br> &lt;=&gt;<br> X V<sub>m,k</sub> ≈ U<sub>n,k</sub> Σ<sub>k,k</sub> </p>
+<p> 其中U<sub>n,k</sub> Σ<sub>k,k</sub> 即为X的低维空间投影<br> V<sub>m,k</sub>为降维矩阵<br> 至此PCA过程就结束了</p>
+</li>
+<li><p>特征值分解与奇异值分解</p>
+<p> X<sup>T</sup>X = P λ P<sup>T</sup> = V Σ<sup>T</sup>Σ V<sup>T</sup><br> 其中P是正交阵, λ 为特征值对角正阵, 特征值从大到小排序<br> 所以只需令P = V  , Σ<sup>T</sup>Σ = λ 即可<br> 再用U = Σ<sup>T</sup> V X 即可求出 U </p>
+</li>
+<li><p>计算特征向量</p>
+<p> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/givens.jpg" alt="这里写图片描述"><br> 基本想法是通过不断使用givens变换 (初等旋转变换) 将X的非对角元素变为0<br> P = ∏<sub>i</sub> P<sub>i</sub> (P<sub>i</sub> 是givens变换)<br> P<sup>T </sup>X<sup>T</sup>X P = λ<br> 其中P<sub>i</sub>中未知量的选取见下图<br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g2.png" alt="这里写图片描述"><br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g3.png" alt="这里写图片描述"> </p>
+<p> 接着直至收敛<br> 接着将λ中的特征值从大到小排序,P中的特征向量依据λ的顺序进行排序<br> 从而得到了V</p>
+<p> end  很简单hh  从头至尾就是一些矩阵乘法运算<br> givens和X的乘法只涉及到两行两列的元素故为O(n)的复杂度</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/19/IndRNN/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -313,8 +472,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/dl/" itemprop="url" rel="index">
-                    <span itemprop="name">dl</span>
+                  <a href="/categories/DL/" itemprop="url" rel="index">
+                    <span itemprop="name">DL</span>
                   </a>
                 </span>
 
@@ -1736,316 +1895,11 @@ else:
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/05/OpenMP同步_互斥与任务调度/" itemprop="url">OpenMP同步&互斥与任务调度</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T16:37:13+08:00">
-                2018-05-05
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>多线程编程需要考虑的资源竞争问题而引入互斥与同步<br>为提高并行率而需要任务调度分配</p>
-<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel for 
-    for(int i=0;i&lt;10;++i){
-
-        #pragma omp critical
-        {
-            sum +=i;
-        }
-    }
-    cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
-}
-</code></pre><p>critical可以将指定的代码块加锁<br>使得任何时候只有一个线程可访问这块区域</p>
-<h3 id="atomic指令-原子操作"><a href="#atomic指令-原子操作" class="headerlink" title="atomic指令(原子操作)"></a>atomic指令(原子操作)</h3><p> 将上面代码中的</p>
-<pre><code>#pragma omp critical
-           {
-               sum +=i;
-           }
-</code></pre><p> 替换为</p>
-<pre><code>#pragma omp atomic
-           sum +=i;
-</code></pre><p>也可以实现加锁<br>与之不同的是atomic是对单个指令加锁</p>
-<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="barrier指令"><a href="#barrier指令" class="headerlink" title="barrier指令"></a>barrier指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel
-    {
-        for(int i=0;i&lt;10;++i){
-            sum +=i;
-        }
-        #pragma omp barrier
-        printf(&quot;sum: %d\n&quot;,sum);
-    }
-
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>sum: 105
-sum: 105
-sum: 105
-sum: 105
-</code></pre><p>如果不加 #pragma omp parallel<br>输出为</p>
-<pre><code>sum: 73
-sum: 45
-sum: 90
-sum: 45
-</code></pre><p>barrier指令使得各线程同步访问sum变量使得输出一致</p>
-<p>OpenMP采用的是fork-join执行模式<br>故在每个并行的线程块结束后都会隐式同步(等效barrier)<br>可以使用nowait子句取消<br>如(都没有parallel)</p>
-<pre><code>#pragma omp for nowait
-#pragma omp sections nowait
-</code></pre><h3 id="ordered子句"><a href="#ordered子句" class="headerlink" title="ordered子句"></a>ordered子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel for ordered
-    for(int i=0;i&lt;4;++i){
-
-        #pragma omp ordered
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>运行结果如下</p>
-<pre><code>id: 0
-id: 1
-id: 2
-id: 3
-</code></pre><p>在parallel for后加上ordered子句后<br>就可以在代码块中使用 #pragma omp ordered 同步执行</p>
-<h3 id="master子句"><a href="#master子句" class="headerlink" title="master子句"></a>master子句</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-
-        #pragma omp master
-        {
-            printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>id: 0
-</code></pre><p>这个子句保证了这块代码只由主线程执行</p>
-<h2 id="任务分配"><a href="#任务分配" class="headerlink" title="任务分配"></a>任务分配</h2><h3 id="schedule子句"><a href="#schedule子句" class="headerlink" title="schedule子句"></a>schedule子句</h3><h4 id="static-静态调度"><a href="#static-静态调度" class="headerlink" title="static 静态调度"></a>static 静态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(static,3)
-    for(int i=0;i&lt;8;++i)
-    {
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>输出如下</p>
-<pre><code>id: 0
-id: 0
-id: 0
-id: 2
-id: 2
-id: 1
-id: 1
-id: 1
-</code></pre><h4 id="dynamic-动态调度"><a href="#dynamic-动态调度" class="headerlink" title="dynamic 动态调度"></a>dynamic 动态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(dynamic,2)
-    for(int i=0;i&lt;12;++i)
-    {
-        printf(&quot;result: %d\tid:%d\n&quot;,
-                i*i*i*i*i*i,
-                omp_get_thread_num());
-    }
-
-}
-</code></pre><p>执行结果如下</p>
-<pre><code>result: 64    id:0
-result: 729    id:0
-result: 262144    id:0
-result: 531441    id:0
-result: 1000000    id:0
-result: 1771561    id:0
-result: 4096    id:2
-result: 15625    id:2
-result: 46656    id:3
-result: 117649    id:3
-result: 0    id:1
-result: 1    id:1
-</code></pre><p>(dynamic,2) 每次分配给线程2个任务<br>谁先完成谁继续接受任务<br>使得能达到核心的高占用率</p>
-<h4 id="guided调度"><a href="#guided调度" class="headerlink" title="guided调度"></a>guided调度</h4><p>一开始给每个线程分配多于size个任务<br>然后分配的任务数指数级下降<br>直到分配任务数下降到size后不变</p>
-<h4 id="runtime调度"><a href="#runtime调度" class="headerlink" title="runtime调度"></a>runtime调度</h4><p>根据环境变量OMP_SCHEDULE选择调度方式<br>最终还是落实到上面三个的其中一个</p>
-<h3 id="single指令"><a href="#single指令" class="headerlink" title="single指令"></a>single指令</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-        #pragma omp single
-        {
-            printf(&quot;hello world\n&quot;);
-        }
-        printf(&quot;nice to meet you\n&quot;);
-    }
-}
-</code></pre><p>程序执行如下</p>
-<pre><code>hello world
-nice to meet you
-nice to meet you
-nice to meet you
-nice to meet you
-</code></pre><p>被single指定的线程块只会被执行一次</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2091,7 +1945,7 @@ nice to meet you
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">20</span>
+                  <span class="site-state-item-count">21</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2113,7 +1967,7 @@ nice to meet you
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
