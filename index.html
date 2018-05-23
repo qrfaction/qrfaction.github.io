@@ -365,7 +365,7 @@
 <p> X<sup>T</sup>X = P λ P<sup>T</sup> = V Σ<sup>T</sup>Σ V<sup>T</sup><br> 其中P是正交阵, λ 为特征值对角正阵, 特征值从大到小排序<br> 所以只需令P = V  , Σ<sup>T</sup>Σ = λ 即可<br> 再用U = Σ<sup>T</sup> V X 即可求出 U </p>
 </li>
 <li><p>计算特征向量</p>
-<p> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/givens.jpg" alt="这里写图片描述"><br> 基本想法是通过不断使用givens变换 (初等旋转变换) 将X的非对角元素变为0<br> P = ∏<sub>i</sub> P<sub>i</sub> (P<sub>i</sub> 是givens变换)<br> P<sup>T </sup>X<sup>T</sup>X P = λ<br> 其中P<sub>i</sub>中未知量的选取见下图<br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g2.png" alt="这里写图片描述"><br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g3.png" alt="这里写图片描述"> </p>
+<p> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/givens.jpeg" alt="这里写图片描述"><br> 基本想法是通过不断使用givens变换 (初等旋转变换) 将X的非对角元素变为0<br> P = ∏<sub>i</sub> P<sub>i</sub> (P<sub>i</sub> 是givens变换)<br> P<sup>T </sup>X<sup>T</sup>X P = λ<br> 其中P<sub>i</sub>中未知量的选取见下图<br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g2.png" alt="这里写图片描述"><br> <img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/23/PCA实现/g3.png" alt="这里写图片描述"> </p>
 <p> 接着直至收敛<br> 接着将λ中的特征值从大到小排序,P中的特征向量依据λ的顺序进行排序<br> 从而得到了V</p>
 <p> end  很简单hh  从头至尾就是一些矩阵乘法运算<br> givens和X的乘法只涉及到两行两列的元素故为O(n)的复杂度</p>
 </li>
