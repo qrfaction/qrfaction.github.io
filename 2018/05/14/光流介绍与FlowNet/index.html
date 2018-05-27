@@ -79,22 +79,22 @@
 
 
 
-<meta name="description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 前者是像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1)">
+<meta name="description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1) = I">
 <meta name="keywords" content="optical flow">
 <meta property="og:type" content="article">
 <meta property="og:title" content="光流介绍与FlowNet">
 <meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/光流介绍与FlowNet/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 前者是像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1)">
+<meta property="og:description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1) = I">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/flow.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/corr.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/kernel.jpg">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/refine.jpg">
-<meta property="og:updated_time" content="2018-05-14T06:26:36.025Z">
+<meta property="og:updated_time" content="2018-05-27T04:19:18.010Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="光流介绍与FlowNet">
-<meta name="twitter:description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 前者是像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1)">
+<meta name="twitter:description" content="主要由于需求原因,需要了解一些Optical Flow相关知识于是写下这篇入门介绍文章 Optical Flow(光流) 介绍segmentation &amp;emsp;: 像素级的分类光流估计 &amp;emsp;&amp;emsp;&amp;emsp; : 像素级的回归 光流估计 &amp;emsp; 预测连续图片序列中每个像素的速度(大小与方向)   例如给定第t帧与t+1帧,求每个像素的运动速度与方向It(x1,y1) = I">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/flow.jpg">
 
 
@@ -358,7 +358,7 @@
 
       
         <p>主要由于需求原因,需要了解一些Optical Flow相关知识<br>于是写下这篇入门介绍文章</p>
-<h2 id="Optical-Flow-光流-介绍"><a href="#Optical-Flow-光流-介绍" class="headerlink" title="Optical Flow(光流) 介绍"></a>Optical Flow(光流) 介绍</h2><p>segmentation &emsp;: 像素级的分类<br>光流估计 &emsp;&emsp;&emsp; : 前者是像素级的回归</p>
+<h2 id="Optical-Flow-光流-介绍"><a href="#Optical-Flow-光流-介绍" class="headerlink" title="Optical Flow(光流) 介绍"></a>Optical Flow(光流) 介绍</h2><p>segmentation &emsp;: 像素级的分类<br>光流估计 &emsp;&emsp;&emsp; : 像素级的回归</p>
 <p>光流估计 &emsp; 预测连续图片序列中每个像素的速度(大小与方向)</p>
 <blockquote>
 </blockquote>
