@@ -128,6 +128,16 @@
 
 
 
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ce10a2762e71d0513ae5a919b9cf34a5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
 
 
 
@@ -362,7 +372,7 @@
 <li>json只能序列化python中的部分对象,而pickle可以序列化大多数</li>
 </ol>
 <p>在python中使用进程并发时隐藏了这些细节<br>但实际中他是以pickle进行传输数据<br>这就带来了下面的问题</p>
-<h2 id="multiprocessing的进程通信方式-1"><a href="#multiprocessing的进程通信方式-1" class="headerlink" title="multiprocessing的进程通信方式"></a>multiprocessing的进程通信方式</h2><blockquote>
+<h2 id="multiprocessing的进程通信限制"><a href="#multiprocessing的进程通信限制" class="headerlink" title="multiprocessing的进程通信限制"></a>multiprocessing的进程通信限制</h2><blockquote>
 <p>struct.error: ‘i’ format requires -2147483648 &lt;= number &lt;= 2147483647</p>
 </blockquote>
 <p>这是我将一个比较大的矩阵作为参数进行传输时带来的问题</p>
@@ -2010,6 +2020,26 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
 
 
 

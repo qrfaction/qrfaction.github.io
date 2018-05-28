@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="并发python的并发已经被诟病许久了GIL锁导致线程级并发争用一个CPU计算密集型任务在多线程的模式下根本做不到真正意义上的并发导致python的多线程只适用于非计算密集型任务类似I/O等 避开这个劣势一般有两种策略其一是使用multiprocessing将线程级转到进程级其二便是使用C语言 multiprocessing的进程通信方式multiprocessing开启一个子进程,两者传参的通信">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-27T04:04:19.387Z">
+<meta property="og:updated_time" content="2018-05-28T03:34:56.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="multiprocessing神坑之进程通信">
 <meta name="twitter:description" content="并发python的并发已经被诟病许久了GIL锁导致线程级并发争用一个CPU计算密集型任务在多线程的模式下根本做不到真正意义上的并发导致python的多线程只适用于非计算密集型任务类似I/O等 避开这个劣势一般有两种策略其一是使用multiprocessing将线程级转到进程级其二便是使用C语言 multiprocessing的进程通信方式multiprocessing开启一个子进程,两者传参的通信">
@@ -132,6 +132,16 @@
 
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ce10a2762e71d0513ae5a919b9cf34a5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -334,6 +344,11 @@
           
 
           
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
 
           
 
@@ -362,7 +377,7 @@
 <li>json只能序列化python中的部分对象,而pickle可以序列化大多数</li>
 </ol>
 <p>在python中使用进程并发时隐藏了这些细节<br>但实际中他是以pickle进行传输数据<br>这就带来了下面的问题</p>
-<h2 id="multiprocessing的进程通信方式-1"><a href="#multiprocessing的进程通信方式-1" class="headerlink" title="multiprocessing的进程通信方式"></a>multiprocessing的进程通信方式</h2><blockquote>
+<h2 id="multiprocessing的进程通信限制"><a href="#multiprocessing的进程通信限制" class="headerlink" title="multiprocessing的进程通信限制"></a>multiprocessing的进程通信限制</h2><blockquote>
 <p>struct.error: ‘i’ format requires -2147483648 &lt;= number &lt;= 2147483647</p>
 </blockquote>
 <p>这是我将一个比较大的矩阵作为参数进行传输时带来的问题</p>
@@ -554,7 +569,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发"><span class="nav-number">1.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing的进程通信方式"><span class="nav-number">2.</span> <span class="nav-text">multiprocessing的进程通信方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing的进程通信方式-1"><span class="nav-number">3.</span> <span class="nav-text">multiprocessing的进程通信方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing的进程的共享对象"><span class="nav-number">4.</span> <span class="nav-text">multiprocessing的进程的共享对象</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并发"><span class="nav-number">1.</span> <span class="nav-text">并发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing的进程通信方式"><span class="nav-number">2.</span> <span class="nav-text">multiprocessing的进程通信方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing的进程通信限制"><span class="nav-number">3.</span> <span class="nav-text">multiprocessing的进程通信限制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#multiprocessing的进程的共享对象"><span class="nav-number">4.</span> <span class="nav-text">multiprocessing的进程的共享对象</span></a></li></ol></div>
             
 
           </div>
@@ -598,6 +613,26 @@
 
 
         
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i> 总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
 
 
 
