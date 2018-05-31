@@ -269,6 +269,185 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/09/GPU高性能编程CUDA实战阅读笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/09/GPU高性能编程CUDA实战阅读笔记/" itemprop="url">GPU高性能编程CUDA实战阅读笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-09T21:11:22+08:00">
+                2018-04-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>闲暇的时候花了一点时间翻了一下这本书<br>当初一直犹豫到底要不要学(最终还是学了hh)</p>
+<p>在看这本书之前推荐看个文章<br><a href="https://zhuanlan.zhihu.com/p/34587739" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/34587739</a><br>从这里我们可以基本了解到GPU是依靠堆积并行线程数量实现加速<br>使用SM(流式处理器),使用单指令多线程架构来调度block至grid级的线程</p>
+<p>这本书里除去一些api的调用介绍<br>重点有以下概念总结</p>
+<h3 id="1-常量内存"><a href="#1-常量内存" class="headerlink" title="1. 常量内存"></a>1. 常量内存</h3><blockquote>
+<p>在数百个乃至上千的并行线程的任务中,性能瓶颈不一定在数学计算吞吐量,而在于芯片的内存带宽<br>声明常量内存只需要在变量前面加上 __constant__ 修饰符</p>
+<p>常量内存的特性:</p>
+<ol>
+<li>可读不可写</li>
+<li>常量内存的读取请求是串行化处理的</li>
+<li>当一个线程束中多个线程从常量内存的相同地址上读取数据时,常量内存会通过广播机制来处理<br>  &emsp;即一次读取请求得,到结果后广播至其他线程  (最多半个线程束,故只需处理两次读取请求)</li>
+<li>由于该内存内容不会发生变化,在读取常量内存时,硬件将主动将其缓存至GPU,这将进一步减少内存流量</li>
+</ol>
+<p>但我们仍需注意,如果线程束中经常出现读取常量内存中不同的数据,将会导致这些读取请求串行处理,而读取全局内存是并行的,这时候会出现慢于从全局内存中读取的情况</p>
+</blockquote>
+<h3 id="2-共享内存"><a href="#2-共享内存" class="headerlink" title="2. 共享内存"></a>2. 共享内存</h3><blockquote>
+<p>共享内存作用于块级线程的通信的共享是块级的,当把一个变量声明为共享内存时<br>声明共享内存只需要在变量前面加上 __shared__  修饰符</p>
+<p>共享内存的特性:</p>
+<ol>
+<li>对于GPU上启动的每个线程块,CUDA C编译器都将创建该变量的一个副本</li>
+<li>单个线程块中可依靠这个变量进行通信,但这不会影响其他线程块中的变量副本</li>
+<li>共享内存缓冲区驻留在物理GPU上,非GPU之外的系统内存,访问他的延迟远低于访问普通缓冲区的延迟</li>
+</ol>
+</blockquote>
+<h3 id="3-纹理内存"><a href="#3-纹理内存" class="headerlink" title="3. 纹理内存"></a>3. 纹理内存</h3><blockquote>
+<p>纹理内存同样用于减小内存带宽压力</p>
+<p>纹理内存的特性:</p>
+<ol>
+<li>对于内存访问模式中具有强空间局部性的可获得较好的加速效果 (如卷积运算)</li>
+<li>只读不可写</li>
+</ol>
+</blockquote>
+<h3 id="4-页锁定主机内存与流"><a href="#4-页锁定主机内存与流" class="headerlink" title="4. 页锁定主机内存与流"></a>4. 页锁定主机内存与流</h3><blockquote>
+<p> 页锁定内存也称固定内存或不可分页内存,他有一个重要的属性,OS不会对这块内存进行分页并交换至磁盘上,从而确保该内存始终驻留在物理内存</p>
+<p> 在GPU与主机之间的数据拷贝时,复制操作将执行两次,一次是将可分页内存中的数据复制到临时的页锁定内存,第二次再将这个页锁定内存中的数据复制到GPU上<br> 从上述特性可以看出可分页内存的数据拷贝将比页锁定内存的拷贝多耗一倍时间</p>
+<p> 零拷贝内存<br> 固定内存保证了该内存不会被交换出去或者重新定位<br> 使得GPU直接访问该内存得以实现,而非需要先进行拷贝数据至显存上<br> CUDA有个”合并式写入(write-combined)”模式,可提高GPU读取该内存的速度但会降低CPU访问他的速度<br> 由于集显的内存是和主机共享的所以集显一般能获得性能提升<br> 零拷贝内存的主要作用就是避免不必要的数据复制<br> 如果该内存会被多次读取不如一开始就将数据复制到GPU上,因为GPU与CPU的通信带宽会限制程序性能</p>
+<p> CUDA流<br> CUDA流表示一个GPU操作队列,同个流中的操作将串行执行,而不同流中的操作可并行执行<br> CUDA提供一个异步数据拷贝的API,但该操作需要在固定缓冲区执行,这要求该内存是页锁定内存<br> 在支持设备重叠的机子上,内存的复制和核函数的执行可以并行执行<br> 即存在内存复制引擎和核函数执行引擎分别执行这两个函数<br> 虽说是异步执行,但是这些异步操作是只有这两个引擎在那处理的<br> 所以防止第一个流中的操作阻塞第二个流中的操作最好放入队列时应采用广度优先而非深度优先</p>
+<p> 页锁定内存的特性是只有分配他的正在使用的cpu线程可以享有<br> 需要设定cudaHostAllocPortable才可在多线程中使用</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1044,7 +1223,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1066,7 +1245,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

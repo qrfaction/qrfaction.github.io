@@ -269,6 +269,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/31/人脑核磁共振海马体分割竞赛总结/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/31/人脑核磁共振海马体分割竞赛总结/" itemprop="url">人脑核磁共振海马体分割竞赛总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-31T21:49:37+08:00">
+                2018-05-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>最终结果是进决赛拿了二等奖<br>这个比赛其实从头水到尾,都没干啥事…<br>不过还是挑一些重点的有价值的东西讲讲<br>很多比赛总结其实一直好像是一个比较流水线的报告<br>从预处理到最后的集成<br>即便trick百出,仍似千篇一律</p>
+<p>但我仍然喜欢有人能相对于trick提出更多的问题</p>
+<h3 id="比赛介绍"><a href="#比赛介绍" class="headerlink" title="比赛介绍"></a>比赛介绍</h3><p>这个比赛是一个3D医学图像分割问题<br>目标是对大脑中的左右海马体进行分割</p>
+<h3 id="数据特点"><a href="#数据特点" class="headerlink" title="数据特点"></a>数据特点</h3><p>132组样本<br>3D图像,4D张量,5D一个batchsize<br>十分吃显存<br>卷积核数稍微大一点就给你爆0.1T显存</p>
+<p>训练不稳定<br>模型对海马体的差异十分敏感,不同的海马体dice loss差距对比有0.85 , 0.42</p>
+<p>验证集阈值浮动<br>由于模型对海马体差异十分敏感<br>所以所以验证集分数经常会从几十跳成0</p>
+<p>海马体强度不均<br>一些海马体体素强度在0至200的范围,部分在0至两千的范围</p>
+<h3 id="问题的解决方式"><a href="#问题的解决方式" class="headerlink" title="问题的解决方式"></a>问题的解决方式</h3><p>吃显存是真的没法子了<br>只能减通道数<br>毕竟换tesla P40是不可能的,这辈子都不可能换的<br>写插值压小图片又不想写,只能随随便便改改卷积核数才适合我</p>
+<p>训练不稳定和验证集阈值浮动提供几个很棒的解决方案</p>
+<ol>
+<li>改batchsize<br> 将batchsize设置为8问题就被缓解很多了,简单粗暴,但要牺牲一些通道数</li>
+<li>将sigmoid激活改成tanh + score map MinMax归一化 + diceLoss<br> 这个方式超级显著,可以说完全解决了这个问题,小batchsize大概要几千轮的样子才能让loss和验证集稳定<br> 这个配合8 batchsize在仅仅600轮即可收敛到88的分数<br> score map MinMax归一化是利用了图片中必定存在海马体的先验信息,即必定存在正例体素</li>
+<li>一堆后处理trick(基于梯度,类间方差,类内方差,knn+先验等<br> 在这里我创了很多方法,这个方法有点慢,效果是有的,不如2+1</li>
+<li>ConvLSTM<br> 将3D图片的一个轴作为循环轴,利用循环单元拟合,这种结构契合了海马体的形态变化<br> 这个结构分数真的很稳,鲁棒性棒棒哒</li>
+<li>在像素级的任务中尽量少用Pool,因为像素级的不对齐任务似乎还是有点影响的</li>
+</ol>
+<h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>其他的事不想说了,毕竟水过来的,很不认真hh<br>一些数据增强,预处理都不想说了<br>我的几个模型结构也懒得聊,看多了只觉得模型结构要么是拍脑袋拿到的,要么是暴力搜素<br>毕竟缺乏理论性,马后炮事的分析结构是很抗拒的</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/29/CUDA上下文环境/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1734,153 +1892,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/10/kcf/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/10/kcf/" itemprop="url">博客迁移之KCF</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-10T11:24:10+08:00">
-                2018-05-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>鉴于讨论班的需要<br>给大家介绍一下tracking的方向<br>于是拿了这个很经典的模型开讲</p>
-<p>以及我的csdn上的博客写的太烂了<br>借这个机会详细写一次…</p>
-<p>直接把做好的ppt放这里吧</p>
-<blockquote>
-<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_01.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_02.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_03.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_04.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_05.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_06.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_07.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_08.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_09.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_10.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_11.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_12.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/10/kcf/0_13.jpg" alt="这里写图片描述"> </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1931,7 +1942,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1953,7 +1964,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">14</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
