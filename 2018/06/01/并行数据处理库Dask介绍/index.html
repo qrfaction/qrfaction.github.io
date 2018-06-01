@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OpenMP," />
+  <meta name="keywords" content="python," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
-<meta name="keywords" content="OpenMP">
+<meta name="description" content="前言最近有一些临时需求需要并行一些python代码受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵… 今天偶然发现一个Dask库api与numpy,pandas一致,但可以并行计算真的是雪中送炭hh Dask接口介绍High Level    Arrays: 并行Numpy    Bags: 并行lists    Dataframes: 并行Pandas    Machi">
+<meta name="keywords" content="python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenMP数据共享与任务并行">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/index.html">
+<meta property="og:title" content="并行数据处理库Dask介绍">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta property="og:description" content="前言最近有一些临时需求需要并行一些python代码受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵… 今天偶然发现一个Dask库api与numpy,pandas一致,但可以并行计算真的是雪中送炭hh Dask接口介绍High Level    Arrays: 并行Numpy    Bags: 并行lists    Dataframes: 并行Pandas    Machi">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-14T04:53:19.837Z">
+<meta property="og:updated_time" content="2018-06-01T12:14:44.489Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenMP数据共享与任务并行">
-<meta name="twitter:description" content="OpenMP基于共享内存的线程级并行计算支持的编程语言包括C、C++和Fortran只需要在适当的位置添加pragma就可以将程序自动并行处理当编译器不支持OpenMP时，程序会退化成普通(串行)程序 并行指令parallel指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;quot;stdlib.h&amp;quot">
+<meta name="twitter:title" content="并行数据处理库Dask介绍">
+<meta name="twitter:description" content="前言最近有一些临时需求需要并行一些python代码受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵… 今天偶然发现一个Dask库api与numpy,pandas一致,但可以并行计算真的是雪中送炭hh Dask接口介绍High Level    Arrays: 并行Numpy    Bags: 并行lists    Dataframes: 并行Pandas    Machi">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/"/>
 
 
 
 
 
-  <title>OpenMP数据共享与任务并行 | qrfaction的博客</title>
+  <title>并行数据处理库Dask介绍 | qrfaction的博客</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/04/OpenMP实例学习之数据共享/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenMP数据共享与任务并行</h1>
+          <h1 class="post-title" itemprop="name headline">并行数据处理库Dask介绍</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-04T20:12:54+08:00">
-                2018-05-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-01T20:13:39+08:00">
+                2018-06-01
               </time>
             
 
@@ -367,123 +367,48 @@
       
 
       
-        <p>OpenMP基于共享内存的线程级并行计算<br>支持的编程语言包括C、C++和Fortran<br>只需要在适当的位置添加pragma就可以将程序自动并行处理<br>当编译器不支持OpenMP时，程序会退化成普通(串行)程序</p>
-<h2 id="并行指令"><a href="#并行指令" class="headerlink" title="并行指令"></a>并行指令</h2><h3 id="parallel指令"><a href="#parallel指令" class="headerlink" title="parallel指令"></a>parallel指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &quot;stdlib.h&quot;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel num_threads(6)
-    {
-        cout&lt;&lt;&quot;hello world&quot;&lt;&lt;endl;
-    }
-}
-</code></pre><p>编译运行 g++ test.cpp -fopenmp -lpthread<br>代码输出如下</p>
-<pre><code>hello world
-hello worldhello world
-hello world
-hello worldhello world
-</code></pre><p>使用OpenMP必加 #pragma omp 前缀<br>parallel可以使得后续代码块并行执行,默认是机器核心数,若加了num_threads(6)语句则开启6个线程</p>
-<p>OpenMP采用fork-join执行模型<br>在进入代码块前开启多个线程,最后再阻塞等待所有线程执行结束退出代码块</p>
-<h3 id="prallel-for指令"><a href="#prallel-for指令" class="headerlink" title="prallel for指令"></a>prallel for指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel for
-    for(int i=0;i&lt;omp_get_num_procs();++i)
-        cout&lt;&lt;&quot;thread id : &quot;
-            &lt;&lt;omp_get_thread_num()&lt;&lt;endl;
-}
-</code></pre><p>代码输出如下</p>
-<pre><code>thread id : thread id : thread id : thread id : 21
-
-0
-3
-</code></pre><p>int omp_get_num_procs()  返回机器核心数<br>int omp_get_thread_num()  返回当前线程id(话说这名字起的…)</p>
-<p>其中parallel for 指令并非能并行所有for循环,要满足如下条件</p>
-<pre><code>1. for循环中的循环变量必须是有int 即int i
-2. for循环中比较操作符必须是&lt;, &lt;=, &gt;, &gt;= ,如!=等会编译不通过
-3. 第三个表达式必须是循环变量的加减,且似乎只能++i, i++, -–i, 或i-–
-4. 循环体内部不许出现到达循环体外的跳转语句如break,goto,但exit除外
-</code></pre><h3 id="sections指令"><a href="#sections指令" class="headerlink" title="sections指令"></a>sections指令</h3><pre><code>int main(){
-    #pragma omp parallel sections
-    {
-        #pragma omp section
-        {
-            for(int i=0;i&lt;4;++i)
-                printf(&quot;i:%i \t id:%d\n&quot;,i,omp_get_thread_num());
-        }
-
-        #pragma omp section
-        {
-            for(int i=0;i&lt;4;++i)
-                printf(&quot;i:%i \t id:%d\n&quot;,i,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序执行结果如下</p>
-<pre><code>i:0      id:1
-i:1      id:1
-i:2      id:1
-i:3      id:1
-i:0      id:3
-i:1      id:3
-i:2      id:3
-i:3      id:3
-</code></pre><p>sections指令中的section指定的代码块将会并行执行</p>
-<h2 id="数据共享"><a href="#数据共享" class="headerlink" title="数据共享"></a>数据共享</h2><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int a=10;
-
-    #pragma omp parallel for firstprivate(a)
-    for(int i=0;i&lt;10;++i)
-        cout &lt;&lt; a*i &lt;&lt; endl;
-}
-</code></pre><p>firstprivate子句在每个线程中声明了a变量,并以外部的a变量的值进行初始化<br>代码运行结果如下</p>
-<pre><code>30
-40
-50
-80
-90
-0
-10
-20
-60
-70
-</code></pre><p>子句 private(val1, val2, …)<br>声明私有变量,但值与外部变量不同,全部初始化为0</p>
-<p>子句 last_private(val1, val2, …)<br>将会把并行区域中最后一次执行对val1的操作后的值将会拷贝到相应外部变量中</p>
-<p>shared(val1, val2, …)<br>声明这些变量共享(其实并行区域外的变量默认是共享的)</p>
-<h3 id="reduction子句"><a href="#reduction子句" class="headerlink" title="reduction子句"></a>reduction子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=10;
-
-    #pragma omp parallel for reduction(+:sum)
-    for(int i=0;i&lt;10;++i){
-        sum +=i;
-        cout &lt;&lt; sum &lt;&lt; endl;
-    }
-    cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
-}
-</code></pre><p>在这里每个线程首先拷贝了一份外部的sum并各自计算<br>最后以指定的运算”+”进行归约(reduction),将各线程的结果求和<br>最后退出代码块将值拷贝到外部的sum</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近有一些临时需求需要并行一些python代码<br>受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵…</p>
+<p>今天偶然发现一个Dask库<br>api与numpy,pandas一致,但可以并行计算<br>真的是雪中送炭hh</p>
+<h2 id="Dask"><a href="#Dask" class="headerlink" title="Dask"></a>Dask</h2><h3 id="接口介绍"><a href="#接口介绍" class="headerlink" title="接口介绍"></a>接口介绍</h3><p>High Level</p>
+<blockquote>
+<p>  Arrays: 并行Numpy<br>    Bags: 并行lists<br>    Dataframes: 并行Pandas<br>    Machine Learning : 并行Scikit-Learn<br>    Others from external projects, like XArray</p>
+</blockquote>
+<p>Low Level</p>
+<blockquote>
+<p>  Delayed: 用这个装饰器可以用于封装自定义函数来搭建计算图延迟计算<br>    Futures: real-time parallel function evaluation</p>
+</blockquote>
+<h3 id="计算图搭建与延迟计算"><a href="#计算图搭建与延迟计算" class="headerlink" title="计算图搭建与延迟计算"></a>计算图搭建与延迟计算</h3><p>方式一</p>
+<blockquote>
+<p>import dask</p>
+</blockquote>
+<p>lazy_results = []<br>for a in A:<br>&emsp;&emsp;for b in B:<br>&emsp;&emsp;&emsp;&emsp;if a &lt; b:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(f)(a, b)  # 延迟任务计算,f是自定义函数<br>&emsp;&emsp;&emsp;&emsp;else:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(g)(a, b)  # 延迟任务计算<br>&emsp;&emsp;&emsp;&emsp;lazy_results.append(c)</p>
+<blockquote>
+<p>results = dask.compute(*lazy_results)  # 并行计算所有任务</p>
+</blockquote>
+<p>方式二 </p>
+<blockquote>
+</blockquote>
+<p>@dask.delayed<br>def inc(x):<br>&emsp;&emsp;return x + 1</p>
+<blockquote>
+</blockquote>
+<p>@dask.delayed<br>def add(x, y):<br>&emsp;&emsp;return x + y</p>
+<blockquote>
+</blockquote>
+<p>a = inc(1)       # 放入计算图<br>b = inc(2)       # 放入计算图<br>c = add(a, b)    # 放入计算图</p>
+<blockquote>
+</blockquote>
+<p>c = c.compute()  # 运行计算图并返回结果</p>
+<h3 id="Dask中的pandas一览"><a href="#Dask中的pandas一览" class="headerlink" title="Dask中的pandas一览"></a>Dask中的pandas一览</h3><blockquote>
+</blockquote>
+<p>>&gt;&gt; import dask.dataframe as dd<br>>&gt;&gt; df = dd.read_csv(‘2014-*.csv’)<br>>&gt;&gt; df.head()<br>&emsp;&emsp;&ensp;x&emsp;y<br>&emsp;0&emsp;1&emsp;a<br>&emsp;1&emsp;2&emsp;b<br>&emsp;2&emsp;3&emsp;c<br>&emsp;3&emsp;4&emsp;a<br>&emsp;4&emsp;5&emsp;b<br>&emsp;5&emsp;6&emsp;c</p>
+<blockquote>
+</blockquote>
+<p>>&gt;&gt; df2 = df[df.y == ‘a’].x + 1</p>
+<blockquote>
+</blockquote>
+<p>>&gt;&gt; df2.compute()<br>0&emsp;2<br>3&emsp;5<br>Name: x, dtype: int64</p>
+<p>pandas中如下等各类函数皆被加速处理</p>
+<p>dd.merge(df1, df2, on=’name’)<br>df.groupby(df.x).apply(myfunc)<br>df[df.x &gt; 0]<br>df.x + df.y<br>等等</p>
 
       
     </div>
@@ -501,7 +426,7 @@ int main(){
       
         <div class="post-tags">
           
-            <a href="/tags/OpenMP/" rel="tag"># OpenMP</a>
+            <a href="/tags/python/" rel="tag"># python</a>
           
         </div>
       
@@ -514,8 +439,8 @@ int main(){
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/02/数据竞赛之完备思考/" rel="next" title="数据竞赛之完备思考">
-                <i class="fa fa-chevron-left"></i> 数据竞赛之完备思考
+              <a href="/2018/05/31/人脑核磁共振海马体分割竞赛总结/" rel="next" title="人脑核磁共振海马体分割竞赛总结">
+                <i class="fa fa-chevron-left"></i> 人脑核磁共振海马体分割竞赛总结
               </a>
             
           </div>
@@ -523,10 +448,6 @@ int main(){
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/OpenMP同步_互斥与任务调度/" rel="prev" title="OpenMP同步&互斥与任务调度">
-                OpenMP同步&互斥与任务调度 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -658,7 +579,7 @@ int main(){
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#并行指令"><span class="nav-number">1.</span> <span class="nav-text">并行指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#parallel指令"><span class="nav-number">1.1.</span> <span class="nav-text">parallel指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#prallel-for指令"><span class="nav-number">1.2.</span> <span class="nav-text">prallel for指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sections指令"><span class="nav-number">1.3.</span> <span class="nav-text">sections指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据共享"><span class="nav-number">2.</span> <span class="nav-text">数据共享</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#reduction子句"><span class="nav-number">2.1.</span> <span class="nav-text">reduction子句</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dask"><span class="nav-number">2.</span> <span class="nav-text">Dask</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#接口介绍"><span class="nav-number">2.1.</span> <span class="nav-text">接口介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算图搭建与延迟计算"><span class="nav-number">2.2.</span> <span class="nav-text">计算图搭建与延迟计算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dask中的pandas一览"><span class="nav-number">2.3.</span> <span class="nav-text">Dask中的pandas一览</span></a></li></ol></li></ol></div>
             
 
           </div>
