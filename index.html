@@ -364,12 +364,12 @@
           
             <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近忽然发现lightgbm中有个梯度优化的loss<br>以前一直好奇树模型如何对auc进行优化<br>于是查了一下,作此博文</p>
 <h2 id="AUC在梯度树与DNN中优化的不同之处"><a href="#AUC在梯度树与DNN中优化的不同之处" class="headerlink" title="AUC在梯度树与DNN中优化的不同之处"></a>AUC在梯度树与DNN中优化的不同之处</h2><p>之前我在文章<a href="https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式" target="_blank" rel="noopener">https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式</a><br>基本就是用一个度量函数将AUC公式中不可微的部分进行平滑</p>
-<p>然而在梯度树中这带来了困难<br>见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpg" alt="这里写图片描述"><br>可知梯度树在计算梯度时主要获得的是针对每个样本的梯度信息<br>而原先在DNN中的AUC是无需将梯度细粒度到每个样本<br>只要有一个loss信息回传就OK了</p>
+<p>然而在梯度树中这带来了困难<br>见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpeg" alt="这里写图片描述"><br>可知梯度树在计算梯度时主要获得的是针对每个样本的梯度信息<br>而原先在DNN中的AUC是无需将梯度细粒度到每个样本<br>只要有一个loss信息回传就OK了</p>
 <p>可见原先的方式不再适用</p>
 <h2 id="Learning-to-rank-之-LambdaMART"><a href="#Learning-to-rank-之-LambdaMART" class="headerlink" title="Learning to rank 之 LambdaMART"></a>Learning to rank 之 LambdaMART</h2><p>MART其实就是GBDT(他名字很多诶)</p>
 <p>这个方法其实是将rankLoss的梯度信息作为模型中的label y<br>即定义了模型的预测score的分数上升方向</p>
-<p>首先定义一个rankLoss,其中s<sub>i</sub> , s<sub>j</sub>是模型输出的score<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpg" alt="这里写图片描述"> </p>
-<p>在对s<sub>i</sub>求偏导<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpg" alt="这里写图片描述"><br>于是得到了一个s<sub>i</sub>的上升/下降方向<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpg" alt="这里写图片描述"><br>再令有序对(i,j)的排序label  S<sub>ij</sub> = 1<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpg" alt="这里写图片描述"><br>最后再将λ<sub>i</sub>作为sample i的label<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpg" alt="这里写图片描述"> </p>
+<p>首先定义一个rankLoss,其中s<sub>i</sub> , s<sub>j</sub>是模型输出的score<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpeg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpeg" alt="这里写图片描述"> </p>
+<p>在对s<sub>i</sub>求偏导<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpeg" alt="这里写图片描述"><br>于是得到了一个s<sub>i</sub>的上升/下降方向<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpeg" alt="这里写图片描述"><br>再令有序对(i,j)的排序label  S<sub>ij</sub> = 1<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpeg" alt="这里写图片描述"><br>最后再将λ<sub>i</sub>作为sample i的label<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpeg" alt="这里写图片描述"> </p>
 <p>从而实现了树模型的Learning to rank</p>
 <p>但这个我感觉应该对auc直接优化有很大帮助<br>因为毕竟auc本身也是一种基于排序的指标<br>但是否具有一致性就不清楚了<br>不过尝试了一下lightgbm中的lambda mart 训练速度超级慢…懒得试了</p>
 
@@ -1463,8 +1463,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/DL/" itemprop="url" rel="index">
-                    <span itemprop="name">DL</span>
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
                   </a>
                 </span>
 
@@ -1934,7 +1934,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1945,7 +1945,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
