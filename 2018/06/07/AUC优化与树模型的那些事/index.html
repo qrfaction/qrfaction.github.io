@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="OpenMP," />
+  <meta name="keywords" content="ML&DL," />
 
 
 
@@ -79,18 +79,26 @@
 
 
 
-<meta name="description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
-<meta name="keywords" content="OpenMP">
+<meta name="description" content="前言最近忽然发现lightgbm中有个梯度优化的loss以前一直好奇树模型如何对auc进行优化于是查了一下,作此博文 AUC在梯度树与DNN中优化的不同之处之前我在文章https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式基本就是用一个度量函数将AUC公式中不可微的部分进行平滑 然而在梯度树中这带来了困难见下图可知梯度树在">
+<meta name="keywords" content="ML&amp;DL">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OpenMP同步&amp;互斥与任务调度">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/index.html">
+<meta property="og:title" content="AUC优化与树模型的那些事">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
+<meta property="og:description" content="前言最近忽然发现lightgbm中有个梯度优化的loss以前一直好奇树模型如何对auc进行优化于是查了一下,作此博文 AUC在梯度树与DNN中优化的不同之处之前我在文章https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式基本就是用一个度量函数将AUC公式中不可微的部分进行平滑 然而在梯度树中这带来了困难见下图可知梯度树在">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-14T04:53:26.845Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpg">
+<meta property="og:updated_time" content="2018-06-07T03:50:03.650Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OpenMP同步&amp;互斥与任务调度">
-<meta name="twitter:description" content="多线程编程需要考虑的资源竞争问题而引入互斥与同步为提高并行率而需要任务调度分配 互斥critical指令#include &amp;quot;omp.h&amp;quot; #include &amp;quot;iostream&amp;quot; #include &amp;lt;stdlib.h&amp;gt;   using namespace std;  int main(){      int sum=0;      #pragma">
+<meta name="twitter:title" content="AUC优化与树模型的那些事">
+<meta name="twitter:description" content="前言最近忽然发现lightgbm中有个梯度优化的loss以前一直好奇树模型如何对auc进行优化于是查了一下,作此博文 AUC在梯度树与DNN中优化的不同之处之前我在文章https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式基本就是用一个度量函数将AUC公式中不可微的部分进行平滑 然而在梯度树中这带来了困难见下图可知梯度树在">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpg">
 
 
 
@@ -120,13 +128,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/"/>
 
 
 
 
 
-  <title>OpenMP同步&互斥与任务调度 | qrfaction的博客</title>
+  <title>AUC优化与树模型的那些事 | qrfaction的博客</title>
   
 
 
@@ -273,7 +281,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/05/OpenMP同步_互斥与任务调度/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -290,7 +298,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">OpenMP同步&互斥与任务调度</h1>
+          <h1 class="post-title" itemprop="name headline">AUC优化与树模型的那些事</h1>
         
 
         <div class="post-meta">
@@ -302,8 +310,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T16:37:13+08:00">
-                2018-05-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-07T11:35:35+08:00">
+                2018-06-07
               </time>
             
 
@@ -325,8 +333,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
                   </a>
                 </span>
 
@@ -367,170 +375,16 @@
       
 
       
-        <p>多线程编程需要考虑的资源竞争问题而引入互斥与同步<br>为提高并行率而需要任务调度分配</p>
-<h2 id="互斥"><a href="#互斥" class="headerlink" title="互斥"></a>互斥</h2><h3 id="critical指令"><a href="#critical指令" class="headerlink" title="critical指令"></a>critical指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdlib.h&gt; 
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel for 
-    for(int i=0;i&lt;10;++i){
-
-        #pragma omp critical
-        {
-            sum +=i;
-        }
-    }
-    cout&lt;&lt;&quot;sum &quot;&lt;&lt;sum&lt;&lt;endl;
-}
-</code></pre><p>critical可以将指定的代码块加锁<br>使得任何时候只有一个线程可访问这块区域</p>
-<h3 id="atomic指令-原子操作"><a href="#atomic指令-原子操作" class="headerlink" title="atomic指令(原子操作)"></a>atomic指令(原子操作)</h3><p> 将上面代码中的</p>
-<pre><code>#pragma omp critical
-           {
-               sum +=i;
-           }
-</code></pre><p> 替换为</p>
-<pre><code>#pragma omp atomic
-           sum +=i;
-</code></pre><p>也可以实现加锁<br>与之不同的是atomic是对单个指令加锁</p>
-<h2 id="同步"><a href="#同步" class="headerlink" title="同步"></a>同步</h2><h3 id="barrier指令"><a href="#barrier指令" class="headerlink" title="barrier指令"></a>barrier指令</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    int sum=0;
-
-    #pragma omp parallel
-    {
-        for(int i=0;i&lt;10;++i){
-            sum +=i;
-        }
-        #pragma omp barrier
-        printf(&quot;sum: %d\n&quot;,sum);
-    }
-
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>sum: 105
-sum: 105
-sum: 105
-sum: 105
-</code></pre><p>如果不加 #pragma omp parallel<br>输出为</p>
-<pre><code>sum: 73
-sum: 45
-sum: 90
-sum: 45
-</code></pre><p>barrier指令使得各线程同步访问sum变量使得输出一致</p>
-<p>OpenMP采用的是fork-join执行模式<br>故在每个并行的线程块结束后都会隐式同步(等效barrier)<br>可以使用nowait子句取消<br>如(都没有parallel)</p>
-<pre><code>#pragma omp for nowait
-#pragma omp sections nowait
-</code></pre><h3 id="ordered子句"><a href="#ordered子句" class="headerlink" title="ordered子句"></a>ordered子句</h3><pre><code>#include &quot;omp.h&quot;
-#include &quot;iostream&quot;
-#include &lt;stdio.h&gt;
-
-using namespace std;
-
-int main(){
-
-    #pragma omp parallel for ordered
-    for(int i=0;i&lt;4;++i){
-
-        #pragma omp ordered
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>运行结果如下</p>
-<pre><code>id: 0
-id: 1
-id: 2
-id: 3
-</code></pre><p>在parallel for后加上ordered子句后<br>就可以在代码块中使用 #pragma omp ordered 同步执行</p>
-<h3 id="master子句"><a href="#master子句" class="headerlink" title="master子句"></a>master子句</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-
-        #pragma omp master
-        {
-            printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-        }
-    }
-}
-</code></pre><p>程序输出如下</p>
-<pre><code>id: 0
-</code></pre><p>这个子句保证了这块代码只由主线程执行</p>
-<h2 id="任务分配"><a href="#任务分配" class="headerlink" title="任务分配"></a>任务分配</h2><h3 id="schedule子句"><a href="#schedule子句" class="headerlink" title="schedule子句"></a>schedule子句</h3><h4 id="static-静态调度"><a href="#static-静态调度" class="headerlink" title="static 静态调度"></a>static 静态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(static,3)
-    for(int i=0;i&lt;8;++i)
-    {
-        printf(&quot;id: %d\n&quot;,omp_get_thread_num());
-    }
-
-}
-</code></pre><p>输出如下</p>
-<pre><code>id: 0
-id: 0
-id: 0
-id: 2
-id: 2
-id: 1
-id: 1
-id: 1
-</code></pre><h4 id="dynamic-动态调度"><a href="#dynamic-动态调度" class="headerlink" title="dynamic 动态调度"></a>dynamic 动态调度</h4><pre><code>int main(){
-
-    #pragma omp parallel for schedule(dynamic,2)
-    for(int i=0;i&lt;12;++i)
-    {
-        printf(&quot;result: %d\tid:%d\n&quot;,
-                i*i*i*i*i*i,
-                omp_get_thread_num());
-    }
-
-}
-</code></pre><p>执行结果如下</p>
-<pre><code>result: 64    id:0
-result: 729    id:0
-result: 262144    id:0
-result: 531441    id:0
-result: 1000000    id:0
-result: 1771561    id:0
-result: 4096    id:2
-result: 15625    id:2
-result: 46656    id:3
-result: 117649    id:3
-result: 0    id:1
-result: 1    id:1
-</code></pre><p>(dynamic,2) 每次分配给线程2个任务<br>谁先完成谁继续接受任务<br>使得能达到核心的高占用率</p>
-<h4 id="guided调度"><a href="#guided调度" class="headerlink" title="guided调度"></a>guided调度</h4><p>一开始给每个线程分配多于size个任务<br>然后分配的任务数指数级下降<br>直到分配任务数下降到size后不变</p>
-<h4 id="runtime调度"><a href="#runtime调度" class="headerlink" title="runtime调度"></a>runtime调度</h4><p>根据环境变量OMP_SCHEDULE选择调度方式<br>最终还是落实到上面三个的其中一个</p>
-<h3 id="single指令"><a href="#single指令" class="headerlink" title="single指令"></a>single指令</h3><pre><code>int main(){
-
-    #pragma omp parallel 
-    {
-        #pragma omp single
-        {
-            printf(&quot;hello world\n&quot;);
-        }
-        printf(&quot;nice to meet you\n&quot;);
-    }
-}
-</code></pre><p>程序执行如下</p>
-<pre><code>hello world
-nice to meet you
-nice to meet you
-nice to meet you
-nice to meet you
-</code></pre><p>被single指定的线程块只会被执行一次</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近忽然发现lightgbm中有个梯度优化的loss<br>以前一直好奇树模型如何对auc进行优化<br>于是查了一下,作此博文</p>
+<h2 id="AUC在梯度树与DNN中优化的不同之处"><a href="#AUC在梯度树与DNN中优化的不同之处" class="headerlink" title="AUC在梯度树与DNN中优化的不同之处"></a>AUC在梯度树与DNN中优化的不同之处</h2><p>之前我在文章<a href="https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式" target="_blank" rel="noopener">https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式</a><br>基本就是用一个度量函数将AUC公式中不可微的部分进行平滑</p>
+<p>然而在梯度树中这带来了困难<br>见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpg" alt="这里写图片描述"><br>可知梯度树在计算梯度时主要获得的是针对每个样本的梯度信息<br>而原先在DNN中的AUC是无需将梯度细粒度到每个样本<br>只要有一个loss信息回传就OK了</p>
+<p>可见原先的方式不再适用</p>
+<h2 id="Learning-to-rank-之-LambdaMART"><a href="#Learning-to-rank-之-LambdaMART" class="headerlink" title="Learning to rank 之 LambdaMART"></a>Learning to rank 之 LambdaMART</h2><p>MART其实就是GBDT(他名字很多诶)</p>
+<p>这个方法其实是将rankLoss的梯度信息作为模型中的label y<br>即定义了模型的预测score的分数上升方向</p>
+<p>首先定义一个rankLoss,其中s<sub>i</sub> , s<sub>j</sub>是模型输出的score<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpg" alt="这里写图片描述"> </p>
+<p>在对s<sub>i</sub>求偏导<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpg" alt="这里写图片描述"><br>于是得到了一个s<sub>i</sub>的上升/下降方向<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpg" alt="这里写图片描述"><br>再令有序对(i,j)的排序label  S<sub>ij</sub> = 1<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpg" alt="这里写图片描述"><br>最后再将λ<sub>i</sub>作为sample i的label<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpg" alt="这里写图片描述"> </p>
+<p>从而实现了树模型的Learning to rank</p>
+<p>但这个我感觉应该对auc直接优化有很大帮助<br>因为毕竟auc本身也是一种基于排序的指标<br>但是否具有一致性就不清楚了<br>不过尝试了一下lightgbm中的lambda mart 训练速度超级慢…懒得试了</p>
 
       
     </div>
@@ -548,7 +402,7 @@ nice to meet you
       
         <div class="post-tags">
           
-            <a href="/tags/OpenMP/" rel="tag"># OpenMP</a>
+            <a href="/tags/ML-DL/" rel="tag"># ML&DL</a>
           
         </div>
       
@@ -561,8 +415,8 @@ nice to meet you
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/05/04/OpenMP实例学习之数据共享/" rel="next" title="OpenMP数据共享与任务并行">
-                <i class="fa fa-chevron-left"></i> OpenMP数据共享与任务并行
+              <a href="/2018/06/01/并行数据处理库Dask介绍/" rel="next" title="并行数据处理库Dask介绍">
+                <i class="fa fa-chevron-left"></i> 并行数据处理库Dask介绍
               </a>
             
           </div>
@@ -570,10 +424,6 @@ nice to meet you
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/05/05/CUDA执行模型/" rel="prev" title="CUDA执行模型">
-                CUDA执行模型 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -705,7 +555,7 @@ nice to meet you
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#互斥"><span class="nav-number">1.</span> <span class="nav-text">互斥</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#critical指令"><span class="nav-number">1.1.</span> <span class="nav-text">critical指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#atomic指令-原子操作"><span class="nav-number">1.2.</span> <span class="nav-text">atomic指令(原子操作)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#同步"><span class="nav-number">2.</span> <span class="nav-text">同步</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#barrier指令"><span class="nav-number">2.1.</span> <span class="nav-text">barrier指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ordered子句"><span class="nav-number">2.2.</span> <span class="nav-text">ordered子句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#master子句"><span class="nav-number">2.3.</span> <span class="nav-text">master子句</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任务分配"><span class="nav-number">3.</span> <span class="nav-text">任务分配</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#schedule子句"><span class="nav-number">3.1.</span> <span class="nav-text">schedule子句</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#static-静态调度"><span class="nav-number">3.1.1.</span> <span class="nav-text">static 静态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#dynamic-动态调度"><span class="nav-number">3.1.2.</span> <span class="nav-text">dynamic 动态调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#guided调度"><span class="nav-number">3.1.3.</span> <span class="nav-text">guided调度</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#runtime调度"><span class="nav-number">3.1.4.</span> <span class="nav-text">runtime调度</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#single指令"><span class="nav-number">3.2.</span> <span class="nav-text">single指令</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC在梯度树与DNN中优化的不同之处"><span class="nav-number">2.</span> <span class="nav-text">AUC在梯度树与DNN中优化的不同之处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Learning-to-rank-之-LambdaMART"><span class="nav-number">3.</span> <span class="nav-text">Learning to rank 之 LambdaMART</span></a></li></ol></div>
             
 
           </div>

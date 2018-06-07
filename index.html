@@ -269,6 +269,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/07/AUC优化与树模型的那些事/" itemprop="url">AUC优化与树模型的那些事</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-07T11:35:35+08:00">
+                2018-06-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近忽然发现lightgbm中有个梯度优化的loss<br>以前一直好奇树模型如何对auc进行优化<br>于是查了一下,作此博文</p>
+<h2 id="AUC在梯度树与DNN中优化的不同之处"><a href="#AUC在梯度树与DNN中优化的不同之处" class="headerlink" title="AUC在梯度树与DNN中优化的不同之处"></a>AUC在梯度树与DNN中优化的不同之处</h2><p>之前我在文章<a href="https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式" target="_blank" rel="noopener">https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式</a><br>基本就是用一个度量函数将AUC公式中不可微的部分进行平滑</p>
+<p>然而在梯度树中这带来了困难<br>见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpg" alt="这里写图片描述"><br>可知梯度树在计算梯度时主要获得的是针对每个样本的梯度信息<br>而原先在DNN中的AUC是无需将梯度细粒度到每个样本<br>只要有一个loss信息回传就OK了</p>
+<p>可见原先的方式不再适用</p>
+<h2 id="Learning-to-rank-之-LambdaMART"><a href="#Learning-to-rank-之-LambdaMART" class="headerlink" title="Learning to rank 之 LambdaMART"></a>Learning to rank 之 LambdaMART</h2><p>MART其实就是GBDT(他名字很多诶)</p>
+<p>这个方法其实是将rankLoss的梯度信息作为模型中的label y<br>即定义了模型的预测score的分数上升方向</p>
+<p>首先定义一个rankLoss,其中s<sub>i</sub> , s<sub>j</sub>是模型输出的score<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpg" alt="这里写图片描述"> </p>
+<p>在对s<sub>i</sub>求偏导<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpg" alt="这里写图片描述"><br>于是得到了一个s<sub>i</sub>的上升/下降方向<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpg" alt="这里写图片描述"><br>再令有序对(i,j)的排序label  S<sub>ij</sub> = 1<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpg" alt="这里写图片描述"><br>最后再将λ<sub>i</sub>作为sample i的label<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpg" alt="这里写图片描述"> </p>
+<p>从而实现了树模型的Learning to rank</p>
+<p>但这个我感觉应该对auc直接优化有很大帮助<br>因为毕竟auc本身也是一种基于排序的指标<br>但是否具有一致性就不清楚了<br>不过尝试了一下lightgbm中的lambda mart 训练速度超级慢…懒得试了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -562,7 +713,7 @@
 <li>ConvLSTM<br> 将3D图片的一个轴作为循环轴,利用循环单元拟合,这种结构契合了海马体的形态变化<br> 这个结构分数真的很稳,鲁棒性棒棒哒</li>
 <li>在像素级的任务中尽量少用Pool,因为像素级的不对齐任务似乎还是有点影响的</li>
 </ol>
-<h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>其他的事不想说了,毕竟水过来的,很不认真hh<br>一些数据增强,预处理都不想说了<br>我的几个模型结构也懒得聊,看多了只觉得模型结构要么是拍脑袋拿到的,要么是暴力搜素<br>毕竟缺乏理论性,马后炮事的分析结构是很抗拒的</p>
+<h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>其他的事不想说了,毕竟水过来的,很不认真hh<br>一些数据增强,预处理都不想说了<br>我的几个模型结构也懒得聊,看多了只觉得模型结构要么是拍脑袋拿到的,要么是暴力搜素<br>毕竟缺乏理论性,马后炮式的分析结构是很抗拒的</p>
 
           
         
@@ -1722,168 +1873,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/12/2018CVPR之RASNet/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/12/2018CVPR之RASNet/" itemprop="url">2018CVPR之RASNet</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T19:58:19+08:00">
-                2018-05-12
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>2018的CVPR<br>浏览过五六篇的2018CVPR tracking的工作介绍<br>个人感觉这篇质量还不错<br>自己其实也有很多想法<br>这篇文章让我的想法有了另一种实现方式</p>
-<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/model.jpeg" alt="这里写图片描述"> </p>
-<h3 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f.jpeg" alt="这里写图片描述"><br>本质就是给相关运算进行加权运算<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f_1.jpeg" alt="这里写图片描述"><br>而加权运算被分解成了三个attention mechanisms进行参数剪枝<br>参数从m<em>n</em>d减少为m*n+d</p>
-<er>
-
-<ol>
-<li><p>通道注意力β<br>&emsp; &emsp;    (类似SEnet)这个部件今年很多文章都有提到</p>
-</li>
-<li><p>对偶注意力(dual attention)<br>&emsp; &emsp; (1) general attention<br>&emsp; &emsp;&emsp; &emsp;这个注意力要满足中心位置权重大于周围位置,例如高斯分布<br>&emsp; &emsp;&emsp; &emsp;实际上是使用了target在目标图像的中心位置的先验知识<br>&emsp; &emsp; (2) residual attention<br>&emsp; &emsp;&emsp; &emsp;dual attention = general attention + residual attention<br>&emsp; &emsp;&emsp; &emsp;第一个注意力使用了先验,而第二个注意力用于微修general attention</p>
-</li>
-</ol>
-<p>个人感觉dual attention的机制还是很棒的,一般残差拟合的难度小于整体拟合<br>这里其实还有办法利用一些先验给search area使用attention mechanism<br>这就属于个人idea了hh</p>
-<p><er></er></p>
-<h3 id="离线预训练"><a href="#离线预训练" class="headerlink" title="离线预训练"></a>离线预训练</h3><p>作者利用ILSVRC15比赛的数据集进行预训练<br>对于每个target 选择target时刻i的图像,以及和时刻j的帧组成一个samples进行加权拟合<br>权重公式如下    时间相差越近,权重越高</p>
-<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/w.jpeg" alt="这里写图片描述"> </p>
-<p><er></er></p>
-<h3 id="details"><a href="#details" class="headerlink" title="details"></a>details</h3><ol>
-<li>注意力权重的推断仅在第一帧进行,接下来一直使用同一个注意力权重有助于高速推断</li>
-<li>离线预训练中的样本对从相邻的100帧中选取</li>
-<li>尺度搜索选择了3个尺度,尺度缩放比例为1.03</li>
-</ol>
-</er>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1934,7 +1923,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1945,7 +1934,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1956,7 +1945,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
