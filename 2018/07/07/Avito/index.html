@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="目标检测," />
+  <meta name="keywords" content="数据竞赛," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="本博客于本人1.20号在csdn发布csdn链接 https://blog.csdn.net/qrfaction/article/details/79112431 简单回顾只挑重点RCNN  大致步骤:  selective search选框 裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符 送入SVM分类 区域回归冗余计算太多。。。没啥好说的吧毕竟是初版   Fast-RCNN  变动有：">
-<meta name="keywords" content="目标检测">
+<meta name="description" content="这个比赛我是快结束的时候参加了,想顺手捞一波名次他对我最大的挑战就是试错成本太高太高了 树模型交叉验证五折要5-7天 = =图片70G各种特征生成也有几十个G = =  我总共打了15天写代码占4天,接下来搞别的事情去了,代码挂着跑了11天最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的 因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)不过现在看下来他们的大部分tri">
+<meta name="keywords" content="数据竞赛">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客迁移之RCNN简单回顾">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/index.html">
+<meta property="og:title" content="Avito Demand Prediction Challenge比赛总结">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="本博客于本人1.20号在csdn发布csdn链接 https://blog.csdn.net/qrfaction/article/details/79112431 简单回顾只挑重点RCNN  大致步骤:  selective search选框 裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符 送入SVM分类 区域回归冗余计算太多。。。没啥好说的吧毕竟是初版   Fast-RCNN  变动有：">
+<meta property="og:description" content="这个比赛我是快结束的时候参加了,想顺手捞一波名次他对我最大的挑战就是试错成本太高太高了 树模型交叉验证五折要5-7天 = =图片70G各种特征生成也有几十个G = =  我总共打了15天写代码占4天,接下来搞别的事情去了,代码挂着跑了11天最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的 因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)不过现在看下来他们的大部分tri">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-05-14T04:54:06.561Z">
+<meta property="og:updated_time" content="2018-07-07T13:26:51.833Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="博客迁移之RCNN简单回顾">
-<meta name="twitter:description" content="本博客于本人1.20号在csdn发布csdn链接 https://blog.csdn.net/qrfaction/article/details/79112431 简单回顾只挑重点RCNN  大致步骤:  selective search选框 裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符 送入SVM分类 区域回归冗余计算太多。。。没啥好说的吧毕竟是初版   Fast-RCNN  变动有：">
+<meta name="twitter:title" content="Avito Demand Prediction Challenge比赛总结">
+<meta name="twitter:description" content="这个比赛我是快结束的时候参加了,想顺手捞一波名次他对我最大的挑战就是试错成本太高太高了 树模型交叉验证五折要5-7天 = =图片70G各种特征生成也有几十个G = =  我总共打了15天写代码占4天,接下来搞别的事情去了,代码挂着跑了11天最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的 因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)不过现在看下来他们的大部分tri">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/"/>
 
 
 
 
 
-  <title>博客迁移之RCNN简单回顾 | qrfaction的博客</title>
+  <title>Avito Demand Prediction Challenge比赛总结 | qrfaction的博客</title>
   
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/04/博客迁移之RCNN简单回顾/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">博客迁移之RCNN简单回顾</h1>
+          <h1 class="post-title" itemprop="name headline">Avito Demand Prediction Challenge比赛总结</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-04T13:14:39+08:00">
-                2018-04-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T21:24:43+08:00">
+                2018-07-07
               </time>
             
 
@@ -325,8 +325,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
+                  <a href="/categories/比赛总结/" itemprop="url" rel="index">
+                    <span itemprop="name">比赛总结</span>
                   </a>
                 </span>
 
@@ -367,52 +367,66 @@
       
 
       
-        <p>本博客于本人1.20号在csdn发布<br>csdn链接 <a href="https://blog.csdn.net/qrfaction/article/details/79112431" target="_blank" rel="noopener">https://blog.csdn.net/qrfaction/article/details/79112431</a></p>
-<p>简单回顾只挑重点<br>RCNN</p>
-<blockquote>
-<p>大致步骤:</p>
+        <p>这个比赛我是快结束的时候参加了,想顺手捞一波名次<br>他对我最大的挑战就是试错成本太高太高了</p>
+<p>树模型交叉验证五折要5-7天 = =<br>图片70G<br>各种特征生成也有几十个G = = </p>
+<p>我总共打了15天<br>写代码占4天,接下来搞别的事情去了,代码挂着跑了11天<br>最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的</p>
+<p>因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)<br>不过现在看下来他们的大部分trick我都做到了,就是没时间搞细</p>
+<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><h3 id="文本特征"><a href="#文本特征" class="headerlink" title="文本特征"></a>文本特征</h3><blockquote>
+<p>自己的做法</p>
 <ol>
-<li>selective search选框</li>
-<li>裁剪缩放到相同尺度送入卷积网络获取高度抽象的描述符</li>
-<li>送入SVM分类</li>
-<li>区域回归<br><br><br>冗余计算太多。。。没啥好说的吧毕竟是初版</li>
+<li>tfidf+char/word(稀疏矩阵存下来,几万维全部丢给树,svd效果会变差,大部分分数靠的是他)</li>
+<li>地理位置信息用google api获取经纬度(没啥效果)</li>
 </ol>
 </blockquote>
-<p>Fast-RCNN</p>
-<blockquote>
-<p>变动有：</p>
+<p>其他有价值的做法</p>
 <ol>
-<li>将图像先送入卷积网络，SS选框后获得proposal的坐标，从而可以直接从特征图筛选区域</li>
-<li>提出ROI Pooling将ROI大小统一</li>
-<li>end2end训练<br> <br><br> 去除了RCNN的proposal冗余的CNN计算</li>
+<li>用fastText的词向量替代tfidf矩阵</li>
+<li>文本的一些统计特征，词数，字数等等</li>
+</ol>
+<h3 id="图像特征"><a href="#图像特征" class="headerlink" title="图像特征"></a>图像特征</h3><blockquote>
+<p>自己的做法</p>
+<ol>
+<li>图片的一些属性特征(写了没跑,因为具言效果不佳)</li>
+<li>vgg的卷积结束后global pool成向量svd分解(效果不佳),其实这里可能丢失语义信息了,或许从全连接那里抽比较好(没时间了)</li>
 </ol>
 </blockquote>
-<p>Faster-RCNN</p>
-<blockquote>
-<p>变动有：</p>
+<p>其他有价值的做法</p>
 <ol>
-<li>提出PRN网络替代selective search选框(对特征图上的每个点进行前后景分类,坐标回归,配合anchor)<br><br><br>selective search那种图像筛选方式效率太低  PRN在特征图上分类回归生成proposal要强不少</li>
+<li>和我的2差不多类似换了基础网络resnet152，resnet34</li>
+<li>还有一些图像的传统统计量亮度暗度（效果都不是很明显）</li>
+<li>冠军用out-of-preditcion来微调resnet34 效果比较显著</li>
+<li>预训练模型对图像进行分类作为特征（其实这个特征已经有了，所以比较冗余，不是很明显）</li>
 </ol>
-</blockquote>
-<p>Mask RCNN</p>
+<h3 id="categorical-amp-numerical"><a href="#categorical-amp-numerical" class="headerlink" title="categorical &amp; numerical"></a>categorical &amp; numerical</h3><p>user_id和item_id 几乎一个样本一个id了,表示学习都没法了<br>而且user_id训练集测试集交集只有6%,item_id只有0%</p>
 <blockquote>
-<p>变动有：</p>
-<ol>
-<li>基础网络的强化  ResNeXt-101+FPN</li>
-<li>加入了mask分支,同时做了分割任务</li>
-<li>ROI Align 替代ROI Pooling<br> 　　ROI Pooling的操作会对分割任务带来微小的偏移<br> 　　ROI Align通过双线性插值减小了这个影响<br><br><br>感觉变化不如前两个大  就加强了基础网络以及多做了个分割任务</li>
-</ol>
+<p>自己的做法<br>1  &emsp; 用user_type和city的组合编码近似代表user<br>&emsp;&emsp;用category,image_top_1等近似代表item<br>&emsp;&emsp;获取邻接矩阵进行svd分解(分数提升)<br>2  &emsp; category批量生成共现概率，条件概率<br>3  &emsp; category与连续组合计算条件统计量<br>4  &emsp; 连续连续组合+-*/<br>5  &emsp; target encode(用category和label组合计算label的统计量）</p>
 </blockquote>
-<p>Light-Head RCNN</p>
+<p>其他有价值的做法</p>
+<ol>
+<li>冠军把user_id用起来了，虽然user_id在训练集测试集中交集只有6%，但他交叉验证时将user_id分的和测试集差不多比例</li>
+</ol>
 <blockquote>
-<p>变动有：</p>
-<ol>
-<li>指出faster-rcnn后接的两个fc计算量过大</li>
-<li>指出R-FCN的position-sensitive scores map channel过多导致PSROI计算量过大</li>
-<li>faster-rcnn 与 R-FCN结合  用separable convolution缩减特征图通道，在这里由于通道缩减 无法直接投票，接上一个全连接层回归分类</li>
-<li>去掉了全局池化利于回归<br><br></li>
-</ol>
 </blockquote>
+<p>category之间计算共现概率,条件概率(条件熵,信息熵等没算)<br>数值和类别之间计算条件统计量(mean,min,max,std)等<br>交叉组合四五个特征</p>
+<blockquote>
+<p>虽说我的特征大都是批量生成<br>但还是选择性的批量生成，否则维度太高了<br>其中起主要效果的是price的条件统计量，以及price条件统计量的标准化</p>
+</blockquote>
+<h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><blockquote>
+</blockquote>
+<ol>
+<li>spatialDropout1D放embedding后超级棒，我最近发现先bn再sdp效果极佳</li>
+<li>图像部分迁移学习固定权重</li>
+<li>树模型与nn都使用交叉熵效果极佳，树模型是xentropy</li>
+</ol>
+<blockquote>
+<p>值得一提的是好多文本比赛感觉attention很不work，我猜可能大部分都是短文本的缘故吧</p>
+</blockquote>
+<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p>没做 = =<br>跑出了俩模型,第一个太烂丢掉了<br>实际有效的模型只跑出了一个，只能随便拉个kerne的平均一下</p>
+<blockquote>
+<p>其他人的做法<br>几组较优超参集成<br>疯狂stacking…</p>
+</blockquote>
+<h2 id="最后感受"><a href="#最后感受" class="headerlink" title="最后感受"></a>最后感受</h2><p>大家做的方法其实都大差不差<br>都是一些细节拉大了分数<br>我感觉我吃的最大的亏是时间<br>在细节上我用的是回归，别人用的是交叉熵</p>
+<p>和鹏哥感受一样比赛真的是一件投入产出比很低 = =<br>从头打到尾套路基本都会了的话<br>不出意外个人感觉top3%,top2%不是意见特别难的事情<br>但是很耗精力，比赛周期一般也太长了。。。</p>
 
       
     </div>
@@ -430,7 +444,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/目标检测/" rel="tag"># 目标检测</a>
+            <a href="/tags/数据竞赛/" rel="tag"># 数据竞赛</a>
           
         </div>
       
@@ -443,8 +457,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/02/end2endAUC/" rel="next" title="END2END优化AUC && F-Score">
-                <i class="fa fa-chevron-left"></i> END2END优化AUC && F-Score
+              <a href="/2018/07/01/GRL简述/" rel="next" title="GRL简述">
+                <i class="fa fa-chevron-left"></i> GRL简述
               </a>
             
           </div>
@@ -452,10 +466,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/04/09/GPU高性能编程CUDA实战阅读笔记/" rel="prev" title="GPU高性能编程CUDA实战阅读笔记">
-                GPU高性能编程CUDA实战阅读笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -507,8 +517,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -568,6 +587,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征工程"><span class="nav-number">1.</span> <span class="nav-text">特征工程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#文本特征"><span class="nav-number">1.1.</span> <span class="nav-text">文本特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图像特征"><span class="nav-number">1.2.</span> <span class="nav-text">图像特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#categorical-amp-numerical"><span class="nav-number">1.3.</span> <span class="nav-text">categorical &amp; numerical</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模型细节"><span class="nav-number">2.</span> <span class="nav-text">模型细节</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#集成"><span class="nav-number">3.</span> <span class="nav-text">集成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后感受"><span class="nav-number">4.</span> <span class="nav-text">最后感受</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
