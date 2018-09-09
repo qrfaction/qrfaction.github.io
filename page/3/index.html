@@ -269,6 +269,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/12/2018CVPR之RASNet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/12/2018CVPR之RASNet/" itemprop="url">2018CVPR之RASNet</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-12T19:58:19+08:00">
+                2018-05-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>2018的CVPR<br>浏览过五六篇的2018CVPR tracking的工作介绍<br>个人感觉这篇质量还不错<br>自己其实也有很多想法<br>这篇文章让我的想法有了另一种实现方式</p>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/model.jpeg" alt="这里写图片描述"> </p>
+<h3 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f.jpeg" alt="这里写图片描述"><br>本质就是给相关运算进行加权运算<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/f_1.jpeg" alt="这里写图片描述"><br>而加权运算被分解成了三个attention mechanisms进行参数剪枝<br>参数从m<em>n</em>d减少为m*n+d</p>
+<er>
+
+<ol>
+<li><p>通道注意力β<br>&emsp; &emsp;    (类似SEnet)这个部件今年很多文章都有提到</p>
+</li>
+<li><p>对偶注意力(dual attention)<br>&emsp; &emsp; (1) general attention<br>&emsp; &emsp;&emsp; &emsp;这个注意力要满足中心位置权重大于周围位置,例如高斯分布<br>&emsp; &emsp;&emsp; &emsp;实际上是使用了target在目标图像的中心位置的先验知识<br>&emsp; &emsp; (2) residual attention<br>&emsp; &emsp;&emsp; &emsp;dual attention = general attention + residual attention<br>&emsp; &emsp;&emsp; &emsp;第一个注意力使用了先验,而第二个注意力用于微修general attention</p>
+</li>
+</ol>
+<p>个人感觉dual attention的机制还是很棒的,一般残差拟合的难度小于整体拟合<br>这里其实还有办法利用一些先验给search area使用attention mechanism<br>这就属于个人idea了hh</p>
+<p><er></er></p>
+<h3 id="离线预训练"><a href="#离线预训练" class="headerlink" title="离线预训练"></a>离线预训练</h3><p>作者利用ILSVRC15比赛的数据集进行预训练<br>对于每个target 选择target时刻i的图像,以及和时刻j的帧组成一个samples进行加权拟合<br>权重公式如下    时间相差越近,权重越高</p>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/12/2018CVPR之RASNet/w.jpeg" alt="这里写图片描述"> </p>
+<p><er></er></p>
+<h3 id="details"><a href="#details" class="headerlink" title="details"></a>details</h3><ol>
+<li>注意力权重的推断仅在第一帧进行,接下来一直使用同一个注意力权重有助于高速推断</li>
+<li>离线预训练中的样本对从相邻的100帧中选取</li>
+<li>尺度搜索选择了3个尺度,尺度缩放比例为1.03</li>
+</ol>
+</er>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/11/CUDA存储器/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1969,561 +2131,6 @@ int main(){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/22/Thrust简单入门/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/22/Thrust简单入门/" itemprop="url">Thrust简单入门</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-22T13:15:01+08:00">
-                2018-04-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>原英文教程地址<a href="https://docs.nvidia.com/cuda/thrust/index.html#introduction" target="_blank" rel="noopener">https://docs.nvidia.com/cuda/thrust/index.html#introduction</a><br>将其简单翻译压缩一下</p>
-<ol>
-<li><p>简单介绍:<br>Thrust 是一个类似STL的  CUDA C++ 模板库<br>如果装了CUDA的话他不用进一步安装即可使用</p>
-</li>
-<li><p>thrust提供两个矢量容器<br>host_vector 和 device_vector。<br>host_vector 存储在主机内存中<br>device_vector居住在GPU设备内存中。<br>类似于stl::vector</p>
-<pre><code>#include &lt;thrust/host_vector.h&gt;
-#include &lt;thrust/device_vector.h&gt;
-#include &lt;iostream&gt;
-
-int main(void)
-{
-    // H存储了四个整数
-    thrust::host_vector&lt;int&gt; H(4);
-
-    // 初始化
-    H[0] = 14;
-    H[1] = 20;
-    H[2] = 38;
-    H[3] = 46;
-
-    // 返回数组长度
-    std::cout &lt;&lt; &quot;H has size &quot; &lt;&lt; H.size() &lt;&lt; std::endl;
-
-    // 打印内容
-    for(int i = 0; i &lt; H.size(); i++)
-        std::cout &lt;&lt; &quot;H[&quot; &lt;&lt; i &lt;&lt; &quot;] = &quot; &lt;&lt; H[i] &lt;&lt; std::endl;
-
-    // 改变大小
-    H.resize(2);
-
-    std::cout &lt;&lt; &quot;H now has size &quot; &lt;&lt; H.size() &lt;&lt; std::endl;
-
-    // 内存到显存的数据拷贝
-    thrust::device_vector&lt;int&gt; D = H;
-
-    // 修改内容
-    D[0] = 99;
-    D[1] = 88;
-
-    // 打印D的内容
-    for(int i = 0; i &lt; D.size(); i++)
-        std::cout &lt;&lt; &quot;D[&quot; &lt;&lt; i &lt;&lt; &quot;] = &quot; &lt;&lt; D[i] &lt;&lt; std::endl;
-
-    // 函数返回时,H,D的资源会自动释放
-    return 0;
-}
-</code></pre></li>
-</ol>
-<p>这个例子说了 “=”可以用于显存上的数组与内存上的数组内容互相拷贝<br>还要注意一个单独的元素device_vector可以使用标准括号表示来访问。但是，因为每个访问都需要呼叫cudaMemcpy，他们应该谨慎使用。稍后会给出一些更高效的方式。</p>
-<p>将矢量的所有元素初始化为特定值或将一组特定值从一个矢量复制到另一个矢量通常很有用。推力提供了几种方法来完成这些操作。</p>
-<pre><code>#include &lt;thrust/host_vector.h&gt;
-#include &lt;thrust/device_vector.h&gt;
-
-#include &lt;thrust/copy.h&gt;
-#include &lt;thrust/fill.h&gt;
-#include &lt;thrust/sequence.h&gt;
-
-#include &lt;iostream&gt;
-
-int main(void)
-{
-    // 将数组初始化为1
-    thrust::device_vector&lt;int&gt; D(10, 1);
-
-    // 用9设置D的前7个元素
-    thrust::fill(D.begin(), D.begin() + 7, 9);
-
-    // 用D的前五个元素初始化H
-    thrust::host_vector&lt;int&gt; H(D.begin(), D.begin() + 5);
-
-    // 将 H 元素修改为 0, 1, 2, 3, ...
-    thrust::sequence(H.begin(), H.end());
-
-    // 拷贝H的元素到D
-    thrust::copy(H.begin(), H.end(), D.begin());
-
-    // 打印D
-    for(int i = 0; i &lt; D.size(); i++)
-        std::cout &lt;&lt; &quot;D[&quot; &lt;&lt; i &lt;&lt; &quot;] = &quot; &lt;&lt; D[i] &lt;&lt; std::endl;
-
-    return 0;
-}
-</code></pre><p>这里我们已经介绍了 fill, copy,和 sequence的使用方式。</p>
-<p>2.1<br>&emsp;&emsp;在这里我们需要注意命名冲突,命名空间的使用是很重要的</p>
-<p>2.2<br>&emsp;&emsp;上面的迭代器与一般的指针和迭代器不同的是他们携带了 他们是用于内存/显存的信息<br>&emsp;&emsp;这决定了算法的调用是使用何种实现<br>&emsp;&emsp;这种类型的判断是在编译的时候进行的,这被称为static dispatching(静态调用)</p>
-<p>如果使用原生指针去调用thrust的算法,会默认调用host版<br>如果原生指针使用的是显存,那么需要先用thrust::device_ptr进行封装</p>
-<pre><code>size_t N = 10;
-
-// 原生指针指向显存
-int * raw_ptr;
-cudaMalloc((void **) &amp;raw_ptr, N * sizeof(int));
-
-// 用 device_ptr 封装原生指针
-thrust::device_ptr&lt;int&gt; dev_ptr(raw_ptr);
-
-thrust::fill(dev_ptr, dev_ptr + N, (int) 0);
-</code></pre><p>device_ptr转换为原生指针:</p>
-<pre><code>size_t N = 10;
-
-thrust::device_ptr&lt;int&gt; dev_ptr = thrust::device_malloc&lt;int&gt;(N);
-
-int * raw_ptr = thrust::raw_pointer_cast(dev_ptr);
-</code></pre><p>区分迭代器与原生指针的另一个原因是可以用于遍历多种数据结构<br>如std::list<br>虽然thrust没有提供这种容器的实现,但兼容他们</p>
-<pre><code>#include &lt;thrust/device_vector.h&gt;
-#include &lt;thrust/copy.h&gt;
-#include &lt;list&gt;
-#include &lt;vector&gt;
-
-int main(void)
-{
-    // create an STL list with 4 values
-    std::list&lt;int&gt; stl_list;
-
-    stl_list.push_back(10);
-    stl_list.push_back(20);
-    stl_list.push_back(30);
-    stl_list.push_back(40);
-
-    // initialize a device_vector with the list
-    thrust::device_vector&lt;int&gt; D(stl_list.begin(), stl_list.end());
-
-    // copy a device_vector into an STL vector
-    std::vector&lt;int&gt; stl_vector(D.size());
-    thrust::copy(D.begin(), D.end(), stl_vector.begin());
-
-    return 0;
-}
-</code></pre><p>3.算法<br>    thrust提供了很多公用的并行算法<br>    thrust中的所有算法都有device和host两种实现<br>    除了thrust:copy之外,其他的算法的迭代器参数理应位于同一个位置(显存or内存),不能混用<br>    如果违反,编译器将报错</p>
-<p>3.1 Transformations<br>    下面展示了一些算法以及仿函数的使用<br>    除了下面展示的negate,modulus,thrust<br>    还提供了plus and multiplies等多种仿函数在thrust/functional.h</p>
-<pre><code>#include &lt;thrust/device_vector.h&gt;
-#include &lt;thrust/transform.h&gt;
-#include &lt;thrust/sequence.h&gt;
-#include &lt;thrust/copy.h&gt;
-#include &lt;thrust/fill.h&gt;
-#include &lt;thrust/replace.h&gt;
-#include &lt;thrust/functional.h&gt;
-#include &lt;iostream&gt;
-
-int main(void)
-{
-    // allocate three device_vectors with 10 elements
-    thrust::device_vector&lt;int&gt; X(10);
-    thrust::device_vector&lt;int&gt; Y(10);
-    thrust::device_vector&lt;int&gt; Z(10);
-
-    // initialize X to 0,1,2,3, ....
-    thrust::sequence(X.begin(), X.end());
-
-    //  Y = -X
-    thrust::transform(X.begin(), X.end(), Y.begin(), thrust::negate&lt;int&gt;());
-
-    // fill Z with twos
-    thrust::fill(Z.begin(), Z.end(), 2);
-
-    //  Y = X mod 2
-    thrust::transform(X.begin(), X.end(), Z.begin(), Y.begin(), thrust::modulus&lt;int&gt;());
-
-    // replace all the ones in Y with tens
-    thrust::replace(Y.begin(), Y.end(), 1, 10);
-
-    // print Y
-    thrust::copy(Y.begin(), Y.end(), std::ostream_iterator&lt;int&gt;(std::cout, &quot;\n&quot;));
-
-    return 0;    
-}
-</code></pre><p>下面展示了 saxpy  (ax+y) 的两种实现</p>
-<pre><code>struct saxpy_functor
-{
-    const float a;
-
-    saxpy_functor(float _a) : a(_a) {}
-
-    __host__ __device__
-        float operator()(const float&amp; x, const float&amp; y) const { 
-            return a * x + y;
-        }
-};
-
-void saxpy_fast(float A, thrust::device_vector&lt;float&gt;&amp; X, thrust::device_vector&lt;float&gt;&amp; Y)
-{
-    // Y &lt;- A * X + Y
-    thrust::transform(X.begin(), X.end(), Y.begin(), Y.begin(), saxpy_functor(A));
-}
-
-void saxpy_slow(float A, thrust::device_vector&lt;float&gt;&amp; X, thrust::device_vector&lt;float&gt;&amp; Y)
-{
-    thrust::device_vector&lt;float&gt; temp(X.size());
-
-    // temp &lt;- A
-    thrust::fill(temp.begin(), temp.end(), A);
-
-    // temp &lt;- A * X
-    thrust::transform(X.begin(), X.end(), temp.begin(), temp.begin(), thrust::multiplies&lt;float&gt;());
-
-    // Y &lt;- A * X + Y
-    thrust::transform(temp.begin(), temp.end(), Y.begin(), Y.begin(), thrust::plus&lt;float&gt;());
-}
-</code></pre><p>如果忽略temp的分配开销<br>saxpy_fast共有2N次读,1N写的开销<br>saxpy_slow有4N次读,3N次写的开销<br>在像SAXPY这样的算法中，通常值得应用kernel fusion（将多个操作组合到单个kernel中）以最小化内存读写的开销</p>
-<p>thrust::transform 只支持具有一个或两个输入参数的转换（例如, f(x) → y and f(x,x)-&gt;y）。<br>当转换使用两个以上的输入参数时，有必要使用不同的方法。例如thrust::zip_iterator 和 thrust::for_each</p>
-<p>3.2 Reductions(归约)<br>归约算法使用二元操作符将一个序列的值转换为单个值<br>如求和,求最大值</p>
-<blockquote>
-<p>int sum = thrust::reduce(D.begin(), D.end(), (int) 0, thrust::plus<int>());</int></p>
-</blockquote>
-<p>这里前两个参数提供归约序列,后两个提供初始值和归约运算符<br>下面三个是等价的0和plus是默认参数</p>
-<blockquote>
-<p>   int sum = thrust::reduce(D.begin(), D.end(), (int) 0, thrust::plus<int>());<br>   int sum = thrust::reduce(D.begin(), D.end(), (int) 0);<br>   int sum = thrust::reduce(D.begin(), D.end())</int></p>
-</blockquote>
-<p>虽然thrust::reduce足以实现各种各样的归约，Thrust提供了一些便利的附加功能。<br>例如，thrust::count 以给定顺序返回特定值的实例数量：</p>
-<pre><code>#include &lt;thrust/count.h&gt;
-#include &lt;thrust/device_vector.h&gt;
-...
-// put three 1s in a device_vector
-thrust::device_vector&lt;int&gt; vec(5,0);
-vec[1] = 1;
-vec[3] = 1;
-vec[4] = 1;
-
-// count the 1s
-int result = thrust::count(vec.begin(), vec.end(), 1);
-// result is three    
-</code></pre><p>thrust还提供了其他归约运算如thrust::count_if, thrust::min_element, thrust::max_element, thrust::is_sorted, thrust::inner_product, 等等见参考文档</p>
-<p>下面用一个计算向量范数的实现方案来介绍reduce与transform的合并操作</p>
-<pre><code>#include &lt;thrust/transform_reduce.h&gt;
-#include &lt;thrust/functional.h&gt;
-#include &lt;thrust/device_vector.h&gt;
-#include &lt;thrust/host_vector.h&gt;
-#include &lt;cmath&gt;
-
-// square&lt;T&gt; computes the square of a number f(x) -&gt; x*x
-template &lt;typename T&gt;
-struct square
-{
-    __host__ __device__
-        T operator()(const T&amp; x) const { 
-            return x * x;
-        }
-};
-
-int main(void)
-{
-    // initialize host array
-    float x[4] = {1.0, 2.0, 3.0, 4.0};
-
-    // transfer to device
-    thrust::device_vector&lt;float&gt; d_x(x, x + 4);
-
-    // setup arguments
-    square&lt;float&gt;        unary_op;
-    thrust::plus&lt;float&gt; binary_op;
-    float init = 0;
-
-    // compute norm
-    float norm = std::sqrt( thrust::transform_reduce(d_x.begin(), d_x.end(), unary_op, init, binary_op) );
-
-    std::cout &lt;&lt; norm &lt;&lt; std::endl;
-
-    return 0;
-}
-</code></pre><p>这里需要提供单元运算符和二元运算符</p>
-<p>3.3 Prefix-Sums<br>数组前缀和和扫描操作是许多并行算法重要的一块<br>下面展示一个扫描操作inclusive scan (默认使用 加 运算)</p>
-<pre><code>#include &lt;thrust/scan.h&gt;
-
-int data[6] = {1, 0, 2, 2, 1, 3};
-
-thrust::inclusive_scan(data, data + 6, data); // in-place scan
-
-// data is now {1, 1, 3, 5, 6, 9}
-</code></pre><p>Sn = a<sub>1</sub> + … a<sub>n</sub></p>
-<p>有一个类似的操作exclusive scan,不过他的结果向右偏移了一个位置</p>
-<pre><code>#include &lt;thrust/scan.h&gt;
-
-int data[6] = {1, 0, 2, 2, 1, 3};
-
-thrust::exclusive_scan(data, data + 6, data); // in-place scan
-
-// data is now {0, 1, 1, 3, 5, 6}
-</code></pre><p>Sn = a<sub>1</sub> + … a<sub>n-1</sub></p>
-<p>3.4. Reordering</p>
-<p>Thrust 给分区(partitioning) 和 流压缩(stream compaction)提供了以下算法支持</p>
-<p>copy_if : 通过判定条件复制元素</p>
-<p>partition : 根据判定条件对元素重新排序(错例在后)</p>
-<p>remove 和 remove_if : 移除判定条件为false的元素</p>
-<p>unique: 去重</p>
-<p>具体使用详见文档</p>
-<p>3.5 sorting (排序)<br>thrust提供了thrust::sort 和 thrust::stable_sort 类比与stl的</p>
-<pre><code>#include &lt;thrust/sort.h&gt;
-
-...
-const int N = 6;
-int A[N] = {1, 4, 2, 8, 5, 7};
-
-thrust::sort(A, A + N);
-
-// A is now {1, 2, 4, 5, 7, 8}
-</code></pre><p>通过键值排序 thrust::sort_by_key 和 thrust::stable_sort_by_key</p>
-<pre><code>#include &lt;thrust/sort.h&gt;
-
-...
-const int N = 6;
-int    keys[N] = {  1,   4,   2,   8,   5,   7};
-char values[N] = {&apos;a&apos;, &apos;b&apos;, &apos;c&apos;, &apos;d&apos;, &apos;e&apos;, &apos;f&apos;};
-
-thrust::sort_by_key(keys, keys + N, values);
-
-// keys is now   {  1,   2,   4,   5,   7,   8}
-// values is now {&apos;a&apos;, &apos;c&apos;, &apos;b&apos;, &apos;e&apos;, &apos;f&apos;, &apos;d&apos;}
-</code></pre><p>他们还接受一个比较运算符(仿函数)</p>
-<pre><code>#include &lt;thrust/sort.h&gt;
-#include &lt;thrust/functional.h&gt;
-
-...
-const int N = 6;
-int A[N] = {1, 4, 2, 8, 5, 7};
-
-thrust::stable_sort(A, A + N, thrust::greater&lt;int&gt;());
-
-// A is now {8, 7, 5, 4, 2, 1}
-</code></pre><p>4.魔幻迭代器</p>
-<p>4.1 constant_iterator<br>这种迭代器用于返回常量,无论索引为何</p>
-<pre><code>#include &lt;thrust/iterator/constant_iterator.h&gt;
-...
-// create iterators
-thrust::constant_iterator&lt;int&gt; first(10);
-thrust::constant_iterator&lt;int&gt; last = first + 3;
-
-first[0]   // returns 10
-first[1]   // returns 10
-first[100] // returns 10
-
-// sum of [first, last)
-thrust::reduce(first, last);   // returns 30 (i.e. 3 * 10)
-</code></pre><p>对于常数序列,这是一个高效便利的方式</p>
-<p>4.2 counting_iterator<br>    如果需要一个自增的序列,这个迭代器是一个很好的选择</p>
-<pre><code>#include &lt;thrust/iterator/counting_iterator.h&gt;
-...
-// create iterators
-thrust::counting_iterator&lt;int&gt; first(10);
-thrust::counting_iterator&lt;int&gt; last = first + 3;
-
-first[0]   // returns 10
-first[1]   // returns 11
-first[100] // returns 110
-
-// sum of [first, last)
-thrust::reduce(first, last);   // returns 33 (i.e. 10 + 11 + 12)
-</code></pre><p>constant_iterator 和 counting_iterator并无存储数组,只是实时计算返回</p>
-<p>4.3 transform_iterator</p>
-<pre><code>#include &lt;thrust/iterator/transform_iterator.h&gt;
-// initialize vector
-thrust::device_vector&lt;int&gt; vec(3);
-vec[0] = 10; vec[1] = 20; vec[2] = 30;
-
-// create iterator (type omitted)
-...
-first = thrust::make_transform_iterator(vec.begin(), negate&lt;int&gt;());
-...
-last  = thrust::make_transform_iterator(vec.end(),   negate&lt;int&gt;());
-
-first[0]   // returns -10
-first[1]   // returns -20
-first[2]   // returns -30
-
-// sum of [first, last)
-thrust::reduce(first, last);   // returns -60 (i.e. -10 + -20 + -30)
-</code></pre><p>这种迭代器行如其名<br>这里没有使用transform_iterator而是用make_transform_iterator是因为考虑到过长的迭代器类型<br>下面的代码避免了first与last的创造后的不必要的存储操作</p>
-<pre><code>thrust::reduce(thrust::make_transform_iterator(vec.begin(), negate&lt;int&gt;()),
-           thrust::make_transform_iterator(vec.end(),   negate&lt;int&gt;()));
-</code></pre><p>4.4 permutation_iterator<br>    这种迭代器通过一个键值来间接访问原序列,即打乱顺序</p>
-<pre><code>#include &lt;thrust/iterator/permutation_iterator.h&gt;
-
-...
-
-// gather locations
-thrust::device_vector&lt;int&gt; map(4);
-map[0] = 3;
-map[1] = 1;
-map[2] = 0;
-map[3] = 5;
-
-// array to gather from
-thrust::device_vector&lt;int&gt; source(6);
-source[0] = 10;
-source[1] = 20;
-source[2] = 30;
-source[3] = 40;
-source[4] = 50;
-source[5] = 60;
-
-// fuse gather with reduction: 
-//   sum = source[map[0]] + source[map[1]] + ...
-int sum = thrust::reduce(thrust::make_permutation_iterator(source.begin(), map),
-                         thrust::make_permutation_iterator(source.begin(), map.end()));
-</code></pre><p>迭代器的初始和结束由map决定</p>
-<p>4.5 zip_iterator<br>    和python的zip差不多吧<br>    结合多个独立序列</p>
-<pre><code>#include &lt;thrust/iterator/zip_iterator.h&gt;
-...
-// initialize vectors
-thrust::device_vector&lt;int&gt;  A(3);
-thrust::device_vector&lt;char&gt; B(3);
-A[0] = 10;  A[1] = 20;  A[2] = 30;
-B[0] = &apos;x&apos;; B[1] = &apos;y&apos;; B[2] = &apos;z&apos;;
-
-// create iterator (type omitted)
-first = thrust::make_zip_iterator(thrust::make_tuple(A.begin(), B.begin()));
-last  = thrust::make_zip_iterator(thrust::make_tuple(A.end(),   B.end()));
-
-first[0]   // returns tuple(10, &apos;x&apos;)
-first[1]   // returns tuple(20, &apos;y&apos;)
-first[2]   // returns tuple(30, &apos;z&apos;)
-
-// maximum of [first, last)
-thrust::maximum&lt; tuple&lt;int,char&gt; &gt; binary_op;
-thrust::tuple&lt;int,char&gt; init = first[0];
-thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;)
-</code></pre>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2574,7 +2181,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2585,7 +2192,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2596,7 +2203,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">15</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
