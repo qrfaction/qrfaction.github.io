@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="ML&DL," />
+  <meta name="keywords" content="图像分割," />
 
 
 
@@ -79,26 +79,22 @@
 
 
 
-<meta name="description" content="前言最近忽然发现lightgbm中有个梯度优化的loss以前一直好奇树模型如何对auc进行优化于是查了一下,作此博文 AUC在梯度树与DNN中优化的不同之处之前我在文章https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式基本就是用一个度量函数将AUC公式中不可微的部分进行平滑 然而在梯度树中这带来了困难见下图可知梯度树在">
-<meta name="keywords" content="ML&amp;DL">
+<meta name="description" content="这是一篇应用了attention在图像分割的文章文章本身很简单,感觉工作不多最近在vqa工作中对attention体会很深,也创新了不少东西在结束后再写篇博文吧 回到正文 整体架构  恩 … 整体框架还是无特别大的创新 Object Context  输出的C指contextP指Position embeddingX+P将位置信息融入feature map再做个很普通的attention就是以像素">
+<meta name="keywords" content="图像分割">
 <meta property="og:type" content="article">
-<meta property="og:title" content="AUC优化与树模型的那些事">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/index.html">
+<meta property="og:title" content="Object Context Network for Scene Parsing">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
-<meta property="og:description" content="前言最近忽然发现lightgbm中有个梯度优化的loss以前一直好奇树模型如何对auc进行优化于是查了一下,作此博文 AUC在梯度树与DNN中优化的不同之处之前我在文章https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式基本就是用一个度量函数将AUC公式中不可微的部分进行平滑 然而在梯度树中这带来了困难见下图可知梯度树在">
+<meta property="og:description" content="这是一篇应用了attention在图像分割的文章文章本身很简单,感觉工作不多最近在vqa工作中对attention体会很深,也创新了不少东西在结束后再写篇博文吧 回到正文 整体架构  恩 … 整体框架还是无特别大的创新 Object Context  输出的C指contextP指Position embeddingX+P将位置信息融入feature map再做个很普通的attention就是以像素">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpeg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpeg">
-<meta property="og:updated_time" content="2018-06-07T03:53:20.030Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/total.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/attention.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/oc.jpg">
+<meta property="og:updated_time" content="2018-10-02T14:38:02.131Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="AUC优化与树模型的那些事">
-<meta name="twitter:description" content="前言最近忽然发现lightgbm中有个梯度优化的loss以前一直好奇树模型如何对auc进行优化于是查了一下,作此博文 AUC在梯度树与DNN中优化的不同之处之前我在文章https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式基本就是用一个度量函数将AUC公式中不可微的部分进行平滑 然而在梯度树中这带来了困难见下图可知梯度树在">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpeg">
+<meta name="twitter:title" content="Object Context Network for Scene Parsing">
+<meta name="twitter:description" content="这是一篇应用了attention在图像分割的文章文章本身很简单,感觉工作不多最近在vqa工作中对attention体会很深,也创新了不少东西在结束后再写篇博文吧 回到正文 整体架构  恩 … 整体框架还是无特别大的创新 Object Context  输出的C指contextP指Position embeddingX+P将位置信息融入feature map再做个很普通的attention就是以像素">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/total.jpg">
 
 
 
@@ -128,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/"/>
 
 
 
 
 
-  <title>AUC优化与树模型的那些事 | qrfaction的博客</title>
+  <title>Object Context Network for Scene Parsing | qrfaction的博客</title>
   
 
 
@@ -281,7 +277,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="qrfaction">
@@ -298,7 +294,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">AUC优化与树模型的那些事</h1>
+          <h1 class="post-title" itemprop="name headline">Object Context Network for Scene Parsing</h1>
         
 
         <div class="post-meta">
@@ -310,8 +306,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-07T11:35:35+08:00">
-                2018-06-07
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-02T22:34:20+08:00">
+                2018-10-02
               </time>
             
 
@@ -333,8 +329,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
-                    <span itemprop="name">ML&DL</span>
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
                   </a>
                 </span>
 
@@ -375,16 +371,14 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近忽然发现lightgbm中有个梯度优化的loss<br>以前一直好奇树模型如何对auc进行优化<br>于是查了一下,作此博文</p>
-<h2 id="AUC在梯度树与DNN中优化的不同之处"><a href="#AUC在梯度树与DNN中优化的不同之处" class="headerlink" title="AUC在梯度树与DNN中优化的不同之处"></a>AUC在梯度树与DNN中优化的不同之处</h2><p>之前我在文章<a href="https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式" target="_blank" rel="noopener">https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式</a><br>基本就是用一个度量函数将AUC公式中不可微的部分进行平滑</p>
-<p>然而在梯度树中这带来了困难<br>见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpeg" alt="这里写图片描述"><br>可知梯度树在计算梯度时主要获得的是针对每个样本的梯度信息<br>而原先在DNN中的AUC是无需将梯度细粒度到每个样本<br>只要有一个loss信息回传就OK了</p>
-<p>可见原先的方式不再适用</p>
-<h2 id="Learning-to-rank-之-LambdaMART"><a href="#Learning-to-rank-之-LambdaMART" class="headerlink" title="Learning to rank 之 LambdaMART"></a>Learning to rank 之 LambdaMART</h2><p>MART其实就是GBDT(他名字很多诶)</p>
-<p>这个方法其实是将rankLoss的梯度信息作为模型中的label y<br>即定义了模型的预测score的分数上升方向</p>
-<p>首先定义一个rankLoss,其中s<sub>i</sub> , s<sub>j</sub>是模型输出的score<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpeg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpeg" alt="这里写图片描述"> </p>
-<p>在对s<sub>i</sub>求偏导<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpeg" alt="这里写图片描述"><br>于是得到了一个s<sub>i</sub>的上升/下降方向<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpeg" alt="这里写图片描述"><br>再令有序对(i,j)的排序label  S<sub>ij</sub> = 1<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpeg" alt="这里写图片描述"><br>最后再将λ<sub>i</sub>作为sample i的label<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpeg" alt="这里写图片描述"> </p>
-<p>从而实现了树模型的Learning to rank</p>
-<p>但这个我感觉应该对auc直接优化有很大帮助<br>因为毕竟auc本身也是一种基于排序的指标<br>但是否具有一致性就不清楚了<br>不过尝试了一下lightgbm中的lambda mart 训练速度超级慢…懒得试了</p>
+        <p>这是一篇应用了attention在图像分割的文章<br>文章本身很简单,感觉工作不多<br>最近在vqa工作中对attention体会很深,也创新了不少东西<br>在结束后再写篇博文吧</p>
+<p>回到正文</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/total.jpg" alt="这里写图片描述"> </p>
+<p>恩 … 整体框架还是无特别大的创新</p>
+<h2 id="Object-Context"><a href="#Object-Context" class="headerlink" title="Object Context"></a>Object Context</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/attention.jpg" alt="这里写图片描述"> </p>
+<p>输出的C指context<br>P指Position embedding<br>X+P将位置信息融入feature map<br>再做个很普通的attention<br>就是以像素为单位,以余弦相关性作为相似度度量.<br>获得了context他的使用方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/oc.jpg" alt="这里写图片描述"><br>配合hypercolumn或ASP</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实感觉Context插入的很强行<br>self-attention其实有跨大距离依赖效果才比conv强的<br>相比于self-attention<br>分割这种感受野任务,给channel加attention(不同感受野feature map拼接后权重不同)效果更佳<br>效果也只有几个千分点的提升,表示质疑<br>朋友测试下效果也不是很好…</p>
+<p>而且他的注意力是直接用softmax的<br>对于这么多像素做softmax  有效信息被无效信息覆盖的情况一般都很严重…<br>我严重怀疑这个和average效果差不多<br>他可以试试半hard半soft的attention</p>
 
       
     </div>
@@ -402,7 +396,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ML-DL/" rel="tag"># ML&DL</a>
+            <a href="/tags/图像分割/" rel="tag"># 图像分割</a>
           
         </div>
       
@@ -415,8 +409,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/06/01/并行数据处理库Dask介绍/" rel="next" title="并行数据处理库Dask介绍">
-                <i class="fa fa-chevron-left"></i> 并行数据处理库Dask介绍
+              <a href="/2018/09/09/trick和创新点的碎碎念/" rel="next" title="trick和创新点的碎碎念">
+                <i class="fa fa-chevron-left"></i> trick和创新点的碎碎念
               </a>
             
           </div>
@@ -424,10 +418,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/06/21/siameseRPN/" rel="prev" title="2018CVPR之siameseRPN">
-                2018CVPR之siameseRPN <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -559,7 +549,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AUC在梯度树与DNN中优化的不同之处"><span class="nav-number">2.</span> <span class="nav-text">AUC在梯度树与DNN中优化的不同之处</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Learning-to-rank-之-LambdaMART"><span class="nav-number">3.</span> <span class="nav-text">Learning to rank 之 LambdaMART</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#整体架构"><span class="nav-number">1.</span> <span class="nav-text">整体架构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-Context"><span class="nav-number">2.</span> <span class="nav-text">Object Context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number">3.</span> <span class="nav-text">最后</span></a></li></ol></div>
             
 
           </div>
