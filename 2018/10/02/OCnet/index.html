@@ -87,14 +87,14 @@
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="这是一篇应用了attention在图像分割的文章文章本身很简单,感觉工作不多最近在vqa工作中对attention体会很深,也创新了不少东西在结束后再写篇博文吧 回到正文 整体架构  恩 … 整体框架还是无特别大的创新 Object Context  输出的C指contextP指Position embeddingX+P将位置信息融入feature map再做个很普通的attention就是以像素">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/total.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/attention.jpg">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/oc.jpg">
-<meta property="og:updated_time" content="2018-10-02T14:38:02.131Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/total.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/attention.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/oc.jpg">
+<meta property="og:updated_time" content="2018-10-05T07:22:27.006Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Object Context Network for Scene Parsing">
 <meta name="twitter:description" content="这是一篇应用了attention在图像分割的文章文章本身很简单,感觉工作不多最近在vqa工作中对attention体会很深,也创新了不少东西在结束后再写篇博文吧 回到正文 整体架构  恩 … 整体框架还是无特别大的创新 Object Context  输出的C指contextP指Position embeddingX+P将位置信息融入feature map再做个很普通的attention就是以像素">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/total.jpg">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/total.jpg">
 
 
 
@@ -373,10 +373,10 @@
       
         <p>这是一篇应用了attention在图像分割的文章<br>文章本身很简单,感觉工作不多<br>最近在vqa工作中对attention体会很深,也创新了不少东西<br>在结束后再写篇博文吧</p>
 <p>回到正文</p>
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/total.jpg" alt="这里写图片描述"> </p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/total.jpg" alt="这里写图片描述"> </p>
 <p>恩 … 整体框架还是无特别大的创新</p>
-<h2 id="Object-Context"><a href="#Object-Context" class="headerlink" title="Object Context"></a>Object Context</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/attention.jpg" alt="这里写图片描述"> </p>
-<p>输出的C指context<br>P指Position embedding<br>X+P将位置信息融入feature map<br>再做个很普通的attention<br>就是以像素为单位,以余弦相关性作为相似度度量.<br>获得了context他的使用方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/Object Context Network for Scene Parsing/oc.jpg" alt="这里写图片描述"><br>配合hypercolumn或ASP</p>
+<h2 id="Object-Context"><a href="#Object-Context" class="headerlink" title="Object Context"></a>Object Context</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/attention.jpg" alt="这里写图片描述"> </p>
+<p>输出的C指context<br>P指Position embedding<br>X+P将位置信息融入feature map<br>再做个很普通的attention<br>就是以像素为单位,以余弦相关性作为相似度度量.<br>获得了context他的使用方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/oc.jpg" alt="这里写图片描述"><br>配合hypercolumn或ASP</p>
 <h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实感觉Context插入的很强行<br>self-attention其实有跨大距离依赖效果才比conv强的<br>相比于self-attention<br>分割这种感受野任务,给channel加attention(不同感受野feature map拼接后权重不同)效果更佳<br>效果也只有几个千分点的提升,表示质疑<br>朋友测试下效果也不是很好…</p>
 <p>而且他的注意力是直接用softmax的<br>对于这么多像素做softmax  有效信息被无效信息覆盖的情况一般都很严重…<br>我严重怀疑这个和average效果差不多<br>他可以试试半hard半soft的attention</p>
 
