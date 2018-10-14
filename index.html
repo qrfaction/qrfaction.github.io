@@ -371,9 +371,9 @@
 <li>cls是句子的类别信息,用于task2和其他任务(非分类任务可无视)</li>
 <li>[SEP]是句子的分隔符<br><br><br><br><br><br><br>下面是该论文的自监督任务的两个创新点<h3 id="TASK1-MLM-masked-language-model"><a href="#TASK1-MLM-masked-language-model" class="headerlink" title="TASK1 #: MLM(masked language model)"></a>TASK1 #: MLM(masked language model)</h3>随机屏蔽batchsize samples中一定量的单词,并去预测他 (完形填空)</li>
 <li>使用bidirectional self-attention<br>&emsp;不使用rnn可能是因为网络很深不好训练.<br>&emsp;作者认为用单项模型然后两向使用再拼接不如直接双向来的自然,能更好的捕捉上下文信息</li>
-<li>每次屏蔽每个句子中15%的单词<br>&emsp;(1)80%的概率将单词换为[mask]标记 , my dog is hairy → my dog is [MASK]<br>&emsp;(2)10%的概率将单词换为字表中其他单词 , my dog is hairy → my dog is apple<br>&emsp;(3)10%的概率不替换 , my dog is hairy → my dog is hairy<br>具体为什么不是很清楚..   (2)可能是加噪缓解过拟合,(3)不知道了…<br><br><br><br><h3 id="TASK2-NSP-Next-Sentence-Prediction"><a href="#TASK2-NSP-Next-Sentence-Prediction" class="headerlink" title="TASK2 #: NSP(Next Sentence Prediction)"></a>TASK2 #: NSP(Next Sentence Prediction)</h3>由于输入的是一个句子对,所以这个任务是去判断句子二是否可作为句子一的下一句</li>
+<li>每次屏蔽每个句子中15%的单词<br>&emsp;(1)80%的概率将单词换为[mask]标记 , my dog is hairy → my dog is [MASK]<br>&emsp;(2)10%的概率将单词换为字表中其他单词 , my dog is hairy → my dog is apple<br>&emsp;(3)10%的概率不替换 , my dog is hairy → my dog is hairy<br>具体为什么不是很清楚..   (2)可能是加噪缓解过拟合,(3)不知道了…<br><br></li>
 </ol>
-<p>这个任务的目的应该是学习句子之间的逻辑关系</p>
+<h3 id="TASK2-NSP-Next-Sentence-Prediction"><a href="#TASK2-NSP-Next-Sentence-Prediction" class="headerlink" title="TASK2 #: NSP(Next Sentence Prediction)"></a>TASK2 #: NSP(Next Sentence Prediction)</h3><p>由于输入的是一个句子对,所以这个任务是去判断句子二是否可作为句子一的下一句<br>这个任务的目的应该是学习句子之间的逻辑关系</p>
 <h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>下图是在其他任务的微调方式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/14/bert/fune.jpg" alt="这里写图片描述"> </p>
 <p>由于每次只屏蔽一部分<br>这比left2right收敛慢很多<br>一般来讲自监督的模型一般有比较好的泛化效果<br>然后结果也很惊人…</p>
 <p>最后就是模型好大…用不起用不起…</p>
