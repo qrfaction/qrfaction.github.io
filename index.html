@@ -369,7 +369,11 @@
 <li>Segment Embedding<br>&emsp;区分是句子一还是句子二</li>
 <li>Position Embedding<br>&emsp;融入位置信息,学习得到</li>
 <li>cls是句子的类别信息,用于task2和其他任务(非分类任务可无视)</li>
-<li>[SEP]是句子的分隔符<br><br><br><br><br><br><br>下面是该论文的自监督任务的两个创新点<h3 id="TASK1-MLM-masked-language-model"><a href="#TASK1-MLM-masked-language-model" class="headerlink" title="TASK1 #: MLM(masked language model)"></a>TASK1 #: MLM(masked language model)</h3>随机屏蔽batchsize samples中一定量的单词,并去预测他 (完形填空)</li>
+<li>[SEP]是句子的分隔符<br><br></li>
+</ol>
+<p>下面是该论文的自监督任务的两个创新点</p>
+<h3 id="TASK1-MLM-masked-language-model"><a href="#TASK1-MLM-masked-language-model" class="headerlink" title="TASK1 #: MLM(masked language model)"></a>TASK1 #: MLM(masked language model)</h3><p>随机屏蔽batchsize samples中一定量的单词,并去预测他 (完形填空)</p>
+<ol>
 <li>使用bidirectional self-attention<br>&emsp;不使用rnn可能是因为网络很深不好训练.<br>&emsp;作者认为用单项模型然后两向使用再拼接不如直接双向来的自然,能更好的捕捉上下文信息</li>
 <li>每次屏蔽每个句子中15%的单词<br>&emsp;(1)80%的概率将单词换为[mask]标记 , my dog is hairy → my dog is [MASK]<br>&emsp;(2)10%的概率将单词换为字表中其他单词 , my dog is hairy → my dog is apple<br>&emsp;(3)10%的概率不替换 , my dog is hairy → my dog is hairy<br>具体为什么不是很清楚..   (2)可能是加噪缓解过拟合,(3)不知道了…<br><br></li>
 </ol>
