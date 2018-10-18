@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="attention," />
 
 
 
@@ -79,13 +79,21 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="qrfaction的博客">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/archives/2018/09/index.html">
+<meta name="description" content="这篇文章主要是稀疏性的需求而提出了一个带有稀疏特性的归一化函数sparsemax常见的有 sigmoid/tanh -&amp;gt; hard_sigmoid/hard_tanhsparsemax在二维情况即为hard_sigmoid 我认为稀疏特性是attention以后十分重要的发展方向目前大部分的soft attention都是基于softmax这就带来了一个缺点,每个元素都会对结果产生影响而ha">
+<meta name="keywords" content="attention">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sparsemax">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/10/18/sparsemax/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
+<meta property="og:description" content="这篇文章主要是稀疏性的需求而提出了一个带有稀疏特性的归一化函数sparsemax常见的有 sigmoid/tanh -&amp;gt; hard_sigmoid/hard_tanhsparsemax在二维情况即为hard_sigmoid 我认为稀疏特性是attention以后十分重要的发展方向目前大部分的soft attention都是基于softmax这就带来了一个缺点,每个元素都会对结果产生影响而ha">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/sparsemax.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/thres.jpg">
+<meta property="og:updated_time" content="2018-10-18T08:56:51.239Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="qrfaction的博客">
+<meta name="twitter:title" content="sparsemax">
+<meta name="twitter:description" content="这篇文章主要是稀疏性的需求而提出了一个带有稀疏特性的归一化函数sparsemax常见的有 sigmoid/tanh -&amp;gt; hard_sigmoid/hard_tanhsparsemax在二维情况即为hard_sigmoid 我认为稀疏特性是attention以后十分重要的发展方向目前大部分的soft attention都是基于softmax这就带来了一个缺点,每个元素都会对结果产生影响而ha">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/sparsemax.jpg">
 
 
 
@@ -115,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/archives/2018/09/"/>
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/10/18/sparsemax/"/>
 
 
 
 
 
-  <title>归档 | qrfaction的博客</title>
+  <title>sparsemax | qrfaction的博客</title>
   
 
 
@@ -150,7 +158,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -254,73 +262,192 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
-
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 41 篇日志。 继续努力。
-      </span>
-
-      
-
-        
-        
-        
-
-        
-          
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
-
-        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/10/18/sparsemax/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/09/09/trick和创新点的碎碎念/" itemprop="url">
-              
-                <span itemprop="name">trick和创新点的碎碎念</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">sparsemax</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-09T11:00:10+08:00"
-              content="2018-09-09" >
-          09-09
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-18T16:30:30+08:00">
+                2018-10-18
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
+      
 
+      
+        <p>这篇文章主要是稀疏性的需求而提出了一个带有稀疏特性的归一化函数sparsemax<br>常见的有 sigmoid/tanh -&gt; hard_sigmoid/hard_tanh<br>sparsemax在二维情况即为hard_sigmoid</p>
+<p>我认为稀疏特性是attention以后十分重要的发展方向<br>目前大部分的soft attention都是基于softmax<br>这就带来了一个缺点,每个元素都会对结果产生影响<br>而hard attention又带了难以优化的问题<br>自然而然sparse attention是一个很好的发展方向<br>虽然本篇文章我应用效果并不怎样…<br>但是仍然感觉很有启发意义</p>
+<p>本篇文章稀疏化的方式是通过一个阈值<br>再利用max函数屏蔽掉一部分权重</p>
+<blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/sparsemax.jpg" alt="这里写图片描述"><br>其中[x]<sub>+</sub>指代max(x,0)<br>该阈值的好处</p>
+<ol>
+<li>介于min(z)与max(z)之间,保证能屏蔽一部分与留下一部分</li>
+<li>k的选择保证了主要成分的保留</li>
+</ol>
+</blockquote>
+<p>此函数需自定义梯度回传公式<br>梯度回传公式如下</p>
+<blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/thres.jpg" alt="这里写图片描述"><br>其中S(z)为[z-r(z)]<sub>+</sub>中非0的部分<br>这个梯度公式意思很简单<br>即用到的部分回传梯度,没用到的部分梯度为0</p>
+</blockquote>
+<p>sparsemax应用场景</p>
+<ol>
+<li>attention归一化权重</li>
+<li>多分类</li>
+</ol>
+
+      
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/attention/" rel="tag"># attention</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/14/bert/" rel="next" title="本年爆款... Bidirectional Encoder Representations from Transformers">
+                <i class="fa fa-chevron-left"></i> 本年爆款... Bidirectional Encoder Representations from Transformers
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -328,6 +455,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -562,6 +693,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
