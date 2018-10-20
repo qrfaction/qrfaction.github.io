@@ -821,15 +821,16 @@
 <h3 id="Siamese-FC"><a href="#Siamese-FC" class="headerlink" title="Siamese FC"></a>Siamese FC</h3><p>使用AlexNet去掉conv2和conv4<br>所有卷积不使用padding</p>
 <h3 id="Region-Proposal-Network"><a href="#Region-Proposal-Network" class="headerlink" title="Region Proposal Network"></a>Region Proposal Network</h3><p>其实看过faster rcnn 和 siamese fc还是一下子就能理明白的</p>
 <ol>
-<li>模板帧用卷积抽成4<em>4</em>(2k*256)个代表k个anchor+前背景分类</li>
-<li>模板帧用卷积抽成4<em>4</em>(4k*256)个代表k个anchor+坐标回归<br>然后模板帧的特征图与检测帧的做相关运算进行匹配<br>其中anchor比例为[0.33,0.5,1,2,3]</li>
+<li>模板帧用卷积抽成4×4×(2k×256)个代表k个anchor+前背景分类</li>
+<li>模板帧用卷积抽成4×4×(4k×256)个代表k个anchor+坐标回归<br>然后模板帧的特征图与检测帧的做相关运算进行匹配<br>其中anchor比例为[0.33,0.5,1,2,3]</li>
 </ol>
 <p>其中回归分支的需要,一些仿射变换用于做数据增强<br>然后proposed至少筛选16个正例,总共64个样本<br>正例IoU阈值为0.6,负例为0.3</p>
 <p>然后loss照搬faster rcnn </p>
-<h2 id="one-shot-detection"><a href="#one-shot-detection" class="headerlink" title="one-shot detection"></a>one-shot detection</h2><h3 id="推断"><a href="#推断" class="headerlink" title="推断"></a>推断</h3><p>模板帧在第一帧推断后就不再更新了(很多tracker好像都是这么干的,有点炒one-shot的嫌疑)</p>
+<h2 id="one-shot-detection"><a href="#one-shot-detection" class="headerlink" title="one-shot detection"></a>one-shot detection</h2><p>检测应用到追踪即为one-shot detection问题</p>
+<h3 id="推断"><a href="#推断" class="headerlink" title="推断"></a>推断</h3><p>模板帧在第一帧推断后就不再更新了</p>
 <ol>
 <li>第一帧的特征更鲁棒</li>
-<li>速度快,nn慢就是因为要迭代bp<br>所以这需要大量的数据进行预训练获得通用化的特征<br>这点其实是NN的优势,滤波法不能离线训练= =<br>但是感觉这样如果形变过大,就gg了</li>
+<li>速度快,nn慢就是因为要迭代bp<br>所以这需要大量的数据进行预训练获得通用化的特征</li>
 </ol>
 <h3 id="proposal-selection"><a href="#proposal-selection" class="headerlink" title="proposal selection"></a>proposal selection</h3><ol>
 <li>不选取中心位置离当帧超过七个像素的anchor</li>
