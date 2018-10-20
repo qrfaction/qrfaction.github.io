@@ -269,6 +269,207 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/07/Avito/" itemprop="url">Avito Demand Prediction Challenge比赛总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-07T21:24:43+08:00">
+                2018-07-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这个比赛我是快结束的时候参加了,想顺手捞一波名次<br>他对我最大的挑战就是试错成本太高太高了</p>
+<p>树模型交叉验证五折要5-7天 = =<br>图片70G<br>各种特征生成也有几十个G = = </p>
+<p>我总共打了15天<br>写代码占4天,接下来搞别的事情去了,代码挂着跑了11天<br>最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的</p>
+<p>因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)<br>不过现在看下来他们的大部分trick我都做到了,就是没时间搞细</p>
+<h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><h3 id="文本特征"><a href="#文本特征" class="headerlink" title="文本特征"></a>文本特征</h3><blockquote>
+<p>自己的做法</p>
+<ol>
+<li>tfidf+char/word(稀疏矩阵存下来,几万维全部丢给树,svd效果会变差,大部分分数靠的是他)</li>
+<li>地理位置信息用google api获取经纬度(没啥效果)</li>
+</ol>
+</blockquote>
+<p>其他有价值的做法</p>
+<ol>
+<li>用fastText的词向量替代tfidf矩阵</li>
+<li>文本的一些统计特征，词数，字数等等</li>
+</ol>
+<h3 id="图像特征"><a href="#图像特征" class="headerlink" title="图像特征"></a>图像特征</h3><blockquote>
+<p>自己的做法</p>
+<ol>
+<li>图片的一些属性特征(写了没跑,因为具言效果不佳)</li>
+<li>vgg的卷积结束后global pool成向量svd分解(效果不佳),其实这里可能丢失语义信息了,或许从全连接那里抽比较好(没时间了)</li>
+</ol>
+</blockquote>
+<p>其他有价值的做法</p>
+<ol>
+<li>和我的2差不多类似换了基础网络resnet152，resnet34</li>
+<li>还有一些图像的传统统计量亮度暗度（效果都不是很明显）</li>
+<li>冠军用out-of-preditcion来微调resnet34 效果比较显著</li>
+<li>预训练模型对图像进行分类作为特征（其实这个特征已经有了，所以比较冗余，不是很明显）</li>
+</ol>
+<h3 id="categorical-amp-numerical"><a href="#categorical-amp-numerical" class="headerlink" title="categorical &amp; numerical"></a>categorical &amp; numerical</h3><p>user_id和item_id 几乎一个样本一个id了,表示学习都没法了<br>而且user_id训练集测试集交集只有6%,item_id只有0%</p>
+<blockquote>
+<p>自己的做法<br>1  &emsp; 用user_type和city的组合编码近似代表user<br>&emsp;&emsp;用category,image_top_1等近似代表item<br>&emsp;&emsp;获取邻接矩阵进行svd分解(分数提升)<br>2  &emsp; category批量生成共现概率，条件概率<br>3  &emsp; category与连续组合计算条件统计量<br>4  &emsp; 连续连续组合+-*/<br>5  &emsp; target encode(用category和label组合计算label的统计量）</p>
+</blockquote>
+<p>其他有价值的做法</p>
+<ol>
+<li>冠军把user_id用起来了，虽然user_id在训练集测试集中交集只有6%，但他交叉验证时将user_id分的和测试集差不多比例</li>
+</ol>
+<blockquote>
+</blockquote>
+<p>category之间计算共现概率,条件概率(条件熵,信息熵等没算)<br>数值和类别之间计算条件统计量(mean,min,max,std)等<br>交叉组合四五个特征</p>
+<blockquote>
+<p>虽说我的特征大都是批量生成<br>但还是选择性的批量生成，否则维度太高了<br>其中起主要效果的是price的条件统计量，以及price条件统计量的标准化</p>
+</blockquote>
+<h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><blockquote>
+</blockquote>
+<ol>
+<li>spatialDropout1D放embedding后超级棒，我最近发现先bn再sdp效果极佳</li>
+<li>图像部分迁移学习固定权重</li>
+<li>树模型与nn都使用交叉熵效果极佳，树模型是xentropy</li>
+</ol>
+<blockquote>
+<p>值得一提的是好多文本比赛感觉attention很不work，我猜可能大部分都是短文本的缘故吧</p>
+</blockquote>
+<h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p>没做 = =<br>跑出了俩模型,第一个太烂丢掉了<br>实际有效的模型只跑出了一个，只能随便拉个kerne的平均一下</p>
+<blockquote>
+<p>其他人的做法<br>几组较优超参集成<br>疯狂stacking…</p>
+</blockquote>
+<h2 id="最后感受"><a href="#最后感受" class="headerlink" title="最后感受"></a>最后感受</h2><p>大家做的方法其实都大差不差<br>都是一些细节拉大了分数<br>我感觉我吃的最大的亏是时间<br>在细节上我用的是回归，别人用的是交叉熵</p>
+<p>和鹏哥感受一样比赛真的是一件投入产出比很低 = =<br>从头打到尾套路基本都会了的话<br>不出意外个人感觉top3%,top2%不是意见特别难的事情<br>但是很耗精力，比赛周期一般也太长了。。。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/07/01/GRL简述/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1702,159 +1903,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/25/Process/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/25/Process/" itemprop="url">Dynamic Network Embedding by Modeling Triadic Closure Process阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-25T21:51:55+08:00">
-                2018-05-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Network embedding 是表示学习中很重要的一块<br>著名的算法有node2vec,line,SDNE,svd等等<br>这篇论文提出的模型主要是对社交网络中的三角闭包结构和社交网络的时间动态变化建模</p>
-<h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><p>点集 V = {  v<sub>1</sub>,v<sub>2</sub>,…,v<sub>M</sub> }<br>边集 E = {  e<sub>ij</sub> }  </p>
-<p>动态网络 G = { G<sup>1</sup>,G<sup>2</sup>,…,G<sup>T</sup>}<br>G<sup>t</sup> = ( V , E<sup>t</sup> , W<sup>t</sup> ) 表示每个时间段的网络图,W<sup>t</sup>是权重<br>u<sup>t</sup><sub>i</sub> = f<sup>t</sup>(v<sub>i</sub>)  表示学习到的结点v<sub>i</sub>向量 </p>
-<h2 id="Triadic-closure-process-三元闭包过程"><a href="#Triadic-closure-process-三元闭包过程" class="headerlink" title="Triadic closure process 三元闭包过程"></a>Triadic closure process 三元闭包过程</h2><p>以社交网络为例<br>( v<sub>i</sub>,v<sub>j</sub>,v<sub>k</sub>)在某时间段是个(open traid)开三角<br>即i,j互不认识,但k认识他俩<br>三元闭包过程就是以预测下一个时间段i,j会相识的概率<br>这个概率取决于k与他们的亲密程度<br>一般来讲越亲密越容易介绍他俩彼此相识<br>亲密程度建模如下,w为权重</p>
-<p><img src="http://latex.codecogs.com/gif.latex?x%5Et_%20%7Bijk%7D%20%3D%20w%5Et_%20%7Bik%7D%20*%20%28%20u%5Et_%20%7Bk%7D%20-%20u%5Et_%20%7Bi%7D%20%29%20-%20w%5Et_%20%7Bjk%7D%20*%20%28%20u%5Et_%20%7Bk%7D%20-%20u%5Et_%20%7Bj%7D%29" alt=""></p>
-<p>其中下个时间段相识的概率为<br><img src="http://latex.codecogs.com/gif.latex?x%5Et_%20%7Bijk%7D%20%3D%20w%5Et_%20%7Bik%7D%20*%20%28%20u%5Et_%20%7Bk%7D%20-%20u%5Et_%20%7Bi%7D%20%29%20-%20w%5Et_%20%7Bjk%7D%20*%20%28%20u%5Et_%20%7Bk%7D%20-%20u%5Et_%20%7Bj%7D%29" alt=""></p>
-<p>极大似然估计<br><img src="http://latex.codecogs.com/gif.latex?%28P%5Et_%7Btr%7D%28i%2Cj%2Ck%29%29%5E%7B%5Calpha_%7Bk%7D%5E%7Bt%2Cj%2Ck%7D%20%7D%20*%20%281-P%5Et_%7Btr%7D%28i%2Cj%2Ck%29%29%29%5E%7B1-%5Calpha_%7Bk%7D%5E%7Bt%2Cj%2Ck%7D%7D" alt=""><br>α<sub>ijk</sub><sup>t</sup> 为label ,下一时刻( v<sub>i</sub>,v<sub>j</sub>,v<sub>k</sub>)为(close traid)闭三角则为1,反之为0</p>
-<p>再遍历所有open traid的样本组累乘概率进行极大似然估计<br>loss函数为<br><img src="http://latex.codecogs.com/gif.latex?L%5Et_%7Btr%7D%20%3D-%20%5Csum_%7B%28i%2Cj%29%5Cin%20S_&plus;%7DlogP%5Et_%7Btr&plus;%7D%28i%2Cj%29%20-%20%5Csum_%7B%28i%2Cj%29%5Cin%20S_-%7DlogP%5Et_%7Btr-%7D%28i%2Cj%29" alt=""><br>S<sub>+</sub>  是下一段时刻会变成close traid的样本组集合<br>S<sub>-</sub>  相反</p>
-<h2 id="Social-homophily"><a href="#Social-homophily" class="headerlink" title="Social homophily"></a>Social homophily</h2><p><img src="http://latex.codecogs.com/gif.latex?L%5Et_%7Bsh%7D%20%3D%20%5Csum_%7B%28i%2Cj%29%5Cin%20E%5Et_&plus;%20%2C%20%28i%5E%7B%27%7D%2Cj%5E%7B%27%7D%29%20%5Cin%20E%5Et_-%7Dh%28w_%7Bj%2Ck%7D%2C%5Bg%5Et%28j%2Ck%29%20-%20g%5Et%28j%5E%7B%20%27%7D%2Ck%5E%7B%27%7D%29%20&plus;%20%5Cxi%20%5D_&plus;%20%29" alt=""><br>E<sup>t</sup><sub>-</sub> 为E<sup>t</sup>中不存在的边<br>h(w,x) = wx<br>[ x ]<sub>+</sub> = max(0,x)<br>该loss即使用了 tripet loss 期望近邻结点相似,非近邻结点稍远</p>
-<h2 id="Temporal-smoothness"><a href="#Temporal-smoothness" class="headerlink" title="Temporal smoothness"></a>Temporal smoothness</h2><p><img src="http://latex.codecogs.com/gif.latex?%24%24%20L%5Et_%7Bsmooth%7D%20%3D%20%5Cbegin%7Bcases%7D%20%5Csum%5EN_%7Bi%3D1%7D%20%7C%7C%20u%5Et_i%20-%20u%5E%7Bt-1%7D_i%20%7C%7C%20%26%20t%3E1%20%5C%5C%200%20%26%20t%3D1%20%5Cend%7Bcases%7D%24%24" alt=""></p>
-<p>基于结点随时间的动态变化是平缓的猜想</p>
-<h2 id="final"><a href="#final" class="headerlink" title="final"></a>final</h2><p>最终三个loss加权求和即为最终loss</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1905,7 +1953,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">41</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
