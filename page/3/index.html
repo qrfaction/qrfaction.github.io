@@ -269,6 +269,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/29/CUDA上下文环境/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/29/CUDA上下文环境/" itemprop="url">CUDA上下文环境</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-29T14:51:15+08:00">
+                2018-05-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
+                    <span itemprop="name">高性能编程</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本篇博客为高性能CUDA应用设计与开发第七章阅读笔记</p>
+<h2 id="CUDA上下文环境"><a href="#CUDA上下文环境" class="headerlink" title="CUDA上下文环境"></a>CUDA上下文环境</h2><h4 id="cuda上下文环境"><a href="#cuda上下文环境" class="headerlink" title="cuda上下文环境"></a>cuda上下文环境</h4><p>囊括了所必需的驱动状态信息,如虚拟地址空间,流,事件,已分配的内存块等</p>
+<h4 id="GPU设备与上下文"><a href="#GPU设备与上下文" class="headerlink" title="GPU设备与上下文"></a>GPU设备与上下文</h4><p>GPU设备驱动通过设备驱动程序为应用程序提供多个上下文环境<br>就可以使单个CUDA应用程序使用多个设备</p>
+<p>同一时刻只能有一个上下文环境处于活动状态<br>所以需要操作多个设备时,需要用cudasetDevice()切换上下文环境</p>
+<p>cuda在第一次调用一个改变驱动状态的函数时会自动默认创建一个上下文环境<br>如cudaMalloc()<br>默认在 GPU 0 上创建上下文</p>
+<h4 id="上下文与流"><a href="#上下文与流" class="headerlink" title="上下文与流"></a>上下文与流</h4><p>cuda程序通过将操作排队到流中,管理任务和并行<br>创建上下文时会隐式的创建一个流,从而命令可以在设备中排队等待执行<br>cudaMemcpy ,kernel函数等都会自动放入默认流中串行执行</p>
+<p>除非指定不同的流,kernel函数流的指定如下<br>kernel&lt;&lt;&lt;nBlocks, nThreadsPerBlocks, 0,stream&gt;&gt;&gt;(para)<br>第三个可填参数是共享内存大小的分配</p>
+<p>当kernel函数之间需要并发执行时要使用多个流</p>
+<h2 id="任务并发与同步"><a href="#任务并发与同步" class="headerlink" title="任务并发与同步"></a>任务并发与同步</h2><h3 id="显式同步"><a href="#显式同步" class="headerlink" title="显式同步"></a>显式同步</h3><p>cudaEventRecord()<br>我的理解是他是往当前流中异步发送了一个任务(记录时间)<br>由于同一个流中的顺序执行,使得他在之前的任务完成之后才能将传入的事件标记为完成</p>
+<p>cudaStreamSynchronize() //同步流与cpu线程<br>cudaDeviceSynchronize() //在cpu线程中同步所有流<br>cudaStreamWaitEvent()   //等待某个事件结束后再执行该流上的任务(这个任务在cudaStreamWaitEvent调用之后指定)<br>cudaStreamQuery()       //查询一个流任务是否完成 </p>
+<h3 id="隐式同步"><a href="#隐式同步" class="headerlink" title="隐式同步"></a>隐式同步</h3><p>部分主机操作在其完成前会强制所有流暂停执行<br>在使用下面这些主机操作时需注意,它们可能会停止所有的并发操作</p>
+<ol>
+<li>页锁定主机内粗的分配</li>
+<li>设备内存的分配</li>
+<li>设备内存设置</li>
+<li>设备到设备的内存拷贝</li>
+<li>L1缓存与共享内存之间的配置转换</li>
+</ol>
+<p>p.s. 我印象中内存的拷贝有异步api的</p>
+<h3 id="同一GPU并发执行kernel注意事项"><a href="#同一GPU并发执行kernel注意事项" class="headerlink" title="同一GPU并发执行kernel注意事项"></a>同一GPU并发执行kernel注意事项</h3><p>运行多个kernel会改变索引的局部性<br>增加L2缓存的未命中率,甚至消除缓存的有效性<br>还会引入其他问题<br>如bank冲突和内存分区冲突</p>
+<h3 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h3><p>这部分书上主要讲了页锁定内存<br>感觉没另一本书讲的详细,之前博客写了不复述了</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/27/multiprocessing神坑之进程通信/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1719,174 +1881,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/07/博客迁移之WSDM-KKBOX音乐推荐比赛总结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/07/博客迁移之WSDM-KKBOX音乐推荐比赛总结/" itemprop="url">博客迁移之WSDM-KKBOX音乐推荐比赛总结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-07T21:23:14+08:00">
-                2018-05-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
-                    <span itemprop="name">数据竞赛</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本文于本人在2017.12.19于csdn首发<br>现在修改重新复盘回顾</p>
-<h3 id="比赛介绍"><a href="#比赛介绍" class="headerlink" title="比赛介绍"></a>比赛介绍</h3><p>给定用户人口统计特征，歌曲信息，预测用户听了某歌后未来一个月内是否会重新聆听</p>
-<h3 id="数据集"><a href="#数据集" class="headerlink" title="数据集"></a>数据集</h3><p>约三四万的用户<br>约两百多万首歌<br>用户-歌曲对 测试集和训练集共有约一千万个</p>
-<h3 id="时间分配"><a href="#时间分配" class="headerlink" title="时间分配"></a>时间分配</h3><p>时间上的分配:印象中开始打了两周左右就丢那里了吧,结尾一周多又去打了…<br>中间没去搞犯懒癌<br>不过最后还是拿到了一个比较满意的成绩，13名。<br>不过差一点就金牌了呀!!! emmmm…</p>
-<h3 id="自己的trick"><a href="#自己的trick" class="headerlink" title="自己的trick"></a>自己的trick</h3><p>挑一些比较重要的</p>
-<blockquote>
-</blockquote>
-<ol>
-<li>计数特征 : 比如歌曲被播放次数，用户听歌次数，歌手被听次数等等,就是一些热度特征 活跃度等等重要指标</li>
-<li>条件概率特征 : 批量生成 P(歌曲|用户）  P（用户|歌曲）  P（作词人|用户）  等等等等</li>
-<li>相似度 : 将用户，歌曲，歌手的网络结构拓扑图丢给node2vec对用户，歌曲，歌手进行编码，再计算他们的皮尔森相关系数作为他们的相似度</li>
-<li>按时间轴加权,离当前时间越近的权重越高</li>
-<li>依赖时间的计数/条件概率特征依照时间窗口滑窗生成</li>
-<li>试过神经网络embedding，歌手歌曲用户进行词嵌入来学习，搭了一个1D的类DesnseNet结构，分数最高也就68点多。于是乎放弃(其实现在看来初始化不行,那时候应该先node2vec预训练的,无论对树和神经网络效果都应该很bug</li>
-<li>尝试过数据集分历史数据和当前两部分，lgbm对历史数据进行训练再对当前数据预测输出样本的叶子节点信息，一般般</li>
-</ol>
-<h3 id="top1-top3的做法"><a href="#top1-top3的做法" class="headerlink" title="top1,top3的做法"></a>top1,top3的做法</h3><blockquote>
-</blockquote>
-<ol>
-<li>生成用户歌曲对特征，SVD分解获得用户歌曲对向量，将向量整个作为特征显著提升<br> 这个当时没做,那时候好像因为最后一两周才回来搞没啥时间了,也不敢svd直接分内存太大了<br> 讲道理node2vec也可以替代的不是</li>
-<li>top1使用了样本的上下文信息(过去与未来的log)<br> 现在看来无论top1还是top3上下文信息的利用的不够干脆<br> 样本非独立,除了用户上下文信息可以用,歌曲上个时间点被谁听了,下个时间点等…<br> 神经网络讲道理也可以用的</li>
-<li>top1尝试了伪标签但效果不好<br> 话说这里那次比赛就有人用伪标签…居然被我忽略了,我那时候眼神不好吧…<br> 这里效果不好很显然,上次毒性分类比赛效果好是因为模型生成的伪标签质量高噪声小<br> 这里平均只有七十多的正确率的标签噪声太多…</li>
-<li>top3数据全转为数字保存为hdf这种图片格式，貌似比csv读写快？</li>
-<li>top3也将数据分成了历史信息和当前信息,将数据索引作为时间轴<br> (1)上下文信息<br> (2)统计了一堆历史信息中和label相关的特征放到当前信息中,最终将当前的数据样本放进去训练<br> 现在感觉这种操作比较冗余</li>
-</ol>
-<h3 id="其他体会"><a href="#其他体会" class="headerlink" title="其他体会"></a>其他体会</h3><p>高性能编程超级超级超级重要,从那次和之后的比赛看出多核,GPU的优势必须用出来<br>有些复杂的特征必须要快速造出来</p>
-<h3 id="没干的事"><a href="#没干的事" class="headerlink" title="没干的事"></a>没干的事</h3><p>集成最后也比较草草的直接加权，毕竟没啥时间了。<br>调参也没调，不过正好说明了老生常谈的论特征的重要性<br>恩，最后….以后一定得大胆想大胆试，人有多大胆地有多大产hh</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1937,7 +1931,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1959,7 +1953,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
