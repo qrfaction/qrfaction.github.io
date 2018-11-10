@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>qrfaction的博客</title>
+  
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
+  <updated>2018-11-10T05:23:46.838Z</updated>
+  <id>https://github.com/qrfaction/qrfaction.github.io/</id>
+  
+  <author>
+    <name>qrfaction</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>IoU-Net 阅读笔记</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/11/10/iounet/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/11/10/iounet/</id>
+    <published>2018-11-10T05:14:37.000Z</published>
+    <updated>2018-11-10T05:23:46.838Z</updated>
+    
+    <content type="html"><![CDATA[<p>好久没碰检测了<br>前段时间因为一些事情又focus了几天<br>今天做个IOU-Net的简短笔记</p><p>简单来说这篇文章主要是针对这样一个问题<br>检测的目的很明确，为了获得高质量的bounding box<br>然而在以前的做法当中是先通过一系列bounding box然后再经过筛选获得<br>筛选是以分类置信度为第一优先级<br>但是，分类置信度和bbox proposal质量存在相关性但非同步增减<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/iouvsloc.png" alt="这里写图片描述"> </p><p>基于这些问题，这篇文章提出了以下策略</p><h3 id="IoU-predictor"><a href="#IoU-predictor" class="headerlink" title="IoU predictor"></a>IoU predictor</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/ioupredict.png" alt="这里写图片描述"><br>加入IoU预测分支，loss使用smooth L1<br>使用非RPN提供的proposals，而是ground truth加随机绕动得到Jittered RoIs</p><h3 id="IoU-guided-NMS"><a href="#IoU-guided-NMS" class="headerlink" title="IoU-guided NMS"></a>IoU-guided NMS</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/nms.png" alt="这里写图片描述"><br>首先选出IoU最大的bbox<br>获得与该bbox重叠率大于某阈值的bbox集合<br>将该bbox的分类置信度更新为该集合内分类置信度的最大值<br>滤掉该集合内的bbox</p><p>如此循环…</p><h3 id="Bounding-box-refinement-as-an-optimization-procedure"><a href="#Bounding-box-refinement-as-an-optimization-procedure" class="headerlink" title="Bounding box refinement as an optimization procedure"></a>Bounding box refinement as an optimization procedure</h3><p>这部分也就长话短说<br>就是我们现在有一个IoU预测器，以及检测获得的bbox<br>将这些bbox输入，获得其IoU预测值，再通过梯度反向微调bbox</p><h3 id="PrROI直接看公式吧"><a href="#PrROI直接看公式吧" class="headerlink" title="PrROI直接看公式吧"></a>PrROI直接看公式吧</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou2.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou3.png" alt="这里写图片描述"><br>ROIPool -&gt; ROIAlign 避免量化<br>ROIAlign -&gt; PrROI 修补了ROIAlign不能由bin大小调整的缺陷</p><h3 id="result"><a href="#result" class="headerlink" title="result"></a>result</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/result.png" alt="这里写图片描述"><br>高IoU阈值时有较显著的提升</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;好久没碰检测了&lt;br&gt;前段时间因为一些事情又focus了几天&lt;br&gt;今天做个IOU-Net的简短笔记&lt;/p&gt;
+&lt;p&gt;简单来说这篇文章主要是针对这样一个问题&lt;br&gt;检测的目的很明确，为了获得高质量的bounding box&lt;br&gt;然而在以前的做法当中是先通过一系列boundi
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="目标检测" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E7%9B%AE%E6%A0%87%E6%A3%80%E6%B5%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>s2s learning as beam-search optimization</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/11/03/s2s/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/11/03/s2s/</id>
+    <published>2018-11-03T13:00:51.000Z</published>
+    <updated>2018-11-03T13:03:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这周自己做的水报<br>16年的文章,感觉好像应用的并不多<br>然后文章里的loss缺陷也很明显..约束不足,感觉只适合微调<br>最近真的好忙啊…<br>争取下几周能搞点质量高的<br>反正先发上来</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_2.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_3.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_4.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_5.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_6.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/03/s2s/0_7.jpg" alt="这里写图片描述"></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这周自己做的水报&lt;br&gt;16年的文章,感觉好像应用的并不多&lt;br&gt;然后文章里的loss缺陷也很明显..约束不足,感觉只适合微调&lt;br&gt;最近真的好忙啊…&lt;br&gt;争取下几周能搞点质量高的&lt;br&gt;反正先发上来&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="seq2seq" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/seq2seq/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Memory network</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/21/memorynet/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/21/memorynet/</id>
+    <published>2018-10-21T08:23:05.000Z</published>
+    <updated>2018-10-21T08:29:32.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>nlp周报<br>这次给讨论班简述一下memory net的框架<br>ppt上传在这<br>主要口述,字有些少<br>时间限制,篇幅较短</p><p>下次超多版本的attention得好好讲,恩…</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_2.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_3.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_4.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_5.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_6.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/21/memorynet/0_7.jpg" alt="这里写图片描述"></p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nlp周报&lt;br&gt;这次给讨论班简述一下memory net的框架&lt;br&gt;ppt上传在这&lt;br&gt;主要口述,字有些少&lt;br&gt;时间限制,篇幅较短&lt;/p&gt;
+&lt;p&gt;下次超多版本的attention得好好讲,恩…&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https:
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="QA" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/QA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018ECCV DaSiamRPN阅读笔记</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/20/dasimarpn/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/20/dasimarpn/</id>
+    <published>2018-10-20T06:22:39.000Z</published>
+    <updated>2018-10-20T06:29:58.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>原文链接<br><a href="https://arxiv.org/pdf/1808.06048.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1808.06048.pdf</a><br>这个模型是2018VOT实时比赛的冠军,VOT2018长时比赛的亚军<br>DaSiamRPN在普通跟踪的Accuracy指标和长时跟踪的Recall指标中均排名第一</p><p>这个模型是基于他们今年之前的一个模型Siamese RPN改进得到的模型</p><h3 id="处理样本不均衡策略"><a href="#处理样本不均衡策略" class="headerlink" title="处理样本不均衡策略"></a>处理样本不均衡策略</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/problem.jpg" alt="这里写图片描述"><br>作者发现在跟踪过程中跟踪器对实例分类困难<br>而对前背景分类能力较强<br>而造成这个问题的原因他归因为跟踪过程中样本不均衡<br>正样本实例种类不够多模型泛化能力差</p><p>作者在训练过程中加入了如下所示的样本对进行离线训练<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/aug.jpg" alt="这里写图片描述"> </p><h3 id="增量学习方式"><a href="#增量学习方式" class="headerlink" title="增量学习方式"></a>增量学习方式</h3><p>公式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/update.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/update2.jpg" alt="这里写图片描述"><br>与模板帧的匹配分数 - 与干扰物的匹配分数作为最终分数<br>这些抗干扰物选择方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/distractor.jpg" alt="这里写图片描述"><br>选择与模板帧相似度大于某个阈值的错误实例</p><p>再进行一般化<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/update3.jpg" alt="这里写图片描述"> </p><p>参数设置细节见论文</p><h3 id="各组件收益"><a href="#各组件收益" class="headerlink" title="各组件收益"></a>各组件收益</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/20/dasimarpn/gain.jpg" alt="这里写图片描述"> </p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;原文链接&lt;br&gt;&lt;a href=&quot;https://arxiv.org/pdf/1808.06048.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://arxiv.org/pdf/1808.06048.pdf&lt;/a&gt;&lt;br&gt;这个模型是20
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="tracking" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/tracking/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>sparsemax</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/18/sparsemax/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/18/sparsemax/</id>
+    <published>2018-10-18T08:30:30.000Z</published>
+    <updated>2018-10-18T08:56:51.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这篇文章主要是稀疏性的需求而提出了一个带有稀疏特性的归一化函数sparsemax<br>常见的有 sigmoid/tanh -&gt; hard_sigmoid/hard_tanh<br>sparsemax在二维情况即为hard_sigmoid</p><p>我认为稀疏特性是attention以后十分重要的发展方向<br>目前大部分的soft attention都是基于softmax<br>这就带来了一个缺点,每个元素都会对结果产生影响<br>而hard attention又带了难以优化的问题<br>自然而然sparse attention是一个很好的发展方向<br>虽然本篇文章我应用效果并不怎样…<br>但是仍然感觉很有启发意义</p><p>本篇文章稀疏化的方式是通过一个阈值<br>再利用max函数屏蔽掉一部分权重</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/sparsemax.jpg" alt="这里写图片描述"><br>其中[x]<sub>+</sub>指代max(x,0)<br>该阈值的好处</p><ol><li>介于min(z)与max(z)之间,保证能屏蔽一部分与留下一部分</li><li>k的选择保证了主要成分的保留</li></ol></blockquote><p>此函数需自定义梯度回传公式<br>梯度回传公式如下</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/18/sparsemax/thres.jpg" alt="这里写图片描述"><br>其中S(z)为[z-r(z)]<sub>+</sub>中非0的部分<br>这个梯度公式意思很简单<br>即用到的部分回传梯度,没用到的部分梯度为0</p></blockquote><p>sparsemax应用场景</p><ol><li>attention归一化权重</li><li>多分类</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这篇文章主要是稀疏性的需求而提出了一个带有稀疏特性的归一化函数sparsemax&lt;br&gt;常见的有 sigmoid/tanh -&amp;gt; hard_sigmoid/hard_tanh&lt;br&gt;sparsemax在二维情况即为hard_sigmoid&lt;/p&gt;
+&lt;p&gt;我认为稀疏特性
+      
+    
+    </summary>
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
+    
+    
+      <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>本年爆款... Bidirectional Encoder Representations from Transformers</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/14/bert/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/14/bert/</id>
+    <published>2018-10-14T08:11:28.000Z</published>
+    <updated>2018-10-14T08:19:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这几天被BERT刷屏了<br>结果是真的好看,刷新了十一项记录,每项都有巨大改进…<br>下面分析一下这篇文章的工作</p><h3 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/14/bert/input.jpg" alt="这里写图片描述"><br>一个句子对,即两个句子</p><ol><li>WordPiece Embedding<br>&emsp;这个东西是用来解决oov的word的,将部分单词拆成两个字词,如fued拆成fu,ed .<br>&emsp;具体怎么拆,拆哪些,用贪心算法搜索尽可能少的token去覆盖所有单词</li><li>Segment Embedding<br>&emsp;区分是句子一还是句子二</li><li>Position Embedding<br>&emsp;融入位置信息,学习得到</li><li>cls是句子的类别信息,用于task2和其他任务(非分类任务可无视)</li><li>[SEP]是句子的分隔符<br><br></li></ol><p>下面是该论文的自监督任务的两个创新点</p><h3 id="TASK1-MLM-masked-language-model"><a href="#TASK1-MLM-masked-language-model" class="headerlink" title="TASK1 #: MLM(masked language model)"></a>TASK1 #: MLM(masked language model)</h3><p>随机屏蔽batchsize samples中一定量的单词,并去预测他 (完形填空)</p><ol><li>使用bidirectional self-attention<br>&emsp;不使用rnn可能是因为网络很深不好训练.<br>&emsp;作者认为用单项模型然后两向使用再拼接不如直接双向来的自然,能更好的捕捉上下文信息</li><li>每次屏蔽每个句子中15%的单词<br>&emsp;(1)80%的概率将单词换为[mask]标记 , my dog is hairy → my dog is [MASK]<br>&emsp;(2)10%的概率将单词换为字表中其他单词 , my dog is hairy → my dog is apple<br>&emsp;(3)10%的概率不替换 , my dog is hairy → my dog is hairy<br>具体为什么不是很清楚..   (2)可能是加噪缓解过拟合,(3)不知道了…<br><br></li></ol><h3 id="TASK2-NSP-Next-Sentence-Prediction"><a href="#TASK2-NSP-Next-Sentence-Prediction" class="headerlink" title="TASK2 #: NSP(Next Sentence Prediction)"></a>TASK2 #: NSP(Next Sentence Prediction)</h3><p>由于输入的是一个句子对,所以这个任务是去判断句子二是否可作为句子一的下一句<br>这个任务的目的应该是学习句子之间的逻辑关系</p><h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>下图是在其他任务的微调方式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/14/bert/fune.jpg" alt="这里写图片描述"> </p><p>由于每次只屏蔽一部分<br>这比left2right收敛慢很多<br>一般来讲自监督的模型一般有比较好的泛化效果<br>然后结果也很惊人…</p><p>最后就是模型好大…用不起用不起…</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这几天被BERT刷屏了&lt;br&gt;结果是真的好看,刷新了十一项记录,每项都有巨大改进…&lt;br&gt;下面分析一下这篇文章的工作&lt;/p&gt;
+&lt;h3 id=&quot;Input&quot;&gt;&lt;a href=&quot;#Input&quot; class=&quot;headerlink&quot; title=&quot;Input&quot;&gt;&lt;/a&gt;Input
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NAACL2018 best paper ELMo</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/13/elmo/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/13/elmo/</id>
+    <published>2018-10-13T07:23:00.000Z</published>
+    <updated>2018-10-13T08:00:03.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>ELMo 是NAACL2018的best paper<br>早就想读了了,攒着一直没读…</p><p>其实nn的文章看图能识个大概了,接着再细读其中细节<br>但这篇文章没图…</p><p>下面上一张自制的</p><h3 id="ELMo结构与使用方式"><a href="#ELMo结构与使用方式" class="headerlink" title="ELMo结构与使用方式"></a>ELMo结构与使用方式</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/elmo.jpg" alt="这里写图片描述"> </p><p>如图,上面是ELMo的使用方式<br>将模型中word在LSTM中输出的中间态作为他的embedding</p><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/target.jpg" alt="这里写图片描述"><br>他自己则是一个多层双向语言自监督模型<br>正向预测和逆向预测word作为task,进行训练<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/loss.jpg" alt="这里写图片描述"> </p><p>这种设计个人认为有如下几点好处</p><ol><li>word在不同语境有不同意思,使用LSTM中间状态带入了上下文信息解决了语义歧义的问题</li><li>biLSTM相比Glove,word2vec带入了语序信息</li><li>biLSTM能捕捉一定的语法结构信息</li></ol><h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><p>冷冻biLM模型<br>将他各个中间层的信息加权平均,再和普通的词向量concat<br>公式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/w.jpg" alt="这里写图片描述"> </p><p>s<sub>task</sub>是可训练且经过softmax归一化的权重<br>s<sub>task</sub>用于在不同任务下自适应调整高维还是低维的抽象信息<br>γ是缩放因子,对模型影响较大,可训练</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;ELMo 是NAACL2018的best paper&lt;br&gt;早就想读了了,攒着一直没读…&lt;/p&gt;
+&lt;p&gt;其实nn的文章看图能识个大概了,接着再细读其中细节&lt;br&gt;但这篇文章没图…&lt;/p&gt;
+&lt;p&gt;下面上一张自制的&lt;/p&gt;
+&lt;h3 id=&quot;ELMo结构与使用方式&quot;&gt;&lt;a hre
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Object Context Network for Scene Parsing</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/</id>
+    <published>2018-10-02T14:34:20.000Z</published>
+    <updated>2018-10-05T07:22:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这是一篇应用了attention在图像分割的文章<br>文章本身很简单,感觉工作不多<br>最近在vqa工作中对attention体会很深,也创新了不少东西<br>在结束后再写篇博文吧</p><p>回到正文</p><h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/total.jpg" alt="这里写图片描述"> </p><p>恩 … 整体框架还是无特别大的创新</p><h2 id="Object-Context"><a href="#Object-Context" class="headerlink" title="Object Context"></a>Object Context</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/attention.jpg" alt="这里写图片描述"> </p><p>输出的C指context<br>P指Position embedding<br>X+P将位置信息融入feature map<br>再做个很普通的attention<br>就是以像素为单位,以余弦相关性作为相似度度量.<br>获得了context他的使用方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/oc.jpg" alt="这里写图片描述"><br>配合hypercolumn或ASP</p><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实感觉Context插入的很强行<br>self-attention其实有跨大距离依赖效果才比conv强的<br>相比于self-attention<br>分割这种感受野任务,给channel加attention(不同感受野feature map拼接后权重不同)效果更佳<br>效果也只有几个千分点的提升,表示质疑<br>朋友测试下效果也不是很好…</p><p>而且他的注意力是直接用softmax的<br>对于这么多像素做softmax  有效信息被无效信息覆盖的情况一般都很严重…<br>我严重怀疑这个和average效果差不多<br>他可以试试半hard半soft的attention</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这是一篇应用了attention在图像分割的文章&lt;br&gt;文章本身很简单,感觉工作不多&lt;br&gt;最近在vqa工作中对attention体会很深,也创新了不少东西&lt;br&gt;在结束后再写篇博文吧&lt;/p&gt;
+&lt;p&gt;回到正文&lt;/p&gt;
+&lt;h2 id=&quot;整体架构&quot;&gt;&lt;a href=&quot;#整体架构
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="图像分割" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E5%89%B2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>trick和创新点的碎碎念</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/09/09/trick%E5%92%8C%E5%88%9B%E6%96%B0%E7%82%B9%E7%9A%84%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/09/09/trick和创新点的碎碎念/</id>
+    <published>2018-09-09T03:00:10.000Z</published>
+    <updated>2018-09-09T03:01:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近一直在搞video qa<br>这是一个比较新的方向,论文总共找到不到三篇,天池的视频问答比赛似乎也是全球第一届</p><p>大家都是新手,一起开荒<br>前天和鹏哥聊着聊着看他有啥想法 .<br>最后聊到trick和创新度的问题</p><p>鹏哥说一篇好的论文不能缺少创新度,纯堆trick是不行的<br>我同意,但是,究竟哪些是创新点那些算trick呢</p><p>我做的六七个上分的大工作里排除已有的工作<br>私以为我的工作里并没有啥trick<br>或许我对trick的理解不大一样吧</p><p>如果在不太严格的条件下具有一定解释性的trick算不算创新点呢<br>我觉得算的</p><p>我认为的trick都是一些magic的leak<br>这些leak对实际意义起不到任何用处,但他就是能上分.<br>一些不具备通用性的调参技巧也算trick</p><p>现在大部分论文都靠搜索模型再加后向解释水了一个又一个会议<br>很难看到除模型之外的地方</p><p>2017 VQA Challenge 冠军的比赛报告是我比较喜欢的一篇文章<br><a href="https://arxiv.org/pdf/1708.02711.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1708.02711.pdf</a></p><p>除模型之外我个人认为的创新点有</p><ol><li>涉及到了zero-shot思想的初始化</li><li>检测模型做 hard attention</li><li>先进的采样算法<br>还有一些就是模型中的不具备通用性的trick了<br>例如特定情况下适用的激活函数</li></ol><p>聊到最后<br>其实我就是认为不管你学不学习,只要不作弊考到好分数都是好学生</p><p>trick具备通用性且后向解释能解释的通就好<br>通用性是前提,解释性可以稍稍靠后</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近一直在搞video qa&lt;br&gt;这是一个比较新的方向,论文总共找到不到三篇,天池的视频问答比赛似乎也是全球第一届&lt;/p&gt;
+&lt;p&gt;大家都是新手,一起开荒&lt;br&gt;前天和鹏哥聊着聊着看他有啥想法 .&lt;br&gt;最后聊到trick和创新度的问题&lt;/p&gt;
+&lt;p&gt;鹏哥说一篇好的论文不能
+      
+    
+    </summary>
+    
+      <category term="其他" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+    
+    
+      <category term="其他" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%85%B6%E4%BB%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Home Credit</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/</id>
+    <published>2018-08-31T08:46:51.000Z</published>
+    <updated>2018-09-12T03:37:15.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>说起来这个比赛打起来体验极差…<br>线上线下琢磨不透…<br>时间上花了两周,最终结果single model cv 0.8004</p><p>开始三天在那抄抄dissussion和kernel里的代码拿到了cv 0.7963<br>后来觉得这样不行<br>后来花两天重构了下了代码,优化并行了特征生成部分<br>开始逐文件批量生成特征,再进行筛选 (毕竟一个变量名都看不懂)<br>接着效率大大提高,分数逐渐上升到8004<br>但是在这途中lb一直很差只有和cv差不多的分数<br>然后就丢了干别的比赛去了,打的烦啊,工作无聊机械,lb还上不去</p><p>最后一天把自己的oof和submit丢给队友就跑了<br>队友提交的最终cv是0.801吧</p><p>第八名的single model cv是0.799  集成804的样子<br>早知道最后一天随便跑跑了几个模型搞点儿差异性出来了…<br>小可惜,不过投入也不算多,不是特别心疼吧</p><p>这个比赛看下来搞特征的思路大多不是特别稀奇<br>强特的话批量找慢慢找都可以找出来的吧<br>主要是筛选工作和批量搜索的时候缩小搜索范围</p><p>我做的主要有</p><blockquote></blockquote><ol><li>时间差分特征  x<sub>t</sub> - x<sub>t-1</sub></li><li>趋势特征     过去一段时间内某变量的随时间变化趋势(即斜率)</li><li>趋势预测特征   用2所得的斜率预测当前值的预测值</li><li>一条record缺失值个数</li><li>特征分bin,计算各bin中的样本,数作为特征</li><li>一些条件概率,共现概率特征</li><li>target encode</li><li>批量搜索单位具有实际意义的特征,例如 钱/钱 , 钱/次数 , 次数/次数 , 次数 - 次数, 时间-时间<br>这么做的主要目的是减小搜索空间,毕竟几百个特征两两组合筛不过来呀</li></ol><p>我的收益几乎都来8 …<br>后来工作没干完就跑了,恩…</p><p>还有一些其他的思路下面再讲</p><p>筛选主要是这样的:</p><blockquote></blockquote><p>我首先划定了top550收益的特征,因为划到550我的cv上升了<br>然后每次批量生成几百个特征的时候留下gain落在top300的特征<br>注意事项: 必须要尽量缩小特征的生成量,因为特征生成的太多,收益均摊到各个特征上,导致大部分特征收益都很接近<br>    这时候不利于筛选</p><p>集成上虽然没做,但简单简述dissussion的magic集成思路<br>即用rank score进行集成<br>如果了解auc的话这个集成方式其实很容易想到</p><ol><li>因为AUC是排序指标<br>这种集成方式还有一个优势</li><li>因为不同的loss输出的预测值在[0,1]的方差不同,密度不同,期望也不同<br>直接加权可能问题就很大了<br>一种方式是把他们直接minmax缩放到[0,1],但这个没解决密度问题<br>另一个很简单的思路就是把预测值投射到rank上</li></ol><p>其他人的特征思路<br>对样本聚类500,然后用这个类别进行target encode<br>(话说聚类这东西我一直玩儿不溜,这东西到底能不能用自己每次都是试了才知道,所以要做都会堆到后期,没一点经验性的参考)<br>因为ext_1缺失值特别多,但他是重要特征,所以建立模型预测该特征作为新特征<br>这个带来收益也比较大</p><p>整个比赛里貌似只有第二名的方式是个亮点<br>他发现了样本以时间序排序,他用一些时间差分的特征如出生日期-上班日期等等特征得到了user_id<br>然后根据user_id和历史上下文信息对target进行编码得到了很大的提高<br>见<a href="https://www.kaggle.com/titericz/visualizing-user-ids" target="_blank" rel="noopener">https://www.kaggle.com/titericz/visualizing-user-ids</a></p><p>emmmmm  就这样吧</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;说起来这个比赛打起来体验极差…&lt;br&gt;线上线下琢磨不透…&lt;br&gt;时间上花了两周,最终结果single model cv 0.8004&lt;/p&gt;
+&lt;p&gt;开始三天在那抄抄dissussion和kernel里的代码拿到了cv 0.7963&lt;br&gt;后来觉得这样不行&lt;br&gt;后来花两天重
+      
+    
+    </summary>
+    
+      <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
+    
+    
+      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018CVPR之Visual Question Answering with Memory-Augmented Networks阅读笔记</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/08/14/vqa-man/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/08/14/vqa-man/</id>
+    <published>2018-08-14T14:30:18.000Z</published>
+    <updated>2018-10-21T08:24:54.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>需求所致简单入门一下vqa</p><h3 id="Sequential-Co-Attention"><a href="#Sequential-Co-Attention" class="headerlink" title="Sequential Co-Attention"></a>Sequential Co-Attention</h3><p>如图所示<br>这是16年11月份一个序列协同注意力结构</p><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/co_attention.jpg" alt="这里写图片描述"> </p><p>直接放公式吧</p><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/e1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/q1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/v1.jpg" alt="这里写图片描述"></p><p>思路比较简单<br>{q<sub>t</sub>} question(word sequence)<br>{v<sub>n</sub>} 是通过一个backbone后再reshape的”区域”序列<br>如vgg16  -&gt;  16<em>16</em>512   -&gt;  256*512  每个像素代表一个区域</p><p>然后对图片的每个区域以及question的每个时间步做相关性计算<br>获得注意力权重加权….</p><h3 id="Memory-Augmented-Network"><a href="#Memory-Augmented-Network" class="headerlink" title="Memory Augmented Network"></a>Memory Augmented Network</h3><p>这里使用了Memory Network<br>是本文的创新点貌似</p><p>用(x<sub>t</sub>,y<sub>t</sub>)代表一个样本<br>t表示样本喂给模型的顺序</p><p>以LSTM 作为Memory Net的controller<br>h<sub>t</sub> = LSTM(x<sub>t</sub> , h<sub>t-1</sub>)<br>每次基于内容寻址<br>将h<sub>t</sub>与所有记忆单元计算相似度<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/d1.jpg" alt="这里写图片描述"><br>然后用softmax规范化相似度作为权重<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/w1.jpg" alt="这里写图片描述"><br>加权获得历史信息<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/ave1.jpg" alt="这里写图片描述"><br>与h<sub>t</sub>拼接放入分类网络</p><p>更新历史信息单元<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/08/14/vqa-man/mem.jpg" alt="这里写图片描述"><br>结束</p><h3 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h3><p>作为一个放入VQA的小萌新<br>刷了几篇感觉好像比我想象中的要easy很多</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;需求所致简单入门一下vqa&lt;/p&gt;
+&lt;h3 id=&quot;Sequential-Co-Attention&quot;&gt;&lt;a href=&quot;#Sequential-Co-Attention&quot; class=&quot;headerlink&quot; title=&quot;Sequential Co-Attention&quot;&gt;
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="QA" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/QA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>数据增广思考</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/29/%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%B9%BF%E6%80%9D%E8%80%83/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/29/数据增广思考/</id>
+    <published>2018-07-29T08:23:18.000Z</published>
+    <updated>2018-07-30T04:05:29.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>魔镜杯中第二名的数据增广使用了mixup<br>但词向量空间是否满足和图像一致的插值的性质值得深思<br>下面是自己的一些收货</p><p>从答辩情况来看,数据增广成功的只有三个人<br>第一第二以及yin叔</p><p>首先是样本生成方式<br>第一没有明说他的方式<br>第二介绍了mixup<br>yin叔则直接利用了相似问题对的稀疏性,断言生成的样本不匹配</p><p>yin叔的方式确有理论保证性,<br>随便估计一下如果官方给的78w个问题中共有10000类<br>以这个计算约两万个样本中只有一个正例 …<br>可见生成的样本label噪声很小</p><p>而mixup不敢笃定<br>图像的数据增广里mixup虽不易证明<br>但是其生成的样本结果肉眼可得到其label也是线性组合</p><p>词向量空间是否满足此性质不知<br>第二的大致思路是<br>q1,q2相似,q2,q3不相似<br>则q1+q2与q3仍不相似<br>似乎没有生成正样本<br>这里难以确定到底是正样本的稀疏性带来的收益还的确是mixup<br>不过不能再提交了,我猜是稀疏性…<br>不过第二好像和yin叔吐槽没啥效果 (所以说mixup并没有成功?到底有无收益?做成的变成2个人?)<br>不过看过来第二的确似乎是堆了多种模型给他带来的收益<br>从我们一直使用一种模型来看,最后一天使用了两个结构比较相似的模型却带来了巨大的收益<br>模型结构差异带来的收益可能更为显著</p><p>其实以上都不是重点<br>我也做了很多数据增强<br>yin叔的那种方式我也做了<br>都会过拟合…</p><p>但还有一个值得注意的地方<br>前排和yin叔数据增强的方式都是先用原有数据集训练<br>再从生成的数据集上进行微调</p><p>而我要么是放入训练集一起训练<br>要么是先用生成的样本获得权重…</p><p>反过来会成功的原因有待深究…</p><p>这次比赛和yin叔探讨中还获得了一个很有价值的东西<br>我使用prob label过拟合的原因似乎不知道,线下涨两个百分点,线上掉三个千分点<br>但是yin叔在一个预估用户评分的任务中给label加了高斯噪声成功了</p><p>他的任务可以很清楚的看到label本身噪声很大<br>给label加高斯噪声并无多大影响,反而能控制过拟合</p><p>数据增强的几个trick论文一览</p><p>label加噪的论文在此,效果较为显著<br>DisturbLabel<br><a href="https://arxiv.org/pdf/1605.00055v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1605.00055v1.pdf</a><br>label加噪也可以认为是一种数据增广的方式</p><p>MixUp论文<br><a href="https://arxiv.org/pdf/1710.09412.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1710.09412.pdf</a></p><p>数据增强之CutOut<br><a href="https://arxiv.org/pdf/1708.04552.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1708.04552.pdf</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;魔镜杯中第二名的数据增广使用了mixup&lt;br&gt;但词向量空间是否满足和图像一致的插值的性质值得深思&lt;br&gt;下面是自己的一些收货&lt;/p&gt;
+&lt;p&gt;从答辩情况来看,数据增广成功的只有三个人&lt;br&gt;第一第二以及yin叔&lt;/p&gt;
+&lt;p&gt;首先是样本生成方式&lt;br&gt;第一没有明说他的方式&lt;
+      
+    
+    </summary>
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
+    
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/ML-DL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>魔镜杯比赛答辩PPT</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/25/%E9%AD%94%E9%95%9C%E6%9D%AF%E6%AF%94%E8%B5%9B%E7%AD%94%E8%BE%A9PPT/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/25/魔镜杯比赛答辩PPT/</id>
+    <published>2018-07-25T11:36:38.000Z</published>
+    <updated>2018-07-25T12:05:25.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>最终排名rank 6 </p><p>自己团队的解决方案<br>此次比赛主要目的用于促进团队的感情…</p><p>答辩情况来看,我们的集成做的太烂了…<br>一直只有一种模型,最后一天才反应到吃亏搞出两种很相似的上了俩千分点<br>靠着半监督的优势撑了大半个比赛流程</p><p>单模型情况(似乎是最高的?)<br>纯模型 0.153-0.154<br>结构特征 0.151-0.152<br>半监督(伪标签) 0.1475</p><p>PPT里藏了部分细节和思考<br>昨天中午和yin叔讨论中发现一些细节,发现了数据增强做成的技巧,发现了概率标签的可能适用场景,虽然仍然不知道他为啥过拟合<br>现在看来数据增强做成功的有三组队伍,冠军队,亚军队,yin叔<br>yin叔只用一种模型不用结构特征到这个分数还是很佩服的<br>小幸运组的tfidf加权词向量有待尝试</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0006.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0007.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0008.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0009.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0010.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0011.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0012.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0013.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0014.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0015.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0016.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0017.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0018.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0019.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0020.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0021.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最终排名rank 6 &lt;/p&gt;
+&lt;p&gt;自己团队的解决方案&lt;br&gt;此次比赛主要目的用于促进团队的感情…&lt;/p&gt;
+&lt;p&gt;答辩情况来看,我们的集成做的太烂了…&lt;br&gt;一直只有一种模型,最后一天才反应到吃亏搞出两种很相似的上了俩千分点&lt;br&gt;靠着半监督的优势撑了大半个比赛流程&lt;/p
+      
+    
+    </summary>
+    
+      <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
+    
+    
+      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Avito Demand Prediction Challenge比赛总结</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/</id>
+    <published>2018-07-07T13:24:43.000Z</published>
+    <updated>2018-07-12T13:30:24.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这个比赛我是快结束的时候参加了,想顺手捞一波名次<br>他对我最大的挑战就是试错成本太高太高了</p><p>树模型交叉验证五折要5-7天 = =<br>图片70G<br>各种特征生成也有几十个G = = </p><p>我总共打了15天<br>写代码占4天,接下来搞别的事情去了,代码挂着跑了11天<br>最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的</p><p>因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)<br>不过现在看下来他们的大部分trick我都做到了,就是没时间搞细</p><h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><h3 id="文本特征"><a href="#文本特征" class="headerlink" title="文本特征"></a>文本特征</h3><blockquote><p>自己的做法</p><ol><li>tfidf+char/word(稀疏矩阵存下来,几万维全部丢给树,svd效果会变差,大部分分数靠的是他)</li><li>地理位置信息用google api获取经纬度(没啥效果)</li></ol></blockquote><p>其他有价值的做法</p><ol><li>用fastText的词向量替代tfidf矩阵</li><li>文本的一些统计特征，词数，字数等等</li></ol><h3 id="图像特征"><a href="#图像特征" class="headerlink" title="图像特征"></a>图像特征</h3><blockquote><p>自己的做法</p><ol><li>图片的一些属性特征(写了没跑,因为具言效果不佳)</li><li>vgg的卷积结束后global pool成向量svd分解(效果不佳),其实这里可能丢失语义信息了,或许从全连接那里抽比较好(没时间了)</li></ol></blockquote><p>其他有价值的做法</p><ol><li>和我的2差不多类似换了基础网络resnet152，resnet34</li><li>还有一些图像的传统统计量亮度暗度（效果都不是很明显）</li><li>冠军用out-of-preditcion来微调resnet34 效果比较显著</li><li>预训练模型对图像进行分类作为特征（其实这个特征已经有了，所以比较冗余，不是很明显）</li></ol><h3 id="categorical-amp-numerical"><a href="#categorical-amp-numerical" class="headerlink" title="categorical &amp; numerical"></a>categorical &amp; numerical</h3><p>user_id和item_id 几乎一个样本一个id了,表示学习都没法了<br>而且user_id训练集测试集交集只有6%,item_id只有0%</p><blockquote><p>自己的做法<br>1  &emsp; 用user_type和city的组合编码近似代表user<br>&emsp;&emsp;用category,image_top_1等近似代表item<br>&emsp;&emsp;获取邻接矩阵进行svd分解(分数提升)<br>2  &emsp; category批量生成共现概率，条件概率<br>3  &emsp; category与连续组合计算条件统计量<br>4  &emsp; 连续连续组合+-*/<br>5  &emsp; target encode(用category和label组合计算label的统计量）</p></blockquote><p>其他有价值的做法</p><ol><li>冠军把user_id用起来了，虽然user_id在训练集测试集中交集只有6%，但他交叉验证时将user_id分的和测试集差不多比例</li></ol><blockquote></blockquote><p>category之间计算共现概率,条件概率(条件熵,信息熵等没算)<br>数值和类别之间计算条件统计量(mean,min,max,std)等<br>交叉组合四五个特征</p><blockquote><p>虽说我的特征大都是批量生成<br>但还是选择性的批量生成，否则维度太高了<br>其中起主要效果的是price的条件统计量，以及price条件统计量的标准化</p></blockquote><h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><blockquote></blockquote><ol><li>spatialDropout1D放embedding后超级棒，我最近发现先bn再sdp效果极佳</li><li>图像部分迁移学习固定权重</li><li>树模型与nn都使用交叉熵效果极佳，树模型是xentropy</li></ol><blockquote><p>值得一提的是好多文本比赛感觉attention很不work，我猜可能大部分都是短文本的缘故吧</p></blockquote><h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p>没做 = =<br>跑出了俩模型,第一个太烂丢掉了<br>实际有效的模型只跑出了一个，只能随便拉个kerne的平均一下</p><blockquote><p>其他人的做法<br>几组较优超参集成<br>疯狂stacking…</p></blockquote><h2 id="最后感受"><a href="#最后感受" class="headerlink" title="最后感受"></a>最后感受</h2><p>大家做的方法其实都大差不差<br>都是一些细节拉大了分数<br>我感觉我吃的最大的亏是时间<br>在细节上我用的是回归，别人用的是交叉熵</p><p>和鹏哥感受一样比赛真的是一件投入产出比很低 = =<br>从头打到尾套路基本都会了的话<br>不出意外个人感觉top3%,top2%不是意见特别难的事情<br>但是很耗精力，比赛周期一般也太长了。。。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这个比赛我是快结束的时候参加了,想顺手捞一波名次&lt;br&gt;他对我最大的挑战就是试错成本太高太高了&lt;/p&gt;
+&lt;p&gt;树模型交叉验证五折要5-7天 = =&lt;br&gt;图片70G&lt;br&gt;各种特征生成也有几十个G = = &lt;/p&gt;
+&lt;p&gt;我总共打了15天&lt;br&gt;写代码占4天,接下来搞别的事
+      
+    
+    </summary>
+    
+      <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
+    
+    
+      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>GRL简述</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/01/GRL%E7%AE%80%E8%BF%B0/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/01/GRL简述/</id>
+    <published>2018-07-01T04:53:52.000Z</published>
+    <updated>2018-10-13T07:58:27.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>nlp讨论班需要简要入门一下GRL<br>在此做个简短的介绍<br>这东西对大家打比赛也是很有用的<br>而且个人觉得这个方向也是比较有趣的</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_01.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_02.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_03.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_04.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_05.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_06.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_07.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_08.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_09.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/01/GRL简述/0_10.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nlp讨论班需要简要入门一下GRL&lt;br&gt;在此做个简短的介绍&lt;br&gt;这东西对大家打比赛也是很有用的&lt;br&gt;而且个人觉得这个方向也是比较有趣的&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qr
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>attention</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/29/attention/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/29/attention/</id>
+    <published>2018-06-29T13:33:51.000Z</published>
+    <updated>2018-06-29T13:37:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>nlp讨论班刚开始没多久<br>得从基础唠起<br>遂做了个简短的注意力ppt<br>做个简单的介绍</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0006.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0007.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0008.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nlp讨论班刚开始没多久&lt;br&gt;得从基础唠起&lt;br&gt;遂做了个简短的注意力ppt&lt;br&gt;做个简单的介绍&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qrfaction/qrfaction.gi
+      
+    
+    </summary>
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
+    
+    
+      <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>attention is all you need</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/27/attention-is-all-you-need/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/27/attention-is-all-you-need/</id>
+    <published>2018-06-27T03:53:05.000Z</published>
+    <updated>2018-06-27T04:02:49.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>这篇文章本身是用于seq2seq任务的<br>其中亮点提出了一个Multi-head attention具有相当的启发意义</p><h2 id="attention-function"><a href="#attention-function" class="headerlink" title="attention function"></a>attention function</h2><p>给定一个query<br>再给定一组(key,value)对,value可以理解为某个事物的具体信息,key为其关键信息</p><p>attention机制就是给出一组权重,使得模型对value的各个部分的关注度不同<br>这个关注度由query和key决定<br>很基本的想法就是和query越相关,权重越大</p><p>这里涉及到一个度量函数,常用的有余弦相似度<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/attention.jpg" alt="这里写图片描述"><br>Q与K中的各个关键字做相似度计算,再进行权重归一化,对V进行加权求和获得最终内容<br>d<sub>k</sub> 是关键字的维度</p><p>获得权重后对value进行加权<br>大部分情况下key=value<br>个人认为当value维度过高时才需要关键信息的提取,这时才会有key和value的不同</p><p>当key=value=query时,就是self-attention机制</p><h2 id="Multi-Head-Attention"><a href="#Multi-Head-Attention" class="headerlink" title="Multi-Head Attention"></a>Multi-Head Attention</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/multi.jpg" alt="这里写图片描述"><br>首先用几个线性变换W将query,key,value映射到多个空间<br>再对他们通过注意力函数提取value的高质量信息</p><p>然后用h组线性变换W,进行拼接就得到了multi-head</p><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/transform.jpg" alt="这里写图片描述"><br>如上便是他的模型结构<br>左边是编码器,右边是解码器</p><h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h3><p>这个编码器由N=6个相同的组件堆叠而成<br>一个组件由两个子层组成</p><p>编码器的multi-head attention 是self-attention<br>Add &amp; Norm是指残差连接和layer规范化</p><p>Feed Forward是指<br>FFN(x) = max(0,W<sub>1</sub>+b<sub>1</sub>)W<sub>2</sub>+b<sub>2</sub><br>x是词向量</p><p>这就相当于两层kernel size = 1的卷积<br>或者时间步上共享权重的全连接层</p><h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h3><p>这个编码器由N=6个相同的组件堆叠而成<br>一个组件由两个子层组成</p><p>编码器的multi-head attention 是self-attention<br>Add &amp; Norm是指残差连接和layer规范化</p><p>Feed Forward是指<br>FFN(x) = max(0,W<sub>1</sub>+b<sub>1</sub>)W<sub>2</sub>+b<sub>2</sub><br>x是词向量</p><p>这就相当于两层kernel size = 1的卷积<br>或者时间步上共享权重的全连接层</p><h3 id="output-embedding"><a href="#output-embedding" class="headerlink" title="output embedding"></a>output embedding</h3><p>将上一时刻的预测作为当前输入<br>seq2seq的常用trick</p><h3 id="position-embedding"><a href="#position-embedding" class="headerlink" title="position embedding"></a>position embedding</h3><p>由于没有使用conv和rnn所以缺失位置信息<br>于是使用了一系列位置编码<br>其实看不大懂这个东西为啥work = =<br>见图 </p><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/pos.jpg" alt="这里写图片描述"> </p><p>对于一个输入的句子矩阵(句长,词向量维度)<br>和他进行信息结合的是position以上述编码方式生成<br>i是第几个维度,pos是位置,时间轴<br>d<sub>model</sub>是词向量的维度</p><p>原本解释说这是因为PE<sub>pos+k</sub>可以表示为PE<sub>pos</sub>的线性函数</p><h2 id="finally"><a href="#finally" class="headerlink" title="finally"></a>finally</h2><p>这篇文章算是粗读<br>只理清了模型的推导<br>里面的参数设置和模型训练的具体细节没去纠</p><p>这篇文章对attention机制做了一个很好描述</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这篇文章本身是用于seq2seq任务的&lt;br&gt;其中亮点提出了一个Multi-head attention具有相当的启发意义&lt;/p&gt;
+&lt;h2 id=&quot;attention-function&quot;&gt;&lt;a href=&quot;#attention-function&quot; class=&quot;header
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018CVPR之siameseRPN</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/21/siameseRPN/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/21/siameseRPN/</id>
+    <published>2018-06-21T14:12:22.000Z</published>
+    <updated>2018-10-20T03:12:11.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/21/siameseRPN/model.jpg" alt="这里写图片描述"> </p><h3 id="Siamese-FC"><a href="#Siamese-FC" class="headerlink" title="Siamese FC"></a>Siamese FC</h3><p>使用AlexNet去掉conv2和conv4<br>所有卷积不使用padding</p><h3 id="Region-Proposal-Network"><a href="#Region-Proposal-Network" class="headerlink" title="Region Proposal Network"></a>Region Proposal Network</h3><p>其实看过faster rcnn 和 siamese fc还是一下子就能理明白的</p><ol><li>模板帧用卷积抽成4×4×(2k×256)个代表k个anchor+前背景分类</li><li>模板帧用卷积抽成4×4×(4k×256)个代表k个anchor+坐标回归<br>然后模板帧的特征图与检测帧的做相关运算进行匹配<br>其中anchor比例为[0.33,0.5,1,2,3]</li></ol><p>其中回归分支的需要,一些仿射变换用于做数据增强<br>然后proposed至少筛选16个正例,总共64个样本<br>正例IoU阈值为0.6,负例为0.3</p><p>然后loss照搬faster rcnn </p><h2 id="one-shot-detection"><a href="#one-shot-detection" class="headerlink" title="one-shot detection"></a>one-shot detection</h2><p>检测应用到追踪即为one-shot detection问题</p><h3 id="推断"><a href="#推断" class="headerlink" title="推断"></a>推断</h3><p>模板帧在第一帧推断后就不再更新了</p><ol><li>第一帧的特征更鲁棒</li><li>速度快,nn慢就是因为要迭代bp<br>所以这需要大量的数据进行预训练获得通用化的特征</li></ol><h3 id="proposal-selection"><a href="#proposal-selection" class="headerlink" title="proposal selection"></a>proposal selection</h3><ol><li>不选取中心位置离当帧超过七个像素的anchor</li><li>给模型的分类置信度加penalty,其中k是超参,r和s分别代表了尺寸和面积,衰减尺度面积变化过大的anchor<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/21/siameseRPN/penalty.jpg" alt="这里写图片描述"> </li><li>选K个分类置信度最高的,进行NMS抑制</li><li>最终尺度选定后使用线性插值进行平滑改变</li></ol><h2 id="other-details"><a href="#other-details" class="headerlink" title="other details"></a>other details</h2><p>使用VID和Youtube-BB数据进行离线训练<br>每次训练模板帧和检测帧之间的时间间隔不超过100帧</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;模型结构&quot;&gt;&lt;a href=&quot;#模型结构&quot; class=&quot;headerlink&quot; title=&quot;模型结构&quot;&gt;&lt;/a&gt;模型结构&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qrfaction/qrfactio
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="tracking" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/tracking/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AUC优化与树模型的那些事</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC%E4%BC%98%E5%8C%96%E4%B8%8E%E6%A0%91%E6%A8%A1%E5%9E%8B%E7%9A%84%E9%82%A3%E4%BA%9B%E4%BA%8B/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/07/AUC优化与树模型的那些事/</id>
+    <published>2018-06-07T03:35:35.000Z</published>
+    <updated>2018-06-07T03:53:20.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近忽然发现lightgbm中有个梯度优化的loss<br>以前一直好奇树模型如何对auc进行优化<br>于是查了一下,作此博文</p><h2 id="AUC在梯度树与DNN中优化的不同之处"><a href="#AUC在梯度树与DNN中优化的不同之处" class="headerlink" title="AUC在梯度树与DNN中优化的不同之处"></a>AUC在梯度树与DNN中优化的不同之处</h2><p>之前我在文章<a href="https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式" target="_blank" rel="noopener">https://qrfaction.github.io/2018/04/02/end2endAUC/简述了DNN对AUC的优化方式</a><br>基本就是用一个度量函数将AUC公式中不可微的部分进行平滑</p><p>然而在梯度树中这带来了困难<br>见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/xgb.jpeg" alt="这里写图片描述"><br>可知梯度树在计算梯度时主要获得的是针对每个样本的梯度信息<br>而原先在DNN中的AUC是无需将梯度细粒度到每个样本<br>只要有一个loss信息回传就OK了</p><p>可见原先的方式不再适用</p><h2 id="Learning-to-rank-之-LambdaMART"><a href="#Learning-to-rank-之-LambdaMART" class="headerlink" title="Learning to rank 之 LambdaMART"></a>Learning to rank 之 LambdaMART</h2><p>MART其实就是GBDT(他名字很多诶)</p><p>这个方法其实是将rankLoss的梯度信息作为模型中的label y<br>即定义了模型的预测score的分数上升方向</p><p>首先定义一个rankLoss,其中s<sub>i</sub> , s<sub>j</sub>是模型输出的score<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss1.jpeg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/loss2.jpeg" alt="这里写图片描述"> </p><p>在对s<sub>i</sub>求偏导<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/grad.jpeg" alt="这里写图片描述"><br>于是得到了一个s<sub>i</sub>的上升/下降方向<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda1.jpeg" alt="这里写图片描述"><br>再令有序对(i,j)的排序label  S<sub>ij</sub> = 1<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda.jpeg" alt="这里写图片描述"><br>最后再将λ<sub>i</sub>作为sample i的label<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/07/AUC优化与树模型的那些事/lambda2.jpeg" alt="这里写图片描述"> </p><p>从而实现了树模型的Learning to rank</p><p>但这个我感觉应该对auc直接优化有很大帮助<br>因为毕竟auc本身也是一种基于排序的指标<br>但是否具有一致性就不清楚了<br>不过尝试了一下lightgbm中的lambda mart 训练速度超级慢…懒得试了</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近忽然发现lightgbm中有个梯度优化的loss&lt;br&gt;以前一直好奇树模型如何对auc进行优化&lt;br&gt;于是查了一下,作此博文&lt;/p&gt;
+&lt;
+      
+    
+    </summary>
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
+    
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/ML-DL/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>并行数据处理库Dask介绍</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/%E5%B9%B6%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%BA%93Dask%E4%BB%8B%E7%BB%8D/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/</id>
+    <published>2018-06-01T12:13:39.000Z</published>
+    <updated>2018-06-01T12:14:44.000Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近有一些临时需求需要并行一些python代码<br>受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵…</p><p>今天偶然发现一个Dask库<br>api与numpy,pandas一致,但可以并行计算<br>真的是雪中送炭hh</p><h2 id="Dask"><a href="#Dask" class="headerlink" title="Dask"></a>Dask</h2><h3 id="接口介绍"><a href="#接口介绍" class="headerlink" title="接口介绍"></a>接口介绍</h3><p>High Level</p><blockquote><p>  Arrays: 并行Numpy<br>    Bags: 并行lists<br>    Dataframes: 并行Pandas<br>    Machine Learning : 并行Scikit-Learn<br>    Others from external projects, like XArray</p></blockquote><p>Low Level</p><blockquote><p>  Delayed: 用这个装饰器可以用于封装自定义函数来搭建计算图延迟计算<br>    Futures: real-time parallel function evaluation</p></blockquote><h3 id="计算图搭建与延迟计算"><a href="#计算图搭建与延迟计算" class="headerlink" title="计算图搭建与延迟计算"></a>计算图搭建与延迟计算</h3><p>方式一</p><blockquote><p>import dask</p></blockquote><p>lazy_results = []<br>for a in A:<br>&emsp;&emsp;for b in B:<br>&emsp;&emsp;&emsp;&emsp;if a &lt; b:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(f)(a, b)  # 延迟任务计算,f是自定义函数<br>&emsp;&emsp;&emsp;&emsp;else:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(g)(a, b)  # 延迟任务计算<br>&emsp;&emsp;&emsp;&emsp;lazy_results.append(c)</p><blockquote><p>results = dask.compute(*lazy_results)  # 并行计算所有任务</p></blockquote><p>方式二 </p><blockquote></blockquote><p>@dask.delayed<br>def inc(x):<br>&emsp;&emsp;return x + 1</p><blockquote></blockquote><p>@dask.delayed<br>def add(x, y):<br>&emsp;&emsp;return x + y</p><blockquote></blockquote><p>a = inc(1)       # 放入计算图<br>b = inc(2)       # 放入计算图<br>c = add(a, b)    # 放入计算图</p><blockquote></blockquote><p>c = c.compute()  # 运行计算图并返回结果</p><h3 id="Dask中的pandas一览"><a href="#Dask中的pandas一览" class="headerlink" title="Dask中的pandas一览"></a>Dask中的pandas一览</h3><blockquote></blockquote><p>>&gt;&gt; import dask.dataframe as dd<br>>&gt;&gt; df = dd.read_csv(‘2014-*.csv’)<br>>&gt;&gt; df.head()<br>&emsp;&emsp;&ensp;x&emsp;y<br>&emsp;0&emsp;1&emsp;a<br>&emsp;1&emsp;2&emsp;b<br>&emsp;2&emsp;3&emsp;c<br>&emsp;3&emsp;4&emsp;a<br>&emsp;4&emsp;5&emsp;b<br>&emsp;5&emsp;6&emsp;c</p><blockquote></blockquote><p>>&gt;&gt; df2 = df[df.y == ‘a’].x + 1</p><blockquote></blockquote><p>>&gt;&gt; df2.compute()<br>0&emsp;2<br>3&emsp;5<br>Name: x, dtype: int64</p><p>pandas中如下等各类函数皆被加速处理</p><p>dd.merge(df1, df2, on=’name’)<br>df.groupby(df.x).apply(myfunc)<br>df[df.x &gt; 0]<br>df.x + df.y<br>等等</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近有一些临时需求需要并行一些python代码&lt;br&gt;受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵…&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="高性能编程" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B/"/>
+    
+    
+      <category term="python" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/python/"/>
+    
+  </entry>
+  
+</feed>
