@@ -92,11 +92,11 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/iouvsloc.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/ioupredict.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/nms.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/prroi1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou3.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/result.png">
-<meta property="og:updated_time" content="2018-11-10T05:23:46.838Z">
+<meta property="og:updated_time" content="2018-11-10T05:41:30.638Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IoU-Net 阅读笔记">
 <meta name="twitter:description" content="好久没碰检测了前段时间因为一些事情又focus了几天今天做个IOU-Net的简短笔记 简单来说这篇文章主要是针对这样一个问题检测的目的很明确，为了获得高质量的bounding box然而在以前的做法当中是先通过一系列bounding box然后再经过筛选获得筛选是以分类置信度为第一优先级但是，分类置信度和bbox proposal质量存在相关性但非同步增减  基于这些问题，这篇文章提出了以下策略">
@@ -384,7 +384,7 @@
 <h3 id="IoU-guided-NMS"><a href="#IoU-guided-NMS" class="headerlink" title="IoU-guided NMS"></a>IoU-guided NMS</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/nms.png" alt="这里写图片描述"><br>首先选出IoU最大的bbox<br>获得与该bbox重叠率大于某阈值的bbox集合<br>将该bbox的分类置信度更新为该集合内分类置信度的最大值<br>滤掉该集合内的bbox</p>
 <p>如此循环…</p>
 <h3 id="Bounding-box-refinement-as-an-optimization-procedure"><a href="#Bounding-box-refinement-as-an-optimization-procedure" class="headerlink" title="Bounding box refinement as an optimization procedure"></a>Bounding box refinement as an optimization procedure</h3><p>这部分也就长话短说<br>就是我们现在有一个IoU预测器，以及检测获得的bbox<br>将这些bbox输入，获得其IoU预测值，再通过梯度反向微调bbox</p>
-<h3 id="PrROI直接看公式吧"><a href="#PrROI直接看公式吧" class="headerlink" title="PrROI直接看公式吧"></a>PrROI直接看公式吧</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou2.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou3.png" alt="这里写图片描述"><br>ROIPool -&gt; ROIAlign 避免量化<br>ROIAlign -&gt; PrROI 修补了ROIAlign不能由bin大小调整的缺陷</p>
+<h3 id="PrROI直接看公式吧"><a href="#PrROI直接看公式吧" class="headerlink" title="PrROI直接看公式吧"></a>PrROI直接看公式吧</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/prroi1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou2.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou3.png" alt="这里写图片描述"><br>ROIPool -&gt; ROIAlign 避免量化<br>ROIAlign -&gt; PrROI 修补了ROIAlign不能由bin大小调整的缺陷</p>
 <h3 id="result"><a href="#result" class="headerlink" title="result"></a>result</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/result.png" alt="这里写图片描述"><br>高IoU阈值时有较显著的提升</p>
 
       
