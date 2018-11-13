@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="序列标注,">
 
 
 
@@ -81,13 +81,21 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="qrfaction的博客">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/tags/cuda/index.html">
+<meta name="description" content="很早之前看CRF一直都是一堆概率图一堆公式，看的晕乎乎，最后也不知道怎么算如何用后来几个月前看到苏神的博客才醍醐灌醒然后这几天也一直在研究crf的源码其实这个东西哪里有那么复杂 同类对比是个很好的理解方式以序列标注为例子首先我们看看直接以softmax建模对序列的每个输出都进行softmax输出概率P(Yi|X)整个序列出现概率为P(Y|X) = ∏i P(Yi|X)该序列的loss为loss =">
+<meta name="keywords" content="序列标注">
+<meta property="og:type" content="article">
+<meta property="og:title" content="同类对比CRF">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/11/13/同类对比CRF/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
+<meta property="og:description" content="很早之前看CRF一直都是一堆概率图一堆公式，看的晕乎乎，最后也不知道怎么算如何用后来几个月前看到苏神的博客才醍醐灌醒然后这几天也一直在研究crf的源码其实这个东西哪里有那么复杂 同类对比是个很好的理解方式以序列标注为例子首先我们看看直接以softmax建模对序列的每个输出都进行softmax输出概率P(Yi|X)整个序列出现概率为P(Y|X) = ∏i P(Yi|X)该序列的loss为loss =">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/softmax.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/crf.png">
+<meta property="og:updated_time" content="2018-11-13T13:11:47.150Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="qrfaction的博客">
+<meta name="twitter:title" content="同类对比CRF">
+<meta name="twitter:description" content="很早之前看CRF一直都是一堆概率图一堆公式，看的晕乎乎，最后也不知道怎么算如何用后来几个月前看到苏神的博客才醍醐灌醒然后这几天也一直在研究crf的源码其实这个东西哪里有那么复杂 同类对比是个很好的理解方式以序列标注为例子首先我们看看直接以softmax建模对序列的每个输出都进行softmax输出概率P(Yi|X)整个序列出现概率为P(Y|X) = ∏i P(Yi|X)该序列的loss为loss =">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/softmax.png">
 
 
 
@@ -117,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/tags/cuda/">
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/13/同类对比CRF/">
 
 
 
 
 
-  <title>标签: cuda | qrfaction的博客</title>
+  <title>同类对比CRF | qrfaction的博客</title>
   
 
 
@@ -152,7 +160,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -256,156 +264,179 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block tag">
-
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>cuda<small>标签</small>
-        </h1>
-      </div>
-
-      
-        
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/13/同类对比CRF/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/05/29/CUDA上下文环境/" itemprop="url">
-              
-                <span itemprop="name">CUDA上下文环境</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">同类对比CRF</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-05-29T14:51:15+08:00" content="2018-05-29">
-          05-29
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T21:02:41+08:00">
+                2018-11-13
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/05/11/CUDA存储器/" itemprop="url">
-              
-                <span itemprop="name">CUDA存储器</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-05-11T13:42:19+08:00" content="2018-05-11">
-          05-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
 
       
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/05/05/CUDA执行模型/" itemprop="url">
-              
-                <span itemprop="name">CUDA执行模型</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-05-05T21:08:17+08:00" content="2018-05-05">
-          05-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/22/Thrust简单入门/" itemprop="url">
-              
-                <span itemprop="name">Thrust简单入门</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-22T13:15:01+08:00" content="2018-04-22">
-          04-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/04/09/GPU高性能编程CUDA实战阅读笔记/" itemprop="url">
-              
-                <span itemprop="name">GPU高性能编程CUDA实战阅读笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-04-09T21:11:22+08:00" content="2018-04-09">
-          04-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+        <p>很早之前看CRF一直都是一堆概率图<br>一堆公式，看的晕乎乎，最后也不知道怎么算如何用<br>后来几个月前看到苏神的博客才醍醐灌醒<br>然后这几天也一直在研究crf的源码<br>其实这个东西哪里有那么复杂</p>
+<p>同类对比是个很好的理解方式<br>以序列标注为例子<br>首先我们看看直接以softmax建模<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/softmax.png" alt="这里写图片描述"><br>对序列的每个输出都进行softmax输出概率P(Y<sub>i</sub>|X)<br>整个序列出现概率为P(Y|X) = ∏<sub>i</sub> P(Y<sub>i</sub>|X)<br>该序列的loss为<br>loss = -Σ<sub>i</sub> log(Y<sub>i</sub>|X)</p>
+<p>而这种建模序列概率的方式没有考虑到序列标签的依赖关系<br>crf是考虑了这种依赖关系而对整个句子的概率进行建模<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/crf.png" alt="这里写图片描述"><br>P(Y|X) = exp(h(y<sub>1</sub>;x)+g(y<sub>1</sub>,y<sub>2</sub>;x)+…+h(y<sub>n</sub>;x))/Z(x)<br>P(Y|X) = exp(Σ<sub>i</sub> h(y<sub>i</sub>;x) + Σ<sub>i</sub>  g(y<sub>i</sub>,y<sub>i+1</sub>;x))/Z(x)<br>如此给句子打分就考虑到了句子间的近临依赖<br>loss = - log(P(Y|X))<br>其中h是之前rnn/cnn等的输出，而g是状态转移矩阵，可用自定义rnn实现</p>
+<p>但是分子计算是完成了<br>分母的计算呢<br>这里用到dp即可计算得到<br>Z<sub>t+1</sub>(i) = ( Σ<sub>j</sub> Z<sub>t</sub>(j) <em> G(j|i) ) </em> H(i|X)<br>Z<sub>t+1</sub>(i)意思是t+1时刻以i结尾的所有序列得分和<br>G(j|i)为exp(g(y<sub>i</sub>,y<sub>i+1</sub>;x))<br>H(i,X)为exp(h(y<sub>i</sub>;x))</p>
+<p>那么还有一个问题，如何预测？<br>普通的对句子的所有输出进行softmax，直接argmax就好了</p>
+<p>用crf的话就涉及到最长路径<br>这个直接用vibiter算法即可获得</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/序列标注/" rel="tag"># 序列标注</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/10/iounet/" rel="next" title="IoU-Net 阅读笔记">
+                <i class="fa fa-chevron-left"></i> IoU-Net 阅读笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -413,6 +444,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -654,6 +689,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 

@@ -271,6 +271,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/16/博客迁移之pytorch神坑记录/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/16/博客迁移之pytorch神坑记录/" itemprop="url">博客迁移之pytorch神坑记录</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-16T19:48:59+08:00">
+                2018-04-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>本文由本人于2018.02.03于<a href="https://blog.csdn.net/qrfaction/article/details/79249831发布" target="_blank" rel="noopener">https://blog.csdn.net/qrfaction/article/details/79249831发布</a></p>
+<p>前天由于需要<br>翻起pytorch文档直接撸<br>然后今天记录一下这两天一路踩下来的神坑</p>
+<p>pytorch3.0 </p>
+<ol>
+<li><p>Tensor  和  Variable不能自动互转…</p>
+</li>
+<li><p>Tensor各种类型之间不支持自动互转…</p>
+</li>
+<li><p>Tensor的布尔索引不支持 list</p>
+</li>
+<li><p>循环单元的初始隐藏状态得自己设置,最好在传播时生成,因为他的batchsize大小会固定…</p>
+</li>
+<li><p>放在GPU上跑的时候记得把循环单元的初始隐藏状态 .cuda() ,因为GPU上的变量类型和CPU上的不能互转…</p>
+</li>
+<li><p>推断模式  一定要把变量设置成volatile = True，否则他会有一部份内存不会释放掉…<br> 我这里反正是由于验证集太大  有快百个G没释放掉 … 开了这个之后内存占用一直没超过12G…</p>
+</li>
+<li><p>使用dropout ,batchnorm 时记得使用 train() 和 eval()</p>
+</li>
+<li><p>模型 .cuda()转到GPU上后 参数也会改变  所以优化器一定要在这个之后用…</p>
+</li>
+<li>pytorch3.0在开Data parallel后跑两个程序会导致进程死锁(kill不掉,以及尝试各类方法)  唯一的解决方案是重启</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/09/GPU高性能编程CUDA实战阅读笔记/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1224,7 +1387,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1246,7 +1409,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

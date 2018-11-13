@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2018-11-10T05:41:30.638Z</updated>
+  <updated>2018-11-13T13:11:47.150Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -17,11 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>同类对比CRF</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/11/13/%E5%90%8C%E7%B1%BB%E5%AF%B9%E6%AF%94CRF/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/11/13/同类对比CRF/</id>
+    <published>2018-11-13T13:02:41.000Z</published>
+    <updated>2018-11-13T13:11:47.150Z</updated>
+    
+    <content type="html"><![CDATA[<p>很早之前看CRF一直都是一堆概率图<br>一堆公式，看的晕乎乎，最后也不知道怎么算如何用<br>后来几个月前看到苏神的博客才醍醐灌醒<br>然后这几天也一直在研究crf的源码<br>其实这个东西哪里有那么复杂</p><p>同类对比是个很好的理解方式<br>以序列标注为例子<br>首先我们看看直接以softmax建模<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/softmax.png" alt="这里写图片描述"><br>对序列的每个输出都进行softmax输出概率P(Y<sub>i</sub>|X)<br>整个序列出现概率为P(Y|X) = ∏<sub>i</sub> P(Y<sub>i</sub>|X)<br>该序列的loss为<br>loss = -Σ<sub>i</sub> log(Y<sub>i</sub>|X)</p><p>而这种建模序列概率的方式没有考虑到序列标签的依赖关系<br>crf是考虑了这种依赖关系而对整个句子的概率进行建模<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/crf.png" alt="这里写图片描述"><br>P(Y|X) = exp(h(y<sub>1</sub>;x)+g(y<sub>1</sub>,y<sub>2</sub>;x)+…+h(y<sub>n</sub>;x))/Z(x)<br>P(Y|X) = exp(Σ<sub>i</sub> h(y<sub>i</sub>;x) + Σ<sub>i</sub>  g(y<sub>i</sub>,y<sub>i+1</sub>;x))/Z(x)<br>如此给句子打分就考虑到了句子间的近临依赖<br>loss = - log(P(Y|X))<br>其中h是之前rnn/cnn等的输出，而g是状态转移矩阵，可用自定义rnn实现</p><p>但是分子计算是完成了<br>分母的计算呢<br>这里用到dp即可计算得到<br>Z<sub>t+1</sub>(i) = ( Σ<sub>j</sub> Z<sub>t</sub>(j) <em> G(j|i) ) </em> H(i|X)<br>Z<sub>t+1</sub>(i)意思是t+1时刻以i结尾的所有序列得分和<br>G(j|i)为exp(g(y<sub>i</sub>,y<sub>i+1</sub>;x))<br>H(i,X)为exp(h(y<sub>i</sub>;x))</p><p>那么还有一个问题，如何预测？<br>普通的对句子的所有输出进行softmax，直接argmax就好了</p><p>用crf的话就涉及到最长路径<br>这个直接用vibiter算法即可获得</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;很早之前看CRF一直都是一堆概率图&lt;br&gt;一堆公式，看的晕乎乎，最后也不知道怎么算如何用&lt;br&gt;后来几个月前看到苏神的博客才醍醐灌醒&lt;br&gt;然后这几天也一直在研究crf的源码&lt;br&gt;其实这个东西哪里有那么复杂&lt;/p&gt;
+&lt;p&gt;同类对比是个很好的理解方式&lt;br&gt;以序列标注为例子
+      
+    
+    </summary>
+    
+      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
+    
+    
+      <category term="序列标注" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%BA%8F%E5%88%97%E6%A0%87%E6%B3%A8/"/>
+    
+  </entry>
+  
+  <entry>
     <title>IoU-Net 阅读笔记</title>
     <link href="https://github.com/qrfaction/qrfaction.github.io/2018/11/10/iounet/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2018/11/10/iounet/</id>
     <published>2018-11-10T05:14:37.000Z</published>
-    <updated>2018-11-10T05:41:30.638Z</updated>
+    <updated>2018-11-10T05:41:30.000Z</updated>
     
     <content type="html"><![CDATA[<p>好久没碰检测了<br>前段时间因为一些事情又focus了几天<br>今天做个IOU-Net的简短笔记</p><p>简单来说这篇文章主要是针对这样一个问题<br>检测的目的很明确，为了获得高质量的bounding box<br>然而在以前的做法当中是先通过一系列bounding box然后再经过筛选获得<br>筛选是以分类置信度为第一优先级<br>但是，分类置信度和bbox proposal质量存在相关性但非同步增减<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/iouvsloc.png" alt="这里写图片描述"> </p><p>基于这些问题，这篇文章提出了以下策略</p><h3 id="IoU-predictor"><a href="#IoU-predictor" class="headerlink" title="IoU predictor"></a>IoU predictor</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/ioupredict.png" alt="这里写图片描述"><br>加入IoU预测分支，loss使用smooth L1<br>使用非RPN提供的proposals，而是ground truth加随机绕动得到Jittered RoIs</p><h3 id="IoU-guided-NMS"><a href="#IoU-guided-NMS" class="headerlink" title="IoU-guided NMS"></a>IoU-guided NMS</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/nms.png" alt="这里写图片描述"><br>首先选出IoU最大的bbox<br>获得与该bbox重叠率大于某阈值的bbox集合<br>将该bbox的分类置信度更新为该集合内分类置信度的最大值<br>滤掉该集合内的bbox</p><p>如此循环…</p><h3 id="Bounding-box-refinement-as-an-optimization-procedure"><a href="#Bounding-box-refinement-as-an-optimization-procedure" class="headerlink" title="Bounding box refinement as an optimization procedure"></a>Bounding box refinement as an optimization procedure</h3><p>这部分也就长话短说<br>就是我们现在有一个IoU预测器，以及检测获得的bbox<br>将这些bbox输入，获得其IoU预测值，再通过梯度反向微调bbox</p><h3 id="PrROI直接看公式吧"><a href="#PrROI直接看公式吧" class="headerlink" title="PrROI直接看公式吧"></a>PrROI直接看公式吧</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/prroi1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou2.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou3.png" alt="这里写图片描述"><br>ROIPool -&gt; ROIAlign 避免量化<br>ROIAlign -&gt; PrROI 修补了ROIAlign不能由bin大小调整的缺陷</p><h3 id="result"><a href="#result" class="headerlink" title="result"></a>result</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/result.png" alt="这里写图片描述"><br>高IoU阈值时有较显著的提升</p>]]></content>
     
@@ -517,32 +543,6 @@
     
     
       <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/ML-DL/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>并行数据处理库Dask介绍</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/%E5%B9%B6%E8%A1%8C%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86%E5%BA%93Dask%E4%BB%8B%E7%BB%8D/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/</id>
-    <published>2018-06-01T12:13:39.000Z</published>
-    <updated>2018-06-01T12:14:44.000Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近有一些临时需求需要并行一些python代码<br>受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵…</p><p>今天偶然发现一个Dask库<br>api与numpy,pandas一致,但可以并行计算<br>真的是雪中送炭hh</p><h2 id="Dask"><a href="#Dask" class="headerlink" title="Dask"></a>Dask</h2><h3 id="接口介绍"><a href="#接口介绍" class="headerlink" title="接口介绍"></a>接口介绍</h3><p>High Level</p><blockquote><p>  Arrays: 并行Numpy<br>    Bags: 并行lists<br>    Dataframes: 并行Pandas<br>    Machine Learning : 并行Scikit-Learn<br>    Others from external projects, like XArray</p></blockquote><p>Low Level</p><blockquote><p>  Delayed: 用这个装饰器可以用于封装自定义函数来搭建计算图延迟计算<br>    Futures: real-time parallel function evaluation</p></blockquote><h3 id="计算图搭建与延迟计算"><a href="#计算图搭建与延迟计算" class="headerlink" title="计算图搭建与延迟计算"></a>计算图搭建与延迟计算</h3><p>方式一</p><blockquote><p>import dask</p></blockquote><p>lazy_results = []<br>for a in A:<br>&emsp;&emsp;for b in B:<br>&emsp;&emsp;&emsp;&emsp;if a &lt; b:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(f)(a, b)  # 延迟任务计算,f是自定义函数<br>&emsp;&emsp;&emsp;&emsp;else:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(g)(a, b)  # 延迟任务计算<br>&emsp;&emsp;&emsp;&emsp;lazy_results.append(c)</p><blockquote><p>results = dask.compute(*lazy_results)  # 并行计算所有任务</p></blockquote><p>方式二 </p><blockquote></blockquote><p>@dask.delayed<br>def inc(x):<br>&emsp;&emsp;return x + 1</p><blockquote></blockquote><p>@dask.delayed<br>def add(x, y):<br>&emsp;&emsp;return x + y</p><blockquote></blockquote><p>a = inc(1)       # 放入计算图<br>b = inc(2)       # 放入计算图<br>c = add(a, b)    # 放入计算图</p><blockquote></blockquote><p>c = c.compute()  # 运行计算图并返回结果</p><h3 id="Dask中的pandas一览"><a href="#Dask中的pandas一览" class="headerlink" title="Dask中的pandas一览"></a>Dask中的pandas一览</h3><blockquote></blockquote><p>>&gt;&gt; import dask.dataframe as dd<br>>&gt;&gt; df = dd.read_csv(‘2014-*.csv’)<br>>&gt;&gt; df.head()<br>&emsp;&emsp;&ensp;x&emsp;y<br>&emsp;0&emsp;1&emsp;a<br>&emsp;1&emsp;2&emsp;b<br>&emsp;2&emsp;3&emsp;c<br>&emsp;3&emsp;4&emsp;a<br>&emsp;4&emsp;5&emsp;b<br>&emsp;5&emsp;6&emsp;c</p><blockquote></blockquote><p>>&gt;&gt; df2 = df[df.y == ‘a’].x + 1</p><blockquote></blockquote><p>>&gt;&gt; df2.compute()<br>0&emsp;2<br>3&emsp;5<br>Name: x, dtype: int64</p><p>pandas中如下等各类函数皆被加速处理</p><p>dd.merge(df1, df2, on=’name’)<br>df.groupby(df.x).apply(myfunc)<br>df[df.x &gt; 0]<br>df.x + df.y<br>等等</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;前言&quot;&gt;&lt;a href=&quot;#前言&quot; class=&quot;headerlink&quot; title=&quot;前言&quot;&gt;&lt;/a&gt;前言&lt;/h2&gt;&lt;p&gt;最近有一些临时需求需要并行一些python代码&lt;br&gt;受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵…&lt;/p&gt;
-
-      
-    
-    </summary>
-    
-      <category term="高性能编程" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E9%AB%98%E6%80%A7%E8%83%BD%E7%BC%96%E7%A8%8B/"/>
-    
-    
-      <category term="python" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/python/"/>
     
   </entry>
   
