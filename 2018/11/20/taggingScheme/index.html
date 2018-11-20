@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT">
+  <meta name="keywords" content="序列标注,">
 
 
 
@@ -81,13 +81,23 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="qrfaction的博客">
-<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/tags/QA/index.html">
+<meta name="description" content="这篇文章内容本身其实蛮少的但是意义还是较为重大的 整篇文章唯一的创新点大概在序列标注的标记模式(1)-(2)-(3)(1)内容使用BIES模式标记实体Begin, Inside, End,Single(2)内容使用类别标记实体类别(3)标记实体的在一对关系中的起始和终止位置 就近原则组合(2)相同，且(3)分别为1,2的实体 下面是模型部分直接看图就好，没什么创新点  这是loss就是负类正类权重">
+<meta name="keywords" content="序列标注">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2017ACL Joint Extraction of Entities and Relations Based on a Novel Tagging Scheme">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2018/11/20/taggingScheme/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
+<meta property="og:description" content="这篇文章内容本身其实蛮少的但是意义还是较为重大的 整篇文章唯一的创新点大概在序列标注的标记模式(1)-(2)-(3)(1)内容使用BIES模式标记实体Begin, Inside, End,Single(2)内容使用类别标记实体类别(3)标记实体的在一对关系中的起始和终止位置 就近原则组合(2)相同，且(3)分别为1,2的实体 下面是模型部分直接看图就好，没什么创新点  这是loss就是负类正类权重">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/example.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/model.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/loss.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/result.png">
+<meta property="og:updated_time" content="2018-11-20T07:44:45.418Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="qrfaction的博客">
+<meta name="twitter:title" content="2017ACL Joint Extraction of Entities and Relations Based on a Novel Tagging Scheme">
+<meta name="twitter:description" content="这篇文章内容本身其实蛮少的但是意义还是较为重大的 整篇文章唯一的创新点大概在序列标注的标记模式(1)-(2)-(3)(1)内容使用BIES模式标记实体Begin, Inside, End,Single(2)内容使用类别标记实体类别(3)标记实体的在一对关系中的起始和终止位置 就近原则组合(2)相同，且(3)分别为1,2的实体 下面是模型部分直接看图就好，没什么创新点  这是loss就是负类正类权重">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/example.png">
 
 
 
@@ -117,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/tags/QA/">
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/20/taggingScheme/">
 
 
 
 
 
-  <title>标签: QA | qrfaction的博客</title>
+  <title>2017ACL Joint Extraction of Entities and Relations Based on a Novel Tagging Scheme | qrfaction的博客</title>
   
 
 
@@ -152,7 +162,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -256,78 +266,180 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>QA<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/20/taggingScheme/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/10/21/memorynet/" itemprop="url">
-              
-                <span itemprop="name">Memory network</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">2017ACL Joint Extraction of Entities and Relations Based on a Novel Tagging Scheme</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-21T16:23:05+08:00" content="2018-10-21">
-          10-21
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-20T15:38:29+08:00">
+                2018-11-20
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/NLP/" itemprop="url" rel="index">
+                    <span itemprop="name">NLP</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/08/14/vqa-man/" itemprop="url">
-              
-                <span itemprop="name">2018CVPR之Visual Question Answering with Memory-Augmented Networks阅读笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-08-14T22:30:18+08:00" content="2018-08-14">
-          08-14
-        </time>
-      </div>
-
-    </header>
-  </article>
-
+      
+        <p>这篇文章内容本身其实蛮少的<br>但是意义还是较为重大的</p>
+<p>整篇文章唯一的创新点大概在序列标注的标记模式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/example.png" alt="这里写图片描述"><br>(1)-(2)-(3)<br>(1)内容使用BIES模式标记实体Begin, Inside, End,Single<br>(2)内容使用类别标记实体类别<br>(3)标记实体的在一对关系中的起始和终止位置</p>
+<p>就近原则组合(2)相同，且(3)分别为1,2的实体</p>
+<p>下面是模型部分<br>直接看图就好，没什么创新点<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/model.png" alt="这里写图片描述"> </p>
+<p>这是loss<br>就是负类正类权重不一样，也没什么好讲的<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/loss.png" alt="这里写图片描述"> </p>
+<p>这种方式效果也较为不错<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/result.png" alt="这里写图片描述"><br>但是弊端也较为明显，对关系重叠问题解决不太好<br>解决方式也很简单，多分类改成多标签分类就好了<br>还有一个貌似对句子拆分要求较高。</p>
+<p>讲讲我做序列标注任务的几点感受<br>对padding十分敏感<br>sota说是crf+lstm<br>其实应该是双层lstm+crf<br>后面太慢了不过可以用cudnn加速版配自己写的mask zero</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/序列标注/" rel="tag"># 序列标注</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/13/同类对比CRF/" rel="next" title="同类对比CRF">
+                <i class="fa fa-chevron-left"></i> 同类对比CRF
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -335,6 +447,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -576,6 +692,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
