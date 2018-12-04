@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2018-12-04T00:41:11.494Z</updated>
+  <updated>2018-12-04T00:44:10.623Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -15,33 +15,6 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>2017CVPR RACNN</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/12/04/2017CVPR-RACNN/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/12/04/2017CVPR-RACNN/</id>
-    <published>2018-12-04T00:32:42.000Z</published>
-    <updated>2018-12-04T00:41:11.494Z</updated>
-    
-    <content type="html"><![CDATA[<p>这篇文章其实是篇比较简单的文章<br>但是其中有个梯度反传的细节很多博客都没纠清楚<br>文章里也没细讲</p><p>这篇文章主要就是利用弱监督定位去做细粒度分类<br>想法还是比较有意思的，上一次见到窗口定位的方式是在local attention</p><p>要弱监督定位需要把梯度传到坐标上，如果坐标进行取整则不能反传梯度<br>坐标的梯度更新是通过他设计的mask传回去的</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0006.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;这篇文章其实是篇比较简单的文章&lt;br&gt;但是其中有个梯度反传的细节很多博客都没纠清楚&lt;br&gt;文章里也没细讲&lt;/p&gt;
-&lt;p&gt;这篇文章主要就是利用弱监督定位去做细粒度分类&lt;br&gt;想法还是比较有意思的，上一次见到窗口定位的方式是在local attention&lt;/p&gt;
-&lt;p&gt;要弱监
-      
-    
-    </summary>
-    
-      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
-    
-    
-      <category term="细粒度分类" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E7%BB%86%E7%B2%92%E5%BA%A6%E5%88%86%E7%B1%BB/"/>
-    
-  </entry>
   
   <entry>
     <title>2017CVPR RACNN</title>
@@ -549,6 +522,33 @@
     
     
       <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>attention</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/29/attention/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/29/attention/</id>
+    <published>2018-06-29T13:33:51.000Z</published>
+    <updated>2018-06-29T13:37:48.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>nlp讨论班刚开始没多久<br>得从基础唠起<br>遂做了个简短的注意力ppt<br>做个简单的介绍</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0006.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0007.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0008.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;nlp讨论班刚开始没多久&lt;br&gt;得从基础唠起&lt;br&gt;遂做了个简短的注意力ppt&lt;br&gt;做个简单的介绍&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qrfaction/qrfaction.gi
+      
+    
+    </summary>
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
+    
+    
+      <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
     
   </entry>
   
