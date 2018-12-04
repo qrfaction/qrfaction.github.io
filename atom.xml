@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2018-12-03T05:11:32.083Z</updated>
+  <updated>2018-12-04T00:39:02.993Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>2017CVPR_RACNN</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/12/04/2017CVPR-RACNN/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/12/04/2017CVPR-RACNN/</id>
+    <published>2018-12-04T00:32:42.000Z</published>
+    <updated>2018-12-04T00:39:02.993Z</updated>
+    
+    <content type="html"><![CDATA[<p>这篇文章其实是篇比较简单的文章<br>但是其中有个梯度反传的细节很多博客都没纠清楚<br>文章里也没细讲</p><p>这篇文章主要就是利用弱监督定位去做细粒度分类<br>想法还是比较有意思的，上一次见到窗口定位的方式是在local attention</p><p>要弱监督定位需要把梯度传到坐标上，如果坐标进行取整则不能反传梯度<br>坐标的梯度更新是通过他设计的mask传回去的</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/4/2017CVPR_RACNN/0006.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;这篇文章其实是篇比较简单的文章&lt;br&gt;但是其中有个梯度反传的细节很多博客都没纠清楚&lt;br&gt;文章里也没细讲&lt;/p&gt;
+&lt;p&gt;这篇文章主要就是利用弱监督定位去做细粒度分类&lt;br&gt;想法还是比较有意思的，上一次见到窗口定位的方式是在local attention&lt;/p&gt;
+&lt;p&gt;要弱监
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="细粒度分类" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E7%BB%86%E7%B2%92%E5%BA%A6%E5%88%86%E7%B1%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>之江视频问答1st比赛总结</title>
@@ -519,32 +546,6 @@
     </summary>
     
       <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
-    
-    
-      <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>attention is all you need</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/27/attention-is-all-you-need/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/27/attention-is-all-you-need/</id>
-    <published>2018-06-27T03:53:05.000Z</published>
-    <updated>2018-06-27T04:02:49.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>这篇文章本身是用于seq2seq任务的<br>其中亮点提出了一个Multi-head attention具有相当的启发意义</p><h2 id="attention-function"><a href="#attention-function" class="headerlink" title="attention function"></a>attention function</h2><p>给定一个query<br>再给定一组(key,value)对,value可以理解为某个事物的具体信息,key为其关键信息</p><p>attention机制就是给出一组权重,使得模型对value的各个部分的关注度不同<br>这个关注度由query和key决定<br>很基本的想法就是和query越相关,权重越大</p><p>这里涉及到一个度量函数,常用的有余弦相似度<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/attention.jpg" alt="这里写图片描述"><br>Q与K中的各个关键字做相似度计算,再进行权重归一化,对V进行加权求和获得最终内容<br>d<sub>k</sub> 是关键字的维度</p><p>获得权重后对value进行加权<br>大部分情况下key=value<br>个人认为当value维度过高时才需要关键信息的提取,这时才会有key和value的不同</p><p>当key=value=query时,就是self-attention机制</p><h2 id="Multi-Head-Attention"><a href="#Multi-Head-Attention" class="headerlink" title="Multi-Head Attention"></a>Multi-Head Attention</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/multi.jpg" alt="这里写图片描述"><br>首先用几个线性变换W将query,key,value映射到多个空间<br>再对他们通过注意力函数提取value的高质量信息</p><p>然后用h组线性变换W,进行拼接就得到了multi-head</p><h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/transform.jpg" alt="这里写图片描述"><br>如上便是他的模型结构<br>左边是编码器,右边是解码器</p><h3 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h3><p>这个编码器由N=6个相同的组件堆叠而成<br>一个组件由两个子层组成</p><p>编码器的multi-head attention 是self-attention<br>Add &amp; Norm是指残差连接和layer规范化</p><p>Feed Forward是指<br>FFN(x) = max(0,W<sub>1</sub>+b<sub>1</sub>)W<sub>2</sub>+b<sub>2</sub><br>x是词向量</p><p>这就相当于两层kernel size = 1的卷积<br>或者时间步上共享权重的全连接层</p><h3 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h3><p>这个编码器由N=6个相同的组件堆叠而成<br>一个组件由两个子层组成</p><p>编码器的multi-head attention 是self-attention<br>Add &amp; Norm是指残差连接和layer规范化</p><p>Feed Forward是指<br>FFN(x) = max(0,W<sub>1</sub>+b<sub>1</sub>)W<sub>2</sub>+b<sub>2</sub><br>x是词向量</p><p>这就相当于两层kernel size = 1的卷积<br>或者时间步上共享权重的全连接层</p><h3 id="output-embedding"><a href="#output-embedding" class="headerlink" title="output embedding"></a>output embedding</h3><p>将上一时刻的预测作为当前输入<br>seq2seq的常用trick</p><h3 id="position-embedding"><a href="#position-embedding" class="headerlink" title="position embedding"></a>position embedding</h3><p>由于没有使用conv和rnn所以缺失位置信息<br>于是使用了一系列位置编码<br>其实看不大懂这个东西为啥work = =<br>见图 </p><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/27/attention-is-all-you-need/pos.jpg" alt="这里写图片描述"> </p><p>对于一个输入的句子矩阵(句长,词向量维度)<br>和他进行信息结合的是position以上述编码方式生成<br>i是第几个维度,pos是位置,时间轴<br>d<sub>model</sub>是词向量的维度</p><p>原本解释说这是因为PE<sub>pos+k</sub>可以表示为PE<sub>pos</sub>的线性函数</p><h2 id="finally"><a href="#finally" class="headerlink" title="finally"></a>finally</h2><p>这篇文章算是粗读<br>只理清了模型的推导<br>里面的参数设置和模型训练的具体细节没去纠</p><p>这篇文章对attention机制做了一个很好描述</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;这篇文章本身是用于seq2seq任务的&lt;br&gt;其中亮点提出了一个Multi-head attention具有相当的启发意义&lt;/p&gt;
-&lt;h2 id=&quot;attention-function&quot;&gt;&lt;a href=&quot;#attention-function&quot; class=&quot;header
-      
-    
-    </summary>
-    
-      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
     
     
       <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
