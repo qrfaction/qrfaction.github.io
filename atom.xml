@@ -48,7 +48,7 @@
     <link href="https://github.com/qrfaction/qrfaction.github.io/2018/12/03/%E4%B9%8B%E6%B1%9F%E8%A7%86%E9%A2%91%E9%97%AE%E7%AD%941st%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2018/12/03/之江视频问答1st比赛总结/</id>
     <published>2018-12-03T05:04:49.000Z</published>
-    <updated>2018-12-03T05:11:32.083Z</updated>
+    <updated>2018-12-04T00:58:45.636Z</updated>
     
     <content type="html"><![CDATA[<p>由于PPT上都是图，直接发打字比较好</p><p>PPT那么多页其实也就几段字，哪有那么多东西讲</p><ol><li><p>mp4关键帧I帧抽取，抽取I帧至40帧，不足则在I帧之间补足40帧</p></li><li><p>2017vqa冠军的模型 faster rcnn<br> (1) 抽取36个物体，受限于IO效率，物体和帧之间以帧为重<br> (2) attribute特征，把输出bbox的属性词作为特征，一是无io压力，二是视频物体种类变化小，可依据该事实通过频率提高该特征信噪比<br> 无效模型 densecap : image caption + action location<br> 本想用它解决动作类问题，无奈句子不方便通过频率筛选，提高特征质量，以及他本身效果不算特别好<br> 外加句子关键词太少</p></li><li><p>prior mask<br> 各类question答案词表分布很不一致，如颜色类问题，数量类问题<br> 很容易想到希望对每一类问题针对性处理，可通过用一个prior mask实现，将该类问题可能回答出的词标1，否则标0，<br> sigmoid激活后与之相乘，避免常识性错误，以及免去类间干扰(question类别)<br> 如此实现了特征共享，但每类问题针对性处理，且可自由扩展类别数量<br> question类别用最易于区分的关键字作为类，如what color ,how many 以及or类问题的or两边的词</p><p> 很容易有下面的改进方法(我没去做,感兴趣试试)</p><p> (1) 以2中抽取的视频attribute作为视频关键信息，通过这个抽取视频先验词表改进prior mask<br> (2) 减小类内干扰，如深红，浅红，细粒度分类无论在nlp还是cv都是个较难的任务,<br>&emsp;&emsp;但是不用细粒度即可答对，干脆放弃细粒度分类<br>&emsp;&emsp;这个问题可以抽象为用尽可能少的答案覆盖该类问题所有答案</p></li><li><p>问答框架<br> 多问多答，可变长输入<br> 问题不足五个重复补足</p><ol><li>免去冗余的五次io</li><li>带来上下文信息</li><li><p>劣势是偏固定的采样方式使他分数若不使用上下文信息会劣于一般训练方式</p><p>改进方法：用0补，重复会让特征信号加强，然后loss梯度权重加倍。。。<br>用0补的话是常量无信息，输出时可配合mask把梯度屏蔽掉</p></li></ol></li><li><p>针对分镜问题的数据增强方案<br> 找俩视频，各取一半帧数，时间轴拼接<br> 问题的话随便取出5个<br> attribute各取频率最高的一半<br> 一问一答，label直接取逻辑加</p></li><li><p>其他数据增强<br> (1) 训练时抽来的40帧随机取16帧 (帧数取太少的话不会有效果的)<br> (2) 测试时隔帧各采16帧，做test aug</p></li><li><p>模型<br> (1) 注意力使用MLB计算（其实啥注意力都差不多)<br> (2) 注意力集成机制：前几层question和video算出注意力权重后，各个问题生成的权重(16,1,1)取平均<br>&emsp;&emsp;与video(16,36,384)各帧相乘<br> (3) attribute 与 question直接算MLB加权平均<br> (4) encode用conv 1<em>1<br>&emsp;&emsp;用faster rcnn特征劣势是失去了空间局部依赖，又因此间接导致失去了物体级的时间局部依赖<br>&emsp;&emsp;rnn与cnn都不能用，采用self-attention+attention稀疏化解决跨时空依赖的想法<br>&emsp;&emsp;稀疏化方式 relu(w-(max(w)+min(w))/(1+λ)<br>&emsp;&emsp;经过调了半天λ，输出注意力矩阵后发现近乎为对角矩阵，退化为1</em>1conv，故直接用1*1conv<br> (6) video与question压成向量用co-attention(其实都差不多)<br> (7) 多问多答问答框架自带的上下文特征，其他question特征取平均与当前question拼接<br> (8) unit调到最小再调dropout（吐槽一下某人的0.95的dropout)<br> (9) 输入层bn + spatial dropout (bn在前，否则会有些shift)<br>&emsp;&emsp;分类层dropout，计算注意力前加spatial dropout<br> (10) focalloss</p></li><li><p>attention + loss 稀疏化(这部分我没用，分数不稳定，上限高下限低)<br> topk注意力，取权重前k名的取平均<br> loss稀疏化，loss最高的k个answer返回梯度，其他不反回<br> 词表太小，loss稀疏化没效果，语言模型如word2vec这种词表近万或过万的有较大效果<br> 可能物体仍然太少，所以不值得稀疏化</p></li></ol><p>参数也不算特别好，经验上关键的地方动了一下，其他没管</p><p>以前不混天池</p><p>未来几个月可能在这边待一会儿</p><p>希望各位大佬发车的时候带上我</p><p>如上</p>]]></content>
     
@@ -69,7 +69,7 @@
       <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
     
     
-      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+      <category term="QA" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/QA/"/>
     
   </entry>
   
@@ -370,7 +370,7 @@
     <link href="https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/</id>
     <published>2018-08-31T08:46:51.000Z</published>
-    <updated>2018-09-12T03:37:15.000Z</updated>
+    <updated>2018-12-04T01:02:09.230Z</updated>
     
     <content type="html"><![CDATA[<p>说起来这个比赛打起来体验极差…<br>线上线下琢磨不透…<br>时间上花了两周,最终结果single model cv 0.8004</p><p>开始三天在那抄抄dissussion和kernel里的代码拿到了cv 0.7963<br>后来觉得这样不行<br>后来花两天重构了下了代码,优化并行了特征生成部分<br>开始逐文件批量生成特征,再进行筛选 (毕竟一个变量名都看不懂)<br>接着效率大大提高,分数逐渐上升到8004<br>但是在这途中lb一直很差只有和cv差不多的分数<br>然后就丢了干别的比赛去了,打的烦啊,工作无聊机械,lb还上不去</p><p>最后一天把自己的oof和submit丢给队友就跑了<br>队友提交的最终cv是0.801吧</p><p>第八名的single model cv是0.799  集成804的样子<br>早知道最后一天随便跑跑了几个模型搞点儿差异性出来了…<br>小可惜,不过投入也不算多,不是特别心疼吧</p><p>这个比赛看下来搞特征的思路大多不是特别稀奇<br>强特的话批量找慢慢找都可以找出来的吧<br>主要是筛选工作和批量搜索的时候缩小搜索范围</p><p>我做的主要有</p><blockquote></blockquote><ol><li>时间差分特征  x<sub>t</sub> - x<sub>t-1</sub></li><li>趋势特征     过去一段时间内某变量的随时间变化趋势(即斜率)</li><li>趋势预测特征   用2所得的斜率预测当前值的预测值</li><li>一条record缺失值个数</li><li>特征分bin,计算各bin中的样本,数作为特征</li><li>一些条件概率,共现概率特征</li><li>target encode</li><li>批量搜索单位具有实际意义的特征,例如 钱/钱 , 钱/次数 , 次数/次数 , 次数 - 次数, 时间-时间<br>这么做的主要目的是减小搜索空间,毕竟几百个特征两两组合筛不过来呀</li></ol><p>我的收益几乎都来8 …<br>后来工作没干完就跑了,恩…</p><p>还有一些其他的思路下面再讲</p><p>筛选主要是这样的:</p><blockquote></blockquote><p>我首先划定了top550收益的特征,因为划到550我的cv上升了<br>然后每次批量生成几百个特征的时候留下gain落在top300的特征<br>注意事项: 必须要尽量缩小特征的生成量,因为特征生成的太多,收益均摊到各个特征上,导致大部分特征收益都很接近<br>    这时候不利于筛选</p><p>集成上虽然没做,但简单简述dissussion的magic集成思路<br>即用rank score进行集成<br>如果了解auc的话这个集成方式其实很容易想到</p><ol><li>因为AUC是排序指标<br>这种集成方式还有一个优势</li><li>因为不同的loss输出的预测值在[0,1]的方差不同,密度不同,期望也不同<br>直接加权可能问题就很大了<br>一种方式是把他们直接minmax缩放到[0,1],但这个没解决密度问题<br>另一个很简单的思路就是把预测值投射到rank上</li></ol><p>其他人的特征思路<br>对样本聚类500,然后用这个类别进行target encode<br>(话说聚类这东西我一直玩儿不溜,这东西到底能不能用自己每次都是试了才知道,所以要做都会堆到后期,没一点经验性的参考)<br>因为ext_1缺失值特别多,但他是重要特征,所以建立模型预测该特征作为新特征<br>这个带来收益也比较大</p><p>整个比赛里貌似只有第二名的方式是个亮点<br>他发现了样本以时间序排序,他用一些时间差分的特征如出生日期-上班日期等等特征得到了user_id<br>然后根据user_id和历史上下文信息对target进行编码得到了很大的提高<br>见<a href="https://www.kaggle.com/titericz/visualizing-user-ids" target="_blank" rel="noopener">https://www.kaggle.com/titericz/visualizing-user-ids</a></p><p>emmmmm  就这样吧</p>]]></content>
     
@@ -387,7 +387,7 @@
       <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
     
     
-      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+      <category term="tabular data" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/tabular-data/"/>
     
   </entry>
   
@@ -449,7 +449,7 @@
     <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/25/%E9%AD%94%E9%95%9C%E6%9D%AF%E6%AF%94%E8%B5%9B%E7%AD%94%E8%BE%A9PPT/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/25/魔镜杯比赛答辩PPT/</id>
     <published>2018-07-25T11:36:38.000Z</published>
-    <updated>2018-07-25T12:05:25.000Z</updated>
+    <updated>2018-12-04T01:03:23.738Z</updated>
     
     <content type="html"><![CDATA[<p>最终排名rank 6 </p><p>自己团队的解决方案<br>此次比赛主要目的用于促进团队的感情…</p><p>答辩情况来看,我们的集成做的太烂了…<br>一直只有一种模型,最后一天才反应到吃亏搞出两种很相似的上了俩千分点<br>靠着半监督的优势撑了大半个比赛流程</p><p>单模型情况(似乎是最高的?)<br>纯模型 0.153-0.154<br>结构特征 0.151-0.152<br>半监督(伪标签) 0.1475</p><p>PPT里藏了部分细节和思考<br>昨天中午和yin叔讨论中发现一些细节,发现了数据增强做成的技巧,发现了概率标签的可能适用场景,虽然仍然不知道他为啥过拟合<br>现在看来数据增强做成功的有三组队伍,冠军队,亚军队,yin叔<br>yin叔只用一种模型不用结构特征到这个分数还是很佩服的<br>小幸运组的tfidf加权词向量有待尝试</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0006.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0007.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0008.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0009.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0010.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0011.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0012.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0013.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0014.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0015.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0016.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0017.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0018.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0019.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0020.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/07/25/魔镜杯比赛答辩PPT/0021.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
     
@@ -467,7 +467,7 @@
       <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
     
     
-      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+      <category term="语义匹配" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E8%AF%AD%E4%B9%89%E5%8C%B9%E9%85%8D/"/>
     
   </entry>
   
@@ -476,7 +476,7 @@
     <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/</id>
     <published>2018-07-07T13:24:43.000Z</published>
-    <updated>2018-07-12T13:30:24.000Z</updated>
+    <updated>2018-12-04T00:57:12.156Z</updated>
     
     <content type="html"><![CDATA[<p>这个比赛我是快结束的时候参加了,想顺手捞一波名次<br>他对我最大的挑战就是试错成本太高太高了</p><p>树模型交叉验证五折要5-7天 = =<br>图片70G<br>各种特征生成也有几十个G = = </p><p>我总共打了15天<br>写代码占4天,接下来搞别的事情去了,代码挂着跑了11天<br>最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的</p><p>因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)<br>不过现在看下来他们的大部分trick我都做到了,就是没时间搞细</p><h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><h3 id="文本特征"><a href="#文本特征" class="headerlink" title="文本特征"></a>文本特征</h3><blockquote><p>自己的做法</p><ol><li>tfidf+char/word(稀疏矩阵存下来,几万维全部丢给树,svd效果会变差,大部分分数靠的是他)</li><li>地理位置信息用google api获取经纬度(没啥效果)</li></ol></blockquote><p>其他有价值的做法</p><ol><li>用fastText的词向量替代tfidf矩阵</li><li>文本的一些统计特征，词数，字数等等</li></ol><h3 id="图像特征"><a href="#图像特征" class="headerlink" title="图像特征"></a>图像特征</h3><blockquote><p>自己的做法</p><ol><li>图片的一些属性特征(写了没跑,因为具言效果不佳)</li><li>vgg的卷积结束后global pool成向量svd分解(效果不佳),其实这里可能丢失语义信息了,或许从全连接那里抽比较好(没时间了)</li></ol></blockquote><p>其他有价值的做法</p><ol><li>和我的2差不多类似换了基础网络resnet152，resnet34</li><li>还有一些图像的传统统计量亮度暗度（效果都不是很明显）</li><li>冠军用out-of-preditcion来微调resnet34 效果比较显著</li><li>预训练模型对图像进行分类作为特征（其实这个特征已经有了，所以比较冗余，不是很明显）</li></ol><h3 id="categorical-amp-numerical"><a href="#categorical-amp-numerical" class="headerlink" title="categorical &amp; numerical"></a>categorical &amp; numerical</h3><p>user_id和item_id 几乎一个样本一个id了,表示学习都没法了<br>而且user_id训练集测试集交集只有6%,item_id只有0%</p><blockquote><p>自己的做法<br>1  &emsp; 用user_type和city的组合编码近似代表user<br>&emsp;&emsp;用category,image_top_1等近似代表item<br>&emsp;&emsp;获取邻接矩阵进行svd分解(分数提升)<br>2  &emsp; category批量生成共现概率，条件概率<br>3  &emsp; category与连续组合计算条件统计量<br>4  &emsp; 连续连续组合+-*/<br>5  &emsp; target encode(用category和label组合计算label的统计量）</p></blockquote><p>其他有价值的做法</p><ol><li>冠军把user_id用起来了，虽然user_id在训练集测试集中交集只有6%，但他交叉验证时将user_id分的和测试集差不多比例</li></ol><blockquote></blockquote><p>category之间计算共现概率,条件概率(条件熵,信息熵等没算)<br>数值和类别之间计算条件统计量(mean,min,max,std)等<br>交叉组合四五个特征</p><blockquote><p>虽说我的特征大都是批量生成<br>但还是选择性的批量生成，否则维度太高了<br>其中起主要效果的是price的条件统计量，以及price条件统计量的标准化</p></blockquote><h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><blockquote></blockquote><ol><li>spatialDropout1D放embedding后超级棒，我最近发现先bn再sdp效果极佳</li><li>图像部分迁移学习固定权重</li><li>树模型与nn都使用交叉熵效果极佳，树模型是xentropy</li></ol><blockquote><p>值得一提的是好多文本比赛感觉attention很不work，我猜可能大部分都是短文本的缘故吧</p></blockquote><h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p>没做 = =<br>跑出了俩模型,第一个太烂丢掉了<br>实际有效的模型只跑出了一个，只能随便拉个kerne的平均一下</p><blockquote><p>其他人的做法<br>几组较优超参集成<br>疯狂stacking…</p></blockquote><h2 id="最后感受"><a href="#最后感受" class="headerlink" title="最后感受"></a>最后感受</h2><p>大家做的方法其实都大差不差<br>都是一些细节拉大了分数<br>我感觉我吃的最大的亏是时间<br>在细节上我用的是回归，别人用的是交叉熵</p><p>和鹏哥感受一样比赛真的是一件投入产出比很低 = =<br>从头打到尾套路基本都会了的话<br>不出意外个人感觉top3%,top2%不是意见特别难的事情<br>但是很耗精力，比赛周期一般也太长了。。。</p>]]></content>
     
@@ -494,7 +494,7 @@
       <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
     
     
-      <category term="比赛总结" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E6%AF%94%E8%B5%9B%E6%80%BB%E7%BB%93/"/>
+      <category term="tabular data" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/tabular-data/"/>
     
   </entry>
   
