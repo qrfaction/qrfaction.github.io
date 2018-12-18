@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2018-12-04T00:44:10.623Z</updated>
+  <updated>2018-12-18T10:53:14.576Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SlowFastNet</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/12/18/slowfastnet/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2018/12/18/slowfastnet/</id>
+    <published>2018-12-18T10:49:44.000Z</published>
+    <updated>2018-12-18T10:53:14.576Z</updated>
+    
+    <content type="html"><![CDATA[<p>cv讨论版自己做的简短汇报<br>行为动作识别任务</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18/slowfastnet/0_1.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18/slowfastnet/0_2.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18/slowfastnet/0_3.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18/slowfastnet/0_4.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18/slowfastnet/0_5.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18/slowfastnet/0_6.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;cv讨论版自己做的简短汇报&lt;br&gt;行为动作识别任务&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/18
+      
+    
+    </summary>
+    
+      <category term="CV" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/CV/"/>
+    
+    
+      <category term="行为动作识别" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E8%A1%8C%E4%B8%BA%E5%8A%A8%E4%BD%9C%E8%AF%86%E5%88%AB/"/>
+    
+  </entry>
   
   <entry>
     <title>2017CVPR RACNN</title>
@@ -522,33 +549,6 @@
     
     
       <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>attention</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/06/29/attention/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/06/29/attention/</id>
-    <published>2018-06-29T13:33:51.000Z</published>
-    <updated>2018-06-29T13:37:48.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>nlp讨论班刚开始没多久<br>得从基础唠起<br>遂做了个简短的注意力ppt<br>做个简单的介绍</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0006.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0007.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/29/attention/0008.jpg" alt="这里写图片描述"> </p></blockquote>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;nlp讨论班刚开始没多久&lt;br&gt;得从基础唠起&lt;br&gt;遂做了个简短的注意力ppt&lt;br&gt;做个简单的介绍&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;img src=&quot;https://raw.githubusercontent.com/qrfaction/qrfaction.gi
-      
-    
-    </summary>
-    
-      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
-    
-    
-      <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
     
   </entry>
   
