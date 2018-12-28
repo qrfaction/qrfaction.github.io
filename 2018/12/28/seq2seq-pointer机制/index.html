@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage1.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage2.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage3.png">
-<meta property="og:updated_time" content="2018-12-28T07:47:31.736Z">
+<meta property="og:updated_time" content="2018-12-28T07:49:45.723Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="pointer,copy,coverage机制简述">
 <meta name="twitter:description" content="Pointer Networkshttps://arxiv.org/pdf/1506.03134.pdf  如上，其实就是直接把注意力权重的结果输出为最后结果了即在原序列中抽样旨在解决凸包和旅行商等类似问题  Copying Mechanismhttps://arxiv.org/pdf/1603.06393.pdf 理解这个我们首先看个使用场景即如下     本文旨在解决oov和低频词版本让模型学">
@@ -391,14 +391,9 @@
 <p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/copy1.png" alt="这里写图片描述"> </p>
 </blockquote>
 <p>本文旨在解决oov和低频词版本<br>让模型学会适当从历史信息中copy文本</p>
-<blockquote>
 <p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/copymodel.png" alt="这里写图片描述"><br>模型即上图<br>首先看模型的输入输出<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/copy_o1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/copy_o2.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/copy_o3.png" alt="这里写图片描述"><br>其中c<sub>t</sub>是当前状态对输入序列的注意力加权后的输出向量<br>M是输入序列的隐藏态h<sub>1</sub> to h<sub>t</sub><br>其中s<sub>t</sub> = f(y<sub>t-1</sub>,s<sub>t-1</sub>,c)是decoder的隐藏态<br>这里多加了一个输入，即从M中获得<br>如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/copy_s.png" alt="这里写图片描述"><br>将y<sub>t-1</sub>在输入中多次出现的词考虑进来</p>
-</blockquote>
 <p>整体来讲模型给那些 不曾在字典中出现过但又在输入中出现过的词 一个输出口<br>让模型在没能很好学习rare word和oov的语义的情况下能具备一些复制能力</p>
-<h3 id="Coverage-Mechanism"><a href="#Coverage-Mechanism" class="headerlink" title="Coverage Mechanism"></a>Coverage Mechanism</h3><p>Get To The Point: Summarization with Pointer-Generator Networks<br><a href="https://arxiv.org/pdf/1704.04368.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1704.04368.pdf</a><br>总得来讲<br>首先维护了在历史状态下decoder时输出的attention权重</p>
-<blockquote>
-<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage1.png" alt="这里写图片描述"><br>将其作为特征输入，用于计算当前attention<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage2.png" alt="这里写图片描述"><br>然后对于那些重复出现过高权重的词，给予适当惩罚<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage3.png" alt="这里写图片描述"><br>目的应该是希望模型不要老出现重复词</p>
-</blockquote>
+<h3 id="Coverage-Mechanism"><a href="#Coverage-Mechanism" class="headerlink" title="Coverage Mechanism"></a>Coverage Mechanism</h3><p>Get To The Point: Summarization with Pointer-Generator Networks<br><a href="https://arxiv.org/pdf/1704.04368.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1704.04368.pdf</a><br>总得来讲<br>首先维护了在历史状态下decoder时输出的attention权重<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage1.png" alt="这里写图片描述"><br>将其作为特征输入，用于计算当前attention<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage2.png" alt="这里写图片描述"><br>然后对于那些重复出现过高权重的词，给予适当惩罚<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/28/seq2seq-pointer机制/coverage3.png" alt="这里写图片描述"><br>目的应该是希望模型不要老出现重复词</p>
 
       
     </div>
