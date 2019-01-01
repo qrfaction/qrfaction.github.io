@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2018-12-28T07:49:45.723Z</updated>
+  <updated>2019-01-01T10:21:59.384Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>18总结与未来展望</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2019/01/01/18%E5%B9%B4%E7%9A%84%E5%9B%9E%E9%A1%BE%E4%B8%8E19%E5%B9%B4%E7%9A%84%E5%B1%95%E6%9C%9B/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2019/01/01/18年的回顾与19年的展望/</id>
+    <published>2019-01-01T10:20:18.000Z</published>
+    <updated>2019-01-01T10:21:59.384Z</updated>
+    
+    <content type="html"><![CDATA[<p>2018整体感觉自己进步还是蛮大的<br>但是细究起来自己有一堆计划没有完成<br>下半年的时间利用率很低，2019需要加以调整</p><h3 id="2018年"><a href="#2018年" class="headerlink" title="2018年"></a>2018年</h3><h4 id="达成成就"><a href="#达成成就" class="headerlink" title="达成成就"></a>达成成就</h4><ol><li>攒下四五个拿得出手的比赛成绩了</li><li>gpu编程了解并完成node2vec加速，虽然感觉现在看起来很烂</li><li>github差不多满绿</li><li>nlp/cv纵向横向知识面拓宽，RL完成一本书的基础阅读量</li><li>抽象思考tabular data切入点并实践</li><li>博客50+</li><li>多次参与国内赛，基本认识了一下圈内人，拓展了一下交际圈</li><li>学生时代达成财富自由</li></ol><h4 id="遗憾"><a href="#遗憾" class="headerlink" title="遗憾"></a>遗憾</h4><p>kaggle大部分都只搞了一周两周，半步金牌，浪费了时间<br>下半年太过松懈，时间利用率远没上半年高<br>没能早点意识去收集比赛称号</p><h3 id="对2019年的期望"><a href="#对2019年的期望" class="headerlink" title="对2019年的期望"></a>对2019年的期望</h3><ol><li>达成grandmaster和天池数据科学家称号（如果能有数据大师超级棒啊）</li><li>一线互联网公司实习</li><li>高性能计算方向能深入下去（冒博啥时候写完书诶）</li><li>博客量100+</li><li>github继续差不多满绿</li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;2018整体感觉自己进步还是蛮大的&lt;br&gt;但是细究起来自己有一堆计划没有完成&lt;br&gt;下半年的时间利用率很低，2019需要加以调整&lt;/p&gt;
+&lt;h3 id=&quot;2018年&quot;&gt;&lt;a href=&quot;#2018年&quot; class=&quot;headerlink&quot; title=&quot;2018年&quot;&gt;&lt;/a
+      
+    
+    </summary>
+    
+      <category term="生活" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
+    
+    
+      <category term="生活" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>pointer,copy,coverage机制简述</title>
@@ -395,7 +421,7 @@
     <link href="https://github.com/qrfaction/qrfaction.github.io/2018/09/09/trick%E5%92%8C%E5%88%9B%E6%96%B0%E7%82%B9%E7%9A%84%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2018/09/09/trick和创新点的碎碎念/</id>
     <published>2018-09-09T03:00:10.000Z</published>
-    <updated>2018-09-09T03:01:15.000Z</updated>
+    <updated>2019-01-01T10:21:13.812Z</updated>
     
     <content type="html"><![CDATA[<p>最近一直在搞video qa<br>这是一个比较新的方向,论文总共找到不到三篇,天池的视频问答比赛似乎也是全球第一届</p><p>大家都是新手,一起开荒<br>前天和鹏哥聊着聊着看他有啥想法 .<br>最后聊到trick和创新度的问题</p><p>鹏哥说一篇好的论文不能缺少创新度,纯堆trick是不行的<br>我同意,但是,究竟哪些是创新点那些算trick呢</p><p>我做的六七个上分的大工作里排除已有的工作<br>私以为我的工作里并没有啥trick<br>或许我对trick的理解不大一样吧</p><p>如果在不太严格的条件下具有一定解释性的trick算不算创新点呢<br>我觉得算的</p><p>我认为的trick都是一些magic的leak<br>这些leak对实际意义起不到任何用处,但他就是能上分.<br>一些不具备通用性的调参技巧也算trick</p><p>现在大部分论文都靠搜索模型再加后向解释水了一个又一个会议<br>很难看到除模型之外的地方</p><p>2017 VQA Challenge 冠军的比赛报告是我比较喜欢的一篇文章<br><a href="https://arxiv.org/pdf/1708.02711.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1708.02711.pdf</a></p><p>除模型之外我个人认为的创新点有</p><ol><li>涉及到了zero-shot思想的初始化</li><li>检测模型做 hard attention</li><li>先进的采样算法<br>还有一些就是模型中的不具备通用性的trick了<br>例如特定情况下适用的激活函数</li></ol><p>聊到最后<br>其实我就是认为不管你学不学习,只要不作弊考到好分数都是好学生</p><p>trick具备通用性且后向解释能解释的通就好<br>通用性是前提,解释性可以稍稍靠后</p>]]></content>
     
@@ -410,10 +436,10 @@
     
     </summary>
     
-      <category term="其他" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E5%85%B6%E4%BB%96/"/>
+      <category term="生活" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E7%94%9F%E6%B4%BB/"/>
     
     
-      <category term="其他" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%85%B6%E4%BB%96/"/>
+      <category term="生活" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
     
   </entry>
   
@@ -520,33 +546,6 @@
     
     
       <category term="语义匹配" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E8%AF%AD%E4%B9%89%E5%8C%B9%E9%85%8D/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Avito Demand Prediction Challenge比赛总结</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/07/07/Avito/</id>
-    <published>2018-07-07T13:24:43.000Z</published>
-    <updated>2018-12-04T00:57:12.156Z</updated>
-    
-    <content type="html"><![CDATA[<p>这个比赛我是快结束的时候参加了,想顺手捞一波名次<br>他对我最大的挑战就是试错成本太高太高了</p><p>树模型交叉验证五折要5-7天 = =<br>图片70G<br>各种特征生成也有几十个G = = </p><p>我总共打了15天<br>写代码占4天,接下来搞别的事情去了,代码挂着跑了11天<br>最终拿了top6%的成绩,这种情况下拿到这个成绩个人还是很满意的</p><p>因为时间短不说,调试周期还长(占我打的时间的1/3~1/2了)<br>不过现在看下来他们的大部分trick我都做到了,就是没时间搞细</p><h2 id="特征工程"><a href="#特征工程" class="headerlink" title="特征工程"></a>特征工程</h2><h3 id="文本特征"><a href="#文本特征" class="headerlink" title="文本特征"></a>文本特征</h3><blockquote><p>自己的做法</p><ol><li>tfidf+char/word(稀疏矩阵存下来,几万维全部丢给树,svd效果会变差,大部分分数靠的是他)</li><li>地理位置信息用google api获取经纬度(没啥效果)</li></ol></blockquote><p>其他有价值的做法</p><ol><li>用fastText的词向量替代tfidf矩阵</li><li>文本的一些统计特征，词数，字数等等</li></ol><h3 id="图像特征"><a href="#图像特征" class="headerlink" title="图像特征"></a>图像特征</h3><blockquote><p>自己的做法</p><ol><li>图片的一些属性特征(写了没跑,因为具言效果不佳)</li><li>vgg的卷积结束后global pool成向量svd分解(效果不佳),其实这里可能丢失语义信息了,或许从全连接那里抽比较好(没时间了)</li></ol></blockquote><p>其他有价值的做法</p><ol><li>和我的2差不多类似换了基础网络resnet152，resnet34</li><li>还有一些图像的传统统计量亮度暗度（效果都不是很明显）</li><li>冠军用out-of-preditcion来微调resnet34 效果比较显著</li><li>预训练模型对图像进行分类作为特征（其实这个特征已经有了，所以比较冗余，不是很明显）</li></ol><h3 id="categorical-amp-numerical"><a href="#categorical-amp-numerical" class="headerlink" title="categorical &amp; numerical"></a>categorical &amp; numerical</h3><p>user_id和item_id 几乎一个样本一个id了,表示学习都没法了<br>而且user_id训练集测试集交集只有6%,item_id只有0%</p><blockquote><p>自己的做法<br>1  &emsp; 用user_type和city的组合编码近似代表user<br>&emsp;&emsp;用category,image_top_1等近似代表item<br>&emsp;&emsp;获取邻接矩阵进行svd分解(分数提升)<br>2  &emsp; category批量生成共现概率，条件概率<br>3  &emsp; category与连续组合计算条件统计量<br>4  &emsp; 连续连续组合+-*/<br>5  &emsp; target encode(用category和label组合计算label的统计量）</p></blockquote><p>其他有价值的做法</p><ol><li>冠军把user_id用起来了，虽然user_id在训练集测试集中交集只有6%，但他交叉验证时将user_id分的和测试集差不多比例</li></ol><blockquote></blockquote><p>category之间计算共现概率,条件概率(条件熵,信息熵等没算)<br>数值和类别之间计算条件统计量(mean,min,max,std)等<br>交叉组合四五个特征</p><blockquote><p>虽说我的特征大都是批量生成<br>但还是选择性的批量生成，否则维度太高了<br>其中起主要效果的是price的条件统计量，以及price条件统计量的标准化</p></blockquote><h2 id="模型细节"><a href="#模型细节" class="headerlink" title="模型细节"></a>模型细节</h2><blockquote></blockquote><ol><li>spatialDropout1D放embedding后超级棒，我最近发现先bn再sdp效果极佳</li><li>图像部分迁移学习固定权重</li><li>树模型与nn都使用交叉熵效果极佳，树模型是xentropy</li></ol><blockquote><p>值得一提的是好多文本比赛感觉attention很不work，我猜可能大部分都是短文本的缘故吧</p></blockquote><h2 id="集成"><a href="#集成" class="headerlink" title="集成"></a>集成</h2><p>没做 = =<br>跑出了俩模型,第一个太烂丢掉了<br>实际有效的模型只跑出了一个，只能随便拉个kerne的平均一下</p><blockquote><p>其他人的做法<br>几组较优超参集成<br>疯狂stacking…</p></blockquote><h2 id="最后感受"><a href="#最后感受" class="headerlink" title="最后感受"></a>最后感受</h2><p>大家做的方法其实都大差不差<br>都是一些细节拉大了分数<br>我感觉我吃的最大的亏是时间<br>在细节上我用的是回归，别人用的是交叉熵</p><p>和鹏哥感受一样比赛真的是一件投入产出比很低 = =<br>从头打到尾套路基本都会了的话<br>不出意外个人感觉top3%,top2%不是意见特别难的事情<br>但是很耗精力，比赛周期一般也太长了。。。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;这个比赛我是快结束的时候参加了,想顺手捞一波名次&lt;br&gt;他对我最大的挑战就是试错成本太高太高了&lt;/p&gt;
-&lt;p&gt;树模型交叉验证五折要5-7天 = =&lt;br&gt;图片70G&lt;br&gt;各种特征生成也有几十个G = = &lt;/p&gt;
-&lt;p&gt;我总共打了15天&lt;br&gt;写代码占4天,接下来搞别的事
-      
-    
-    </summary>
-    
-      <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
-    
-    
-      <category term="tabular data" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/tabular-data/"/>
     
   </entry>
   
