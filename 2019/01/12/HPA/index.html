@@ -84,16 +84,16 @@
 <meta name="description" content="前言这个是要被队友借去改改发知乎上的给别人写的不能像自己的凑合，所以这次写的总结会比以往的都正式很多。。此次比赛和队友一起拿下了金牌，最终名次11/2172原本是想着积分榜第一的巨佬bestfitting公开方案后写个方案汇总的但怕是等不到了。。。这个比赛是对于believe your cv的死教条的一个很好的反面示例那些不会依据客观事实变通只知道守着死教条的人都死得很惨！！！ 比赛介绍任务介绍本">
 <meta name="keywords" content="细粒度分类">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HPA">
+<meta property="og:title" content="kaggle Human Protein Atlas 比赛总结">
 <meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2019/01/12/HPA/index.html">
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="前言这个是要被队友借去改改发知乎上的给别人写的不能像自己的凑合，所以这次写的总结会比以往的都正式很多。。此次比赛和队友一起拿下了金牌，最终名次11/2172原本是想着积分榜第一的巨佬bestfitting公开方案后写个方案汇总的但怕是等不到了。。。这个比赛是对于believe your cv的死教条的一个很好的反面示例那些不会依据客观事实变通只知道守着死教条的人都死得很惨！！！ 比赛介绍任务介绍本">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/12/HPA/result.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/12/HPA/1541446267.jpg">
-<meta property="og:updated_time" content="2019-01-12T13:16:40.490Z">
+<meta property="og:updated_time" content="2019-01-12T13:20:38.673Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="HPA">
+<meta name="twitter:title" content="kaggle Human Protein Atlas 比赛总结">
 <meta name="twitter:description" content="前言这个是要被队友借去改改发知乎上的给别人写的不能像自己的凑合，所以这次写的总结会比以往的都正式很多。。此次比赛和队友一起拿下了金牌，最终名次11/2172原本是想着积分榜第一的巨佬bestfitting公开方案后写个方案汇总的但怕是等不到了。。。这个比赛是对于believe your cv的死教条的一个很好的反面示例那些不会依据客观事实变通只知道守着死教条的人都死得很惨！！！ 比赛介绍任务介绍本">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/12/HPA/result.png">
 
@@ -131,7 +131,7 @@
 
 
 
-  <title>HPA | qrfaction的博客</title>
+  <title>kaggle Human Protein Atlas 比赛总结 | qrfaction的博客</title>
   
 
 
@@ -295,7 +295,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HPA</h1>
+          <h1 class="post-title" itemprop="name headline">kaggle Human Protein Atlas 比赛总结</h1>
         
 
         <div class="post-meta">
@@ -375,18 +375,14 @@
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个是要被队友借去改改发知乎上的<br>给别人写的不能像自己的凑合，所以这次写的总结会比以往的都正式很多。。<br>此次比赛和队友一起拿下了金牌，最终名次11/2172<br>原本是想着积分榜第一的巨佬<a href="https://www.kaggle.com/bestfitting" target="_blank" rel="noopener">bestfitting</a>公开方案后写个方案汇总的<br>但怕是等不到了。。。<br>这个比赛是对于believe your cv的死教条的一个很好的反面示例<br>那些不会依据客观事实变通只知道守着死教条的人都死得很惨！！！</p>
 <h2 id="比赛介绍"><a href="#比赛介绍" class="headerlink" title="比赛介绍"></a>比赛介绍</h2><h3 id="任务介绍"><a href="#任务介绍" class="headerlink" title="任务介绍"></a>任务介绍</h3><p>本次比赛的问题是场景识别<br>定位的是蛋白质所处位置的识别,例如在细胞液，细胞核里之类的<br>依输出分所属多标签分类</p>
 <h3 id="难点及数据介绍"><a href="#难点及数据介绍" class="headerlink" title="难点及数据介绍"></a>难点及数据介绍</h3><p>首先一张示例图如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/12/HPA/result.png" alt="这里写图片描述"> </p>
-<ol>
-<li>一个样本由四个”通道图”组成(分成四张存储，每个”通道图”单通道)，2048*2048大小，官方提供了插值缩小为512大小的数据</li>
-<li>外部数据70k(每个”通道图”都是rgb格式)</li>
-<li>图片伪重多，然后四个”通道图”，id相同但实例不同的情况也很多，如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/12/HPA/1541446267.jpg" alt="这里写图片描述"> </li>
-</ol>
-<p>1，2对比我们发现了外部数据总共有4 <em> 3个通道，而官方数据只有4 </em> 1个<br>这便带来了第一个难点，如何处理外部数据<br>2，3最麻烦的是伪重问题，伪重造成验证集leak，不能制作一个好的验证集</p>
+<p>1) 一个样本由四个”通道图”组成(分成四张存储，每个”通道图”单通道)，2048*2048大小，官方提供了插值缩小为512大小的数据<br>2) 外部数据70k(每个”通道图”都是rgb格式)<br>3) 图片伪重多，然后四个”通道图”，id相同但实例不同的情况也很多，如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/12/HPA/1541446267.jpg" alt="这里写图片描述"> </p>
+<p>1)，2)对比我们发现了外部数据总共有4 <em> 3个通道，而官方数据只有4 </em> 1个<br>这便带来了第一个难点，如何处理外部数据<br>2)，3)最麻烦的是伪重问题，伪重造成验证集leak，不能制作一个好的验证集</p>
 <p>外部数据处理后加入训练集，要制作一个好的验证集就得跨过两道坎</p>
 <ol>
 <li>外部数据无论咋处理总是和测试集分布有些不一样的</li>
 <li>训练集里伪重过多，如何保证验证集不leak</li>
 </ol>
-<p>这个问题貌似只有bestfitting解决了，但是他还没公开方案。。。<br>1.2.3共同造成的线下val的不可靠，这时候线上比线下可靠，但仍需注意不要过拟合线上</p>
+<p>这个问题貌似只有bestfitting解决了，但是他还没公开方案。。。<br>1)2)3)共同造成的线下val的不可靠，这时候线上比线下可靠，但仍需注意不要过拟合线上</p>
 <h3 id="our-solution"><a href="#our-solution" class="headerlink" title="our solution"></a>our solution</h3><h4 id="model-config1"><a href="#model-config1" class="headerlink" title="model config1"></a>model config1</h4><ol>
 <li>数据增广(亮度对比度调整，crop_resize,flip,other)<br>我们总共用了12倍的TTA<br>亮度对比度主要用于让模型对外部数据和官方数据差异的鲁棒性更好<br>crop_resize对于显微镜下实例大小方差巨大的情况，带来了较好的线下收益<br>受限于调试成本，为了不避免数据增广带来的分布偏移问题，于是只选择性的尝试了上述几种，不过也一蒙及中。</li>
 <li>Models<br>res18 (batchsize=64)<br>res34 (batchsize=32)<br>bninception (batchsize=32)<br>inceptionv3 (batchsize=32)<br>xception (batchsize=24, P40-24G)<br>se-resnext50(batchsize=24, P40-24G)<br>其中模型对batchsize大小十份敏感，正确来说是模型对参与batchnorm计算的样本数十分敏感，需用sync-bn或者P40(24G)显存实现</li>
