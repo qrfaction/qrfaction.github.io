@@ -271,6 +271,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/07/29/数据增广思考/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/29/数据增广思考/" itemprop="url">数据增广思考</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-29T16:23:18+08:00">
+                2018-07-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>魔镜杯中第二名的数据增广使用了mixup<br>但词向量空间是否满足和图像一致的插值的性质值得深思<br>下面是自己的一些收货</p>
+<p>从答辩情况来看,数据增广成功的只有三个人<br>第一第二以及yin叔</p>
+<p>首先是样本生成方式<br>第一没有明说他的方式<br>第二介绍了mixup<br>yin叔则直接利用了相似问题对的稀疏性,断言生成的样本不匹配</p>
+<p>yin叔的方式确有理论保证性,<br>随便估计一下如果官方给的78w个问题中共有10000类<br>以这个计算约两万个样本中只有一个正例 …<br>可见生成的样本label噪声很小</p>
+<p>而mixup不敢笃定<br>图像的数据增广里mixup虽不易证明<br>但是其生成的样本结果肉眼可得到其label也是线性组合</p>
+<p>词向量空间是否满足此性质不知<br>第二的大致思路是<br>q1,q2相似,q2,q3不相似<br>则q1+q2与q3仍不相似<br>似乎没有生成正样本<br>这里难以确定到底是正样本的稀疏性带来的收益还的确是mixup<br>不过不能再提交了,我猜是稀疏性…<br>不过第二好像和yin叔吐槽没啥效果 (所以说mixup并没有成功?到底有无收益?做成的变成2个人?)<br>不过看过来第二的确似乎是堆了多种模型给他带来的收益<br>从我们一直使用一种模型来看,最后一天使用了两个结构比较相似的模型却带来了巨大的收益<br>模型结构差异带来的收益可能更为显著</p>
+<p>其实以上都不是重点<br>我也做了很多数据增强<br>yin叔的那种方式我也做了<br>都会过拟合…</p>
+<p>但还有一个值得注意的地方<br>前排和yin叔数据增强的方式都是先用原有数据集训练<br>再从生成的数据集上进行微调</p>
+<p>而我要么是放入训练集一起训练<br>要么是先用生成的样本获得权重…</p>
+<p>反过来会成功的原因有待深究…</p>
+<p>这次比赛和yin叔探讨中还获得了一个很有价值的东西<br>我使用prob label过拟合的原因似乎不知道,线下涨两个百分点,线上掉三个千分点<br>但是yin叔在一个预估用户评分的任务中给label加了高斯噪声成功了</p>
+<p>他的任务可以很清楚的看到label本身噪声很大<br>给label加高斯噪声并无多大影响,反而能控制过拟合</p>
+<p>数据增强的几个trick论文一览</p>
+<p>label加噪的论文在此,效果较为显著<br>DisturbLabel<br><a href="https://arxiv.org/pdf/1605.00055v1.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1605.00055v1.pdf</a><br>label加噪也可以认为是一种数据增广的方式</p>
+<p>MixUp论文<br><a href="https://arxiv.org/pdf/1710.09412.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1710.09412.pdf</a></p>
+<p>数据增强之CutOut<br><a href="https://arxiv.org/pdf/1708.04552.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1708.04552.pdf</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/07/25/魔镜杯比赛答辩PPT/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -675,8 +832,8 @@
               
               
                 <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
+                  <a href="/categories/GNN/" itemprop="url" rel="index">
+                    <span itemprop="name">GNN</span>
                   </a>
                 </span>
 
@@ -1719,168 +1876,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/29/CUDA上下文环境/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/05/29/CUDA上下文环境/" itemprop="url">CUDA上下文环境</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-29T14:51:15+08:00">
-                2018-05-29
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>本篇博客为高性能CUDA应用设计与开发第七章阅读笔记</p>
-<h2 id="CUDA上下文环境"><a href="#CUDA上下文环境" class="headerlink" title="CUDA上下文环境"></a>CUDA上下文环境</h2><h4 id="cuda上下文环境"><a href="#cuda上下文环境" class="headerlink" title="cuda上下文环境"></a>cuda上下文环境</h4><p>囊括了所必需的驱动状态信息,如虚拟地址空间,流,事件,已分配的内存块等</p>
-<h4 id="GPU设备与上下文"><a href="#GPU设备与上下文" class="headerlink" title="GPU设备与上下文"></a>GPU设备与上下文</h4><p>GPU设备驱动通过设备驱动程序为应用程序提供多个上下文环境<br>就可以使单个CUDA应用程序使用多个设备</p>
-<p>同一时刻只能有一个上下文环境处于活动状态<br>所以需要操作多个设备时,需要用cudasetDevice()切换上下文环境</p>
-<p>cuda在第一次调用一个改变驱动状态的函数时会自动默认创建一个上下文环境<br>如cudaMalloc()<br>默认在 GPU 0 上创建上下文</p>
-<h4 id="上下文与流"><a href="#上下文与流" class="headerlink" title="上下文与流"></a>上下文与流</h4><p>cuda程序通过将操作排队到流中,管理任务和并行<br>创建上下文时会隐式的创建一个流,从而命令可以在设备中排队等待执行<br>cudaMemcpy ,kernel函数等都会自动放入默认流中串行执行</p>
-<p>除非指定不同的流,kernel函数流的指定如下<br>kernel&lt;&lt;&lt;nBlocks, nThreadsPerBlocks, 0,stream&gt;&gt;&gt;(para)<br>第三个可填参数是共享内存大小的分配</p>
-<p>当kernel函数之间需要并发执行时要使用多个流</p>
-<h2 id="任务并发与同步"><a href="#任务并发与同步" class="headerlink" title="任务并发与同步"></a>任务并发与同步</h2><h3 id="显式同步"><a href="#显式同步" class="headerlink" title="显式同步"></a>显式同步</h3><p>cudaEventRecord()<br>我的理解是他是往当前流中异步发送了一个任务(记录时间)<br>由于同一个流中的顺序执行,使得他在之前的任务完成之后才能将传入的事件标记为完成</p>
-<p>cudaStreamSynchronize() //同步流与cpu线程<br>cudaDeviceSynchronize() //在cpu线程中同步所有流<br>cudaStreamWaitEvent()   //等待某个事件结束后再执行该流上的任务(这个任务在cudaStreamWaitEvent调用之后指定)<br>cudaStreamQuery()       //查询一个流任务是否完成 </p>
-<h3 id="隐式同步"><a href="#隐式同步" class="headerlink" title="隐式同步"></a>隐式同步</h3><p>部分主机操作在其完成前会强制所有流暂停执行<br>在使用下面这些主机操作时需注意,它们可能会停止所有的并发操作</p>
-<ol>
-<li>页锁定主机内粗的分配</li>
-<li>设备内存的分配</li>
-<li>设备内存设置</li>
-<li>设备到设备的内存拷贝</li>
-<li>L1缓存与共享内存之间的配置转换</li>
-</ol>
-<p>p.s. 我印象中内存的拷贝有异步api的</p>
-<h3 id="同一GPU并发执行kernel注意事项"><a href="#同一GPU并发执行kernel注意事项" class="headerlink" title="同一GPU并发执行kernel注意事项"></a>同一GPU并发执行kernel注意事项</h3><p>运行多个kernel会改变索引的局部性<br>增加L2缓存的未命中率,甚至消除缓存的有效性<br>还会引入其他问题<br>如bank冲突和内存分区冲突</p>
-<h3 id="内存映射"><a href="#内存映射" class="headerlink" title="内存映射"></a>内存映射</h3><p>这部分书上主要讲了页锁定内存<br>感觉没另一本书讲的详细,之前博客写了不复述了</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1931,7 +1926,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1942,7 +1937,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1953,7 +1948,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">23</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
