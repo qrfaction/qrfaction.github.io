@@ -271,6 +271,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/01/31/GHM/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/01/31/GHM/" itemprop="url">Gradient Harmonizing Mechanism简读</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-31T21:47:31+08:00">
+                2019-01-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/ML-DL/" itemprop="url" rel="index">
+                    <span itemprop="name">ML&DL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>文章链接 <a href="https://arxiv.org/pdf/1811.05181.pdf" target="_blank" rel="noopener">https://arxiv.org/pdf/1811.05181.pdf</a></p>
+<h3 id="核心思想"><a href="#核心思想" class="headerlink" title="核心思想"></a>核心思想</h3><p>通过数据集的梯度分布去调节训练时权重<br>旨在降低label噪声影响和对hard example更好的学习</p>
+<blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/ghmc.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/beta.png" alt="这里写图片描述"></p>
+</blockquote>
+<h3 id="Gradient-Density"><a href="#Gradient-Density" class="headerlink" title="Gradient Density"></a>Gradient Density</h3><blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/gn.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/gd.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/g.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/g_d.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/01/31/GHM/gd_detail.png" alt="这里写图片描述"><br>意思就是密度越大的样本权重越低<br>密度大且loss大的样本认为是outlier</p>
+</blockquote>
+<h3 id="Unit-Region-Approximation"><a href="#Unit-Region-Approximation" class="headerlink" title="Unit Region Approximation"></a>Unit Region Approximation</h3><p>将梯度分区间段统计计算梯度密度<br>很简单的一个近似估计来降低算法时间复杂度</p>
+<h3 id="Exponential-Moving-Average"><a href="#Exponential-Moving-Average" class="headerlink" title="Exponential Moving Average"></a>Exponential Moving Average</h3><p>梯度密度是根据一个mini-batch的样本统计所得<br>通常情况下batch不能很好反应整个数据集的分布情况<br>梯度密度变化十分不稳定<br>通过滑动平均让这个变化变得更加smooth</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/01/13/gcn/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1645,156 +1796,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/10/iounet/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/10/iounet/" itemprop="url">IoU-Net 阅读笔记</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-10T13:14:37+08:00">
-                2018-11-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>好久没碰检测了<br>前段时间因为一些事情又focus了几天<br>今天做个IOU-Net的简短笔记</p>
-<p>简单来说这篇文章主要是针对这样一个问题<br>检测的目的很明确，为了获得高质量的bounding box<br>然而在以前的做法当中是先通过一系列bounding box然后再经过筛选获得<br>筛选是以分类置信度为第一优先级<br>但是，分类置信度和bbox proposal质量存在相关性但非同步增减<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/iouvsloc.png" alt="这里写图片描述"> </p>
-<p>基于这些问题，这篇文章提出了以下策略</p>
-<h3 id="IoU-predictor"><a href="#IoU-predictor" class="headerlink" title="IoU predictor"></a>IoU predictor</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/ioupredict.png" alt="这里写图片描述"><br>加入IoU预测分支，loss使用smooth L1<br>使用非RPN提供的proposals，而是ground truth加随机绕动得到Jittered RoIs</p>
-<h3 id="IoU-guided-NMS"><a href="#IoU-guided-NMS" class="headerlink" title="IoU-guided NMS"></a>IoU-guided NMS</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/nms.png" alt="这里写图片描述"><br>首先选出IoU最大的bbox<br>获得与该bbox重叠率大于某阈值的bbox集合<br>将该bbox的分类置信度更新为该集合内分类置信度的最大值<br>滤掉该集合内的bbox</p>
-<p>如此循环…</p>
-<h3 id="Bounding-box-refinement-as-an-optimization-procedure"><a href="#Bounding-box-refinement-as-an-optimization-procedure" class="headerlink" title="Bounding box refinement as an optimization procedure"></a>Bounding box refinement as an optimization procedure</h3><p>这部分也就长话短说<br>就是我们现在有一个IoU预测器，以及检测获得的bbox<br>将这些bbox输入，获得其IoU预测值，再通过梯度反向微调bbox</p>
-<h3 id="PrROI直接看公式吧"><a href="#PrROI直接看公式吧" class="headerlink" title="PrROI直接看公式吧"></a>PrROI直接看公式吧</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/prroi1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou2.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/priou3.png" alt="这里写图片描述"><br>ROIPool -&gt; ROIAlign 避免量化<br>ROIAlign -&gt; PrROI 修补了ROIAlign不能由bin大小调整的缺陷</p>
-<h3 id="result"><a href="#result" class="headerlink" title="result"></a>result</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/10/iounet/result.png" alt="这里写图片描述"><br>高IoU阈值时有较显著的提升</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1845,7 +1846,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
