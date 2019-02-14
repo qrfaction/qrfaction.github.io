@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2019-02-14T02:12:17.409Z</updated>
+  <updated>2019-02-14T02:14:50.963Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://github.com/qrfaction/qrfaction.github.io/2019/02/14/german-solution/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2019/02/14/german-solution/</id>
     <published>2019-02-14T02:08:56.000Z</published>
-    <updated>2019-02-14T02:12:17.409Z</updated>
+    <updated>2019-02-14T02:14:50.963Z</updated>
     
     <content type="html"><![CDATA[<p>赛季1：主要是hadxu和haowei在干活儿<br>赛季2：主要是我和haowei在干活儿</p><h2 id="赛题分析"><a href="#赛题分析" class="headerlink" title="赛题分析"></a>赛题分析</h2><p>题目数据来自卫星数据有18通道<br>各通道数据区间相差较大<br>比较麻烦的是验证集与测试集同分布，而训练集非同分布<br>而且训练集，验证集和测试集疑似存在很多伪重图片，造成线下cv和线上难以对上</p><p>个人一直很烦这种问题，大部分找不到很好的解决方案，只能采取一些维稳策略<br>毕竟只有良好的验证集才能帮助正确评估模型快速迭代优化方案<br>各位看客有比较好的解决方案望告知</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>讲的很细，因为没啥东西，算是个抛砖引玉<br>个人感觉基础分类任务创新也是蛮难得，基本上看到都是loss啥变变</p><ol><li>可见光通道所在的卫星数据进行亮度对比度数据增广</li><li>所有数据进行flip+rotate</li><li>数据z-score规范化使各通道范数相近(据队友实验数据好像归一化会严重掉分，不过我没这习惯hh)</li><li>卫星数据reflect放大，一直测试到160*160，因为春节大家都比较懒只测到这么大了，一直有涨</li><li>学习率三次衰减，再衰减线下虽还未过拟合，线上分数已经开始掉了</li><li>label smooth  -&gt;  label = (1-alpha)<em>label+alpha</em>(1-label)/16</li><li>batch level ohem </li><li>Nadam+pytorch</li><li>deep backbone + light head</li><li>使用初版模型获得训练数据的fc特征，再聚类聚5类分fold（约几个千）</li><li>半监督伪标签，四份测试集取较高分数段滤掉部分低质量样本加入训练集训练</li><li>TTA × 8</li><li>112,128,144,160大小图像差异集成，xcep + IncepResnetv2 + seresnext50 + resnet50集成</li></ol><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>恩，方案简简单单普普通通<br>模型也还行，春节期间比较忙，最后临时抱佛脚性质跑了四个模型<br>等着前排答辩完开个方案</p>]]></content>
     
@@ -38,7 +38,7 @@
       <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
     
     
-      <category term="分类" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%88%86%E7%B1%BB/"/>
+      <category term="图像分类" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%9B%BE%E5%83%8F%E5%88%86%E7%B1%BB/"/>
     
   </entry>
   
