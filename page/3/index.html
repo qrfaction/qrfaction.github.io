@@ -271,6 +271,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/08/31/Home/" itemprop="url">Home Credit</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-31T16:46:51+08:00">
+                2018-08-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>说起来这个比赛打起来体验极差…<br>线上线下琢磨不透…<br>时间上花了两周,最终结果single model cv 0.8004</p>
+<p>开始三天在那抄抄dissussion和kernel里的代码拿到了cv 0.7963<br>后来觉得这样不行<br>后来花两天重构了下了代码,优化并行了特征生成部分<br>开始逐文件批量生成特征,再进行筛选 (毕竟一个变量名都看不懂)<br>接着效率大大提高,分数逐渐上升到8004<br>但是在这途中lb一直很差只有和cv差不多的分数<br>然后就丢了干别的比赛去了,打的烦啊,工作无聊机械,lb还上不去</p>
+<p>最后一天把自己的oof和submit丢给队友就跑了<br>队友提交的最终cv是0.801吧</p>
+<p>第八名的single model cv是0.799  集成804的样子<br>早知道最后一天随便跑跑了几个模型搞点儿差异性出来了…<br>小可惜,不过投入也不算多,不是特别心疼吧</p>
+<p>这个比赛看下来搞特征的思路大多不是特别稀奇<br>强特的话批量找慢慢找都可以找出来的吧<br>主要是筛选工作和批量搜索的时候缩小搜索范围</p>
+<p>我做的主要有</p>
+<blockquote>
+</blockquote>
+<ol>
+<li>时间差分特征  x<sub>t</sub> - x<sub>t-1</sub></li>
+<li>趋势特征     过去一段时间内某变量的随时间变化趋势(即斜率)</li>
+<li>趋势预测特征   用2所得的斜率预测当前值的预测值</li>
+<li>一条record缺失值个数</li>
+<li>特征分bin,计算各bin中的样本,数作为特征</li>
+<li>一些条件概率,共现概率特征</li>
+<li>target encode</li>
+<li>批量搜索单位具有实际意义的特征,例如 钱/钱 , 钱/次数 , 次数/次数 , 次数 - 次数, 时间-时间<br>这么做的主要目的是减小搜索空间,毕竟几百个特征两两组合筛不过来呀</li>
+</ol>
+<p>我的收益几乎都来8 …<br>后来工作没干完就跑了,恩…</p>
+<p>还有一些其他的思路下面再讲</p>
+<p>筛选主要是这样的:</p>
+<blockquote>
+</blockquote>
+<p>我首先划定了top550收益的特征,因为划到550我的cv上升了<br>然后每次批量生成几百个特征的时候留下gain落在top300的特征<br>注意事项: 必须要尽量缩小特征的生成量,因为特征生成的太多,收益均摊到各个特征上,导致大部分特征收益都很接近<br>    这时候不利于筛选</p>
+<p>集成上虽然没做,但简单简述dissussion的magic集成思路<br>即用rank score进行集成<br>如果了解auc的话这个集成方式其实很容易想到</p>
+<ol>
+<li>因为AUC是排序指标<br>这种集成方式还有一个优势</li>
+<li>因为不同的loss输出的预测值在[0,1]的方差不同,密度不同,期望也不同<br>直接加权可能问题就很大了<br>一种方式是把他们直接minmax缩放到[0,1],但这个没解决密度问题<br>另一个很简单的思路就是把预测值投射到rank上</li>
+</ol>
+<p>其他人的特征思路<br>对样本聚类500,然后用这个类别进行target encode<br>(话说聚类这东西我一直玩儿不溜,这东西到底能不能用自己每次都是试了才知道,所以要做都会堆到后期,没一点经验性的参考)<br>因为ext_1缺失值特别多,但他是重要特征,所以建立模型预测该特征作为新特征<br>这个带来收益也比较大</p>
+<p>整个比赛里貌似只有第二名的方式是个亮点<br>他发现了样本以时间序排序,他用一些时间差分的特征如出生日期-上班日期等等特征得到了user_id<br>然后根据user_id和历史上下文信息对target进行编码得到了很大的提高<br>见<a href="https://www.kaggle.com/titericz/visualizing-user-ids" target="_blank" rel="noopener">https://www.kaggle.com/titericz/visualizing-user-ids</a></p>
+<p>emmmmm  就这样吧</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/08/14/vqa-man/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1687,189 +1860,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/01/并行数据处理库Dask介绍/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/01/并行数据处理库Dask介绍/" itemprop="url">并行数据处理库Dask介绍</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-01T20:13:39+08:00">
-                2018-06-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/高性能编程/" itemprop="url" rel="index">
-                    <span itemprop="name">高性能编程</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近有一些临时需求需要并行一些python代码<br>受限于multiprocessing的进程通信限制,不能很方便的通信大矩阵…</p>
-<p>今天偶然发现一个Dask库<br>api与numpy,pandas一致,但可以并行计算<br>真的是雪中送炭hh</p>
-<h2 id="Dask"><a href="#Dask" class="headerlink" title="Dask"></a>Dask</h2><h3 id="接口介绍"><a href="#接口介绍" class="headerlink" title="接口介绍"></a>接口介绍</h3><p>High Level</p>
-<blockquote>
-<p>  Arrays: 并行Numpy<br>    Bags: 并行lists<br>    Dataframes: 并行Pandas<br>    Machine Learning : 并行Scikit-Learn<br>    Others from external projects, like XArray</p>
-</blockquote>
-<p>Low Level</p>
-<blockquote>
-<p>  Delayed: 用这个装饰器可以用于封装自定义函数来搭建计算图延迟计算<br>    Futures: real-time parallel function evaluation</p>
-</blockquote>
-<h3 id="计算图搭建与延迟计算"><a href="#计算图搭建与延迟计算" class="headerlink" title="计算图搭建与延迟计算"></a>计算图搭建与延迟计算</h3><p>方式一</p>
-<blockquote>
-<p>import dask</p>
-</blockquote>
-<p>lazy_results = []<br>for a in A:<br>&emsp;&emsp;for b in B:<br>&emsp;&emsp;&emsp;&emsp;if a &lt; b:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(f)(a, b)  # 延迟任务计算,f是自定义函数<br>&emsp;&emsp;&emsp;&emsp;else:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;c = dask.delayed(g)(a, b)  # 延迟任务计算<br>&emsp;&emsp;&emsp;&emsp;lazy_results.append(c)</p>
-<blockquote>
-<p>results = dask.compute(*lazy_results)  # 并行计算所有任务</p>
-</blockquote>
-<p>方式二 </p>
-<blockquote>
-</blockquote>
-<p>@dask.delayed<br>def inc(x):<br>&emsp;&emsp;return x + 1</p>
-<blockquote>
-</blockquote>
-<p>@dask.delayed<br>def add(x, y):<br>&emsp;&emsp;return x + y</p>
-<blockquote>
-</blockquote>
-<p>a = inc(1)       # 放入计算图<br>b = inc(2)       # 放入计算图<br>c = add(a, b)    # 放入计算图</p>
-<blockquote>
-</blockquote>
-<p>c = c.compute()  # 运行计算图并返回结果</p>
-<h3 id="Dask中的pandas一览"><a href="#Dask中的pandas一览" class="headerlink" title="Dask中的pandas一览"></a>Dask中的pandas一览</h3><blockquote>
-</blockquote>
-<p>>&gt;&gt; import dask.dataframe as dd<br>>&gt;&gt; df = dd.read_csv(‘2014-*.csv’)<br>>&gt;&gt; df.head()<br>&emsp;&emsp;&ensp;x&emsp;y<br>&emsp;0&emsp;1&emsp;a<br>&emsp;1&emsp;2&emsp;b<br>&emsp;2&emsp;3&emsp;c<br>&emsp;3&emsp;4&emsp;a<br>&emsp;4&emsp;5&emsp;b<br>&emsp;5&emsp;6&emsp;c</p>
-<blockquote>
-</blockquote>
-<p>>&gt;&gt; df2 = df[df.y == ‘a’].x + 1</p>
-<blockquote>
-</blockquote>
-<p>>&gt;&gt; df2.compute()<br>0&emsp;2<br>3&emsp;5<br>Name: x, dtype: int64</p>
-<p>pandas中如下等各类函数皆被加速处理</p>
-<p>dd.merge(df1, df2, on=’name’)<br>df.groupby(df.x).apply(myfunc)<br>df[df.x &gt; 0]<br>df.x + df.y<br>等等</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1920,7 +1910,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1942,7 +1932,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

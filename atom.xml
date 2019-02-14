@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2019-01-31T14:38:23.573Z</updated>
+  <updated>2019-02-14T02:12:17.409Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Alibaba Cloud German AI Challenge 比赛总结</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2019/02/14/german-solution/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2019/02/14/german-solution/</id>
+    <published>2019-02-14T02:08:56.000Z</published>
+    <updated>2019-02-14T02:12:17.409Z</updated>
+    
+    <content type="html"><![CDATA[<p>赛季1：主要是hadxu和haowei在干活儿<br>赛季2：主要是我和haowei在干活儿</p><h2 id="赛题分析"><a href="#赛题分析" class="headerlink" title="赛题分析"></a>赛题分析</h2><p>题目数据来自卫星数据有18通道<br>各通道数据区间相差较大<br>比较麻烦的是验证集与测试集同分布，而训练集非同分布<br>而且训练集，验证集和测试集疑似存在很多伪重图片，造成线下cv和线上难以对上</p><p>个人一直很烦这种问题，大部分找不到很好的解决方案，只能采取一些维稳策略<br>毕竟只有良好的验证集才能帮助正确评估模型快速迭代优化方案<br>各位看客有比较好的解决方案望告知</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>讲的很细，因为没啥东西，算是个抛砖引玉<br>个人感觉基础分类任务创新也是蛮难得，基本上看到都是loss啥变变</p><ol><li>可见光通道所在的卫星数据进行亮度对比度数据增广</li><li>所有数据进行flip+rotate</li><li>数据z-score规范化使各通道范数相近(据队友实验数据好像归一化会严重掉分，不过我没这习惯hh)</li><li>卫星数据reflect放大，一直测试到160*160，因为春节大家都比较懒只测到这么大了，一直有涨</li><li>学习率三次衰减，再衰减线下虽还未过拟合，线上分数已经开始掉了</li><li>label smooth  -&gt;  label = (1-alpha)<em>label+alpha</em>(1-label)/16</li><li>batch level ohem </li><li>Nadam+pytorch</li><li>deep backbone + light head</li><li>使用初版模型获得训练数据的fc特征，再聚类聚5类分fold（约几个千）</li><li>半监督伪标签，四份测试集取较高分数段滤掉部分低质量样本加入训练集训练</li><li>TTA × 8</li><li>112,128,144,160大小图像差异集成，xcep + IncepResnetv2 + seresnext50 + resnet50集成</li></ol><h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>恩，方案简简单单普普通通<br>模型也还行，春节期间比较忙，最后临时抱佛脚性质跑了四个模型<br>等着前排答辩完开个方案</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;赛季1：主要是hadxu和haowei在干活儿&lt;br&gt;赛季2：主要是我和haowei在干活儿&lt;/p&gt;
+&lt;h2 id=&quot;赛题分析&quot;&gt;&lt;a href=&quot;#赛题分析&quot; class=&quot;headerlink&quot; title=&quot;赛题分析&quot;&gt;&lt;/a&gt;赛题分析&lt;/h2&gt;&lt;p&gt;题目数据来自卫星
+      
+    
+    </summary>
+    
+      <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
+    
+    
+      <category term="分类" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%88%86%E7%B1%BB/"/>
+    
+  </entry>
   
   <entry>
     <title>Gradient Harmonizing Mechanism简读</title>
@@ -516,32 +542,6 @@
     
     
       <category term="生活" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E7%94%9F%E6%B4%BB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Home Credit</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/08/31/Home/</id>
-    <published>2018-08-31T08:46:51.000Z</published>
-    <updated>2018-12-04T01:02:09.230Z</updated>
-    
-    <content type="html"><![CDATA[<p>说起来这个比赛打起来体验极差…<br>线上线下琢磨不透…<br>时间上花了两周,最终结果single model cv 0.8004</p><p>开始三天在那抄抄dissussion和kernel里的代码拿到了cv 0.7963<br>后来觉得这样不行<br>后来花两天重构了下了代码,优化并行了特征生成部分<br>开始逐文件批量生成特征,再进行筛选 (毕竟一个变量名都看不懂)<br>接着效率大大提高,分数逐渐上升到8004<br>但是在这途中lb一直很差只有和cv差不多的分数<br>然后就丢了干别的比赛去了,打的烦啊,工作无聊机械,lb还上不去</p><p>最后一天把自己的oof和submit丢给队友就跑了<br>队友提交的最终cv是0.801吧</p><p>第八名的single model cv是0.799  集成804的样子<br>早知道最后一天随便跑跑了几个模型搞点儿差异性出来了…<br>小可惜,不过投入也不算多,不是特别心疼吧</p><p>这个比赛看下来搞特征的思路大多不是特别稀奇<br>强特的话批量找慢慢找都可以找出来的吧<br>主要是筛选工作和批量搜索的时候缩小搜索范围</p><p>我做的主要有</p><blockquote></blockquote><ol><li>时间差分特征  x<sub>t</sub> - x<sub>t-1</sub></li><li>趋势特征     过去一段时间内某变量的随时间变化趋势(即斜率)</li><li>趋势预测特征   用2所得的斜率预测当前值的预测值</li><li>一条record缺失值个数</li><li>特征分bin,计算各bin中的样本,数作为特征</li><li>一些条件概率,共现概率特征</li><li>target encode</li><li>批量搜索单位具有实际意义的特征,例如 钱/钱 , 钱/次数 , 次数/次数 , 次数 - 次数, 时间-时间<br>这么做的主要目的是减小搜索空间,毕竟几百个特征两两组合筛不过来呀</li></ol><p>我的收益几乎都来8 …<br>后来工作没干完就跑了,恩…</p><p>还有一些其他的思路下面再讲</p><p>筛选主要是这样的:</p><blockquote></blockquote><p>我首先划定了top550收益的特征,因为划到550我的cv上升了<br>然后每次批量生成几百个特征的时候留下gain落在top300的特征<br>注意事项: 必须要尽量缩小特征的生成量,因为特征生成的太多,收益均摊到各个特征上,导致大部分特征收益都很接近<br>    这时候不利于筛选</p><p>集成上虽然没做,但简单简述dissussion的magic集成思路<br>即用rank score进行集成<br>如果了解auc的话这个集成方式其实很容易想到</p><ol><li>因为AUC是排序指标<br>这种集成方式还有一个优势</li><li>因为不同的loss输出的预测值在[0,1]的方差不同,密度不同,期望也不同<br>直接加权可能问题就很大了<br>一种方式是把他们直接minmax缩放到[0,1],但这个没解决密度问题<br>另一个很简单的思路就是把预测值投射到rank上</li></ol><p>其他人的特征思路<br>对样本聚类500,然后用这个类别进行target encode<br>(话说聚类这东西我一直玩儿不溜,这东西到底能不能用自己每次都是试了才知道,所以要做都会堆到后期,没一点经验性的参考)<br>因为ext_1缺失值特别多,但他是重要特征,所以建立模型预测该特征作为新特征<br>这个带来收益也比较大</p><p>整个比赛里貌似只有第二名的方式是个亮点<br>他发现了样本以时间序排序,他用一些时间差分的特征如出生日期-上班日期等等特征得到了user_id<br>然后根据user_id和历史上下文信息对target进行编码得到了很大的提高<br>见<a href="https://www.kaggle.com/titericz/visualizing-user-ids" target="_blank" rel="noopener">https://www.kaggle.com/titericz/visualizing-user-ids</a></p><p>emmmmm  就这样吧</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;说起来这个比赛打起来体验极差…&lt;br&gt;线上线下琢磨不透…&lt;br&gt;时间上花了两周,最终结果single model cv 0.8004&lt;/p&gt;
-&lt;p&gt;开始三天在那抄抄dissussion和kernel里的代码拿到了cv 0.7963&lt;br&gt;后来觉得这样不行&lt;br&gt;后来花两天重
-      
-    
-    </summary>
-    
-      <category term="数据竞赛" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E6%95%B0%E6%8D%AE%E7%AB%9E%E8%B5%9B/"/>
-    
-    
-      <category term="tabular data" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/tabular-data/"/>
     
   </entry>
   

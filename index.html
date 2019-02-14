@@ -271,6 +271,167 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/02/14/german-solution/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/14/german-solution/" itemprop="url">Alibaba Cloud German AI Challenge 比赛总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-14T10:08:56+08:00">
+                2019-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>赛季1：主要是hadxu和haowei在干活儿<br>赛季2：主要是我和haowei在干活儿</p>
+<h2 id="赛题分析"><a href="#赛题分析" class="headerlink" title="赛题分析"></a>赛题分析</h2><p>题目数据来自卫星数据有18通道<br>各通道数据区间相差较大<br>比较麻烦的是验证集与测试集同分布，而训练集非同分布<br>而且训练集，验证集和测试集疑似存在很多伪重图片，造成线下cv和线上难以对上</p>
+<p>个人一直很烦这种问题，大部分找不到很好的解决方案，只能采取一些维稳策略<br>毕竟只有良好的验证集才能帮助正确评估模型快速迭代优化方案<br>各位看客有比较好的解决方案望告知</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>讲的很细，因为没啥东西，算是个抛砖引玉<br>个人感觉基础分类任务创新也是蛮难得，基本上看到都是loss啥变变</p>
+<ol>
+<li>可见光通道所在的卫星数据进行亮度对比度数据增广</li>
+<li>所有数据进行flip+rotate</li>
+<li>数据z-score规范化使各通道范数相近(据队友实验数据好像归一化会严重掉分，不过我没这习惯hh)</li>
+<li>卫星数据reflect放大，一直测试到160*160，因为春节大家都比较懒只测到这么大了，一直有涨</li>
+<li>学习率三次衰减，再衰减线下虽还未过拟合，线上分数已经开始掉了</li>
+<li>label smooth  -&gt;  label = (1-alpha)<em>label+alpha</em>(1-label)/16</li>
+<li>batch level ohem </li>
+<li>Nadam+pytorch</li>
+<li>deep backbone + light head</li>
+<li>使用初版模型获得训练数据的fc特征，再聚类聚5类分fold（约几个千）</li>
+<li>半监督伪标签，四份测试集取较高分数段滤掉部分低质量样本加入训练集训练</li>
+<li>TTA × 8</li>
+<li>112,128,144,160大小图像差异集成，xcep + IncepResnetv2 + seresnext50 + resnet50集成</li>
+</ol>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>恩，方案简简单单普普通通<br>模型也还行，春节期间比较忙，最后临时抱佛脚性质跑了四个模型<br>等着前排答辩完开个方案</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/01/31/GHM/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1649,153 +1810,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/13/同类对比CRF/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/13/同类对比CRF/" itemprop="url">同类对比CRF</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-13T21:02:41+08:00">
-                2018-11-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>很早之前看CRF一直都是一堆概率图<br>一堆公式，看的晕乎乎，最后也不知道怎么算如何用<br>后来几个月前看到苏神的博客才醍醐灌醒<br>然后这几天也一直在研究crf的源码<br>其实这个东西哪里有那么复杂</p>
-<p>同类对比是个很好的理解方式<br>以序列标注为例子<br>首先我们看看直接以softmax建模<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/softmax.png" alt="这里写图片描述"><br>对序列的每个输出都进行softmax输出概率P(Y<sub>i</sub>|X)<br>整个序列出现概率为P(Y|X) = ∏<sub>i</sub> P(Y<sub>i</sub>|X)<br>该序列的loss为<br>loss = -Σ<sub>i</sub> log(Y<sub>i</sub>|X)</p>
-<p>而这种建模序列概率的方式没有考虑到序列标签的依赖关系<br>crf是考虑了这种依赖关系而对整个句子的概率进行建模<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/13/同类对比CRF/crf.png" alt="这里写图片描述"><br>P(Y|X) = exp(h(y<sub>1</sub>;x)+g(y<sub>1</sub>,y<sub>2</sub>;x)+…+h(y<sub>n</sub>;x))/Z(x)<br>P(Y|X) = exp(Σ<sub>i</sub> h(y<sub>i</sub>;x) + Σ<sub>i</sub>  g(y<sub>i</sub>,y<sub>i+1</sub>;x))/Z(x)<br>如此给句子打分就考虑到了句子间的近临依赖<br>loss = - log(P(Y|X))<br>其中h是之前rnn/cnn等的输出，而g是状态转移矩阵，可用自定义rnn实现</p>
-<p>但是分子计算是完成了<br>分母的计算呢<br>这里用到dp即可计算得到<br>Z<sub>t+1</sub>(i) = ( Σ<sub>j</sub> Z<sub>t</sub>(j) <em> G(j|i) ) </em> H(i|X)<br>Z<sub>t+1</sub>(i)意思是t+1时刻以i结尾的所有序列得分和<br>G(j|i)为exp(g(y<sub>i</sub>,y<sub>i+1</sub>;x))<br>H(i,X)为exp(h(y<sub>i</sub>;x))</p>
-<p>那么还有一个问题，如何预测？<br>普通的对句子的所有输出进行softmax，直接argmax就好了</p>
-<p>用crf的话就涉及到最长路径<br>这个直接用vibiter算法即可获得</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1846,7 +1860,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">56</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1868,7 +1882,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">23</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
