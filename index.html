@@ -365,6 +365,7 @@
         
           
             <p>赛季1：主要是hadxu和haowei在干活儿<br>赛季2：主要是我和haowei在干活儿</p>
+<p>源码链接：<a href="https://github.com/lhwcv/cloud_german_rank10">https://github.com/lhwcv/cloud_german_rank10</a></p>
 <h2 id="赛题分析"><a href="#赛题分析" class="headerlink" title="赛题分析"></a>赛题分析</h2><p>题目数据来自卫星数据有18通道<br>各通道数据区间相差较大<br>比较麻烦的是验证集与测试集同分布，而训练集非同分布<br>而且训练集，验证集和测试集疑似存在很多伪重图片，造成线下cv和线上难以对上</p>
 <p>个人一直很烦这种问题，大部分找不到很好的解决方案，只能采取一些维稳策略<br>毕竟只有良好的验证集才能帮助正确评估模型快速迭代优化方案<br>各位看客有比较好的解决方案望告知</p>
 <h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><p>讲的很细，因为没啥东西，算是个抛砖引玉<br>个人感觉基础分类任务创新也是蛮难得，基本上看到都是loss啥变变</p>
