@@ -271,6 +271,162 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/02/28/瑞金知识图谱/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/28/瑞金知识图谱/" itemprop="url">瑞金知识图谱比赛总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-28T19:45:29+08:00">
+                2019-02-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这个小破赛到昨天才答辩，吐槽一波(恩，好像没隔壁oppo惨，hh)</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>涨分的应该都说了，但有些具体多少实在忘掉了<br>答辩队友没准备充分，部分答错加答漏，导致被翻盘少了两万，此处拉出来鞭尸<br>复赛2nd,答辩3rd</p>
+<h3 id="初赛"><a href="#初赛" class="headerlink" title="初赛"></a>初赛</h3><p>命名体识别问题，采用序列标注方式<br>数据特点：数据集脏，句子不易切分，句子长度方差较大，长句严重影响训练调试速度</p>
+<p>我们初期着重点一直在如何加速调试<br>我们初期直接采用了sota：LSTM+CRF(不考虑外部工具及模型)<br>然而这个模型实在训练太慢了<br>0) 预处理一种是按规则切分和按行切分，按行略差3个千<br>1) 改模型LSTM为CuDNNGRU/CuDNNLSTM<br>&emsp;&emsp;速度*5～10具体多少忘了，分数下降10个点(CuDNNGRU/CuDNNLSTM不支持mask zero)<br>2) 由于CuDNNGRU/CuDNNLSTM不支持mask zero<br>&emsp;&emsp;实现伪mask zero(解决循环单元前传，反传无法解决)，上涨8个点<br>3) 解决句子边缘识别太差<br>&emsp;&emsp;sample = [sentence1,sentence2,sentence3]<br>&emsp;&emsp;y = [y1,y2,y3]<br>&emsp;&emsp;输入输出改成窗口为三同时输入三句话的方式，最后结果只取y2<br>&emsp;&emsp;因为中间句sentence2没有边缘信息不足问题<br>&emsp;&emsp;这个方式训练速度下降三倍，不用CuDNNGRU一般是跑不动的。。。<br>&emsp;&emsp;分数上涨2-4个点<br>4) 添加词性词边界特征将其embedding后与字向量拼接<br>&emsp;&emsp;上涨1-2个点<br>5) 将GRU容量压到最小后开始逐层调Spatial Dropout<br>6) 差分学习率，embedding层学习率小十倍，上涨1个点左右<br>7) 按行切分和按规则切分集成分数上涨0.2~0.3个点</p>
+<p><er><br>以上是初赛的解决方案<br>其实线下再加一层CuDNNGRU还可以涨3-4个百分点<br>由于之前实验未控制好变量，得到错误结论故一直没采用<br>CuDNNGRU两层后速度彻底和两层GRU的速度拉开来了超多倍</er></p>
+<p>初赛主要赢在让模型训练速度大幅度加倍的同时只是略降分数<br>使得我们可以采用很暴力的上分方式</p>
+<p><er></er></p>
+<p>###复赛<br>实体对关系分类问题<br>数据特点：<br>1) 已知实体对可能关系类别，但未知是否成立<br>2) 数据集标签存在一定噪声(存在关系的实体对相隔太远)</p>
+<p>核心思路<br>0) 实体对两两组合，并将覆盖他们的句子切出进行分类，其中过滤长度大于200的句子<br>1) 覆盖实体对的句子在两端各取一定长度的短句丰富上下文信息</p>
+<blockquote>
+</blockquote>
+<p>if end - begin &lt;= 100:<br>    padding = 50     # window是在两边补多少词<br>elif end - begin &lt;= 140:<br>    padding = 30<br>else:<br>    padding = 0</p>
+<p>2) 特征工程<br>&emsp;&emsp;1.实体对距离特征：这个特征原本没有用，因为句子的补0数量可以让模型捕捉到长度信息<br>&emsp;&emsp;但是1)中的方法使得这个信息丢失，让模型不易捕捉<br>&emsp;&emsp;2.词性特征+position embedding(每个字到实体1,2的距离)，与字向量拼接<br>&emsp;&emsp;3.实体segment特征，实体1标0.1，实体2为-0.1，其他为0，与字向量相加<br>&emsp;&emsp;&emsp;&emsp;选0.1主要考虑到默认初始化的方差大小，故选择一个较小的值<br>&emsp;&emsp;&emsp;&emsp;这个特征一方面是标示出实体对 yu的差异与其他字的差异<br>&emsp;&emsp;&emsp;&emsp;另一方面是为了后面利用他获得实体1,2的特征向量<br>&emsp;&emsp;4.邻近实体对存在关系的概率特征(这个好像没什么人发现)<br>&emsp;&emsp;&emsp;&emsp;example:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;中国2型糖尿病防治指南(2010)在LSM和二甲双胍基础上HBA1C,≥7.O%:<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;新诊断有明显体重减轻或其他严重高血糖状的患者<br>&emsp;&emsp;&emsp;&emsp;我们观察到 (2型糖尿病,LSM) 是否存在关系,还与 (2型糖尿病,二甲双胍) ，(2型糖尿病,HBA1C)有关</p>
+<p>&emsp;&emsp;&emsp;&emsp;其实这个特征真不是看数据得到的。。<br>&emsp;&emsp;&emsp;&emsp;主要是开始分fold发现不按文档分而按句子分会严重leak验证集，线上线下对不上<br>&emsp;&emsp;&emsp;&emsp;既然leak了验证集，如果能利用好还是能劣势转优势的<br>&emsp;&emsp;&emsp;&emsp;查找leak的原因后，观察发现文章中某些实体对强相关。<br>&emsp;&emsp;&emsp;&emsp;然后用初版模型对实体对打分，将邻近实体对的分数作为特征上了不到一个百<br>&emsp;&emsp;&emsp;&emsp;(前面特征用太多了，快上限了)<br>3) 模型<br>&emsp;&emsp;两层GRU + SpatialDropout + attention pooling + dropout + fc + 差分学习率<br>4) attention (1~2个点)<br>&emsp;&emsp;使用之前的segment标示出的实体位置，在输入的text中取出对应字向量<br>&emsp;&emsp;并将其平均处理，再通过权重共享的全连接层将文本和字映射到同一个空间<br>&emsp;&emsp;使用e2-(e1+text)作为相似度计算的方式(参考知识图谱的embedding算法)<br>&emsp;&emsp;e2-(e1+text)越小权重越高<br>&emsp;&emsp;然后用获得的attention pooling进行加权平均<br>5) prior mask实现独立分类器<br>&emsp;&emsp;我们的输出非11个单元，也非1个单元的二分类<br>&emsp;&emsp;而是输出了10个单元的二分类(即sigmoid激活，不是softmax)<br>&emsp;&emsp;由于我们之前知道了实体对可能的类别<br>&emsp;&emsp;故可以生成类似如下的向量<br>&emsp;&emsp;prior mask = [0,0,0,0,0,1,0,0,0,0]<br>&emsp;&emsp;而模型输出output = [0.1,0.9,0.5,0.4,0.3,0.2,0.1,0.5,0.6,0.7]<br>&emsp;&emsp;output = output * prior mask = [0,0,0,0,0,0.2,0,0,0,0]<br>&emsp;&emsp;然后用bce计算loss回传梯度<br>&emsp;&emsp;这个方式结合了11分类与2分类的好处<br>&emsp;&emsp;11分类会有类间干扰，2分类会导致所有类别用同一个分类器权重<br>6) 知识蒸馏二次训练3个千<br>7) 替换GRU为LSTM训练集成，3个千</p>
+<p>最后<br>比赛比较懒，数据清洗方面一直懒得下功夫<br>模型也都是用之前的经验，懒得调试<br>loss也懒得动<br>其他队正好和我们队互补，可以参考一下他们的</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/02/14/german-solution/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1663,154 +1819,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/20/taggingScheme/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/11/20/taggingScheme/" itemprop="url">2017ACL Joint Extraction of Entities and Relations Based on a Novel Tagging Scheme</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-20T15:38:29+08:00">
-                2018-11-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/NLP/" itemprop="url" rel="index">
-                    <span itemprop="name">NLP</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这篇文章内容本身其实蛮少的<br>但是意义还是较为重大的</p>
-<p>整篇文章唯一的创新点大概在序列标注的标记模式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/example.png" alt="这里写图片描述"><br>(1)-(2)-(3)<br>(1)内容使用BIES模式标记实体Begin, Inside, End,Single<br>(2)内容使用类别标记实体类别<br>(3)标记实体的在一对关系中的起始和终止位置</p>
-<p>就近原则组合(2)相同，且(3)分别为1,2的实体</p>
-<p>下面是模型部分<br>直接看图就好，没什么创新点<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/model.png" alt="这里写图片描述"> </p>
-<p>这是loss<br>就是负类正类权重不一样，也没什么好讲的<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/loss.png" alt="这里写图片描述"> </p>
-<p>这种方式效果也较为不错<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/11/20/taggingScheme/result.png" alt="这里写图片描述"><br>但是弊端也较为明显，对关系重叠问题解决不太好<br>解决方式也很简单，多分类改成多标签分类就好了<br>还有一个貌似对句子拆分要求较高。</p>
-<p>讲讲我做序列标注任务的几点感受<br>对padding十分敏感<br>sota说是crf+lstm<br>其实应该是双层lstm+crf<br>后面太慢了不过可以用cudnn加速版配自己写的mask zero</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1861,7 +1869,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1883,7 +1891,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
