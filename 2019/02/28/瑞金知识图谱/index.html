@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="这个小破赛到昨天才答辩，吐槽一波(恩，好像没隔壁oppo惨，hh) 前言涨分的应该都说了，但有些具体多少实在忘掉了答辩队友没准备充分，部分答错加答漏，导致被翻盘少了两万，此处拉出来鞭尸复赛2nd,答辩3rd 初赛命名体识别问题，采用序列标注方式数据特点：数据集脏，句子不易切分，句子长度方差较大，长句严重影响训练调试速度 我们初期着重点一直在如何加速调试我们初期直接采用了sota：LSTM+CRF(">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-02-28T11:55:53.787Z">
+<meta property="og:updated_time" content="2019-02-28T11:57:52.632Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="瑞金知识图谱比赛总结">
 <meta name="twitter:description" content="这个小破赛到昨天才答辩，吐槽一波(恩，好像没隔壁oppo惨，hh) 前言涨分的应该都说了，但有些具体多少实在忘掉了答辩队友没准备充分，部分答错加答漏，导致被翻盘少了两万，此处拉出来鞭尸复赛2nd,答辩3rd 初赛命名体识别问题，采用序列标注方式数据特点：数据集脏，句子不易切分，句子长度方差较大，长句严重影响训练调试速度 我们初期着重点一直在如何加速调试我们初期直接采用了sota：LSTM+CRF(">
@@ -376,7 +376,7 @@
 <p><er><br>以上是初赛的解决方案<br>其实线下再加一层CuDNNGRU还可以涨3-4个百分点<br>由于之前实验未控制好变量，得到错误结论故一直没采用<br>CuDNNGRU两层后速度彻底和两层GRU的速度拉开来了超多倍</er></p>
 <p>初赛主要赢在让模型训练速度大幅度加倍的同时只是略降分数<br>使得我们可以采用很暴力的上分方式</p>
 <p><er></er></p>
-<p>###复赛<br>实体对关系分类问题<br>数据特点：<br>1) 已知实体对可能关系类别，但未知是否成立<br>2) 数据集标签存在一定噪声(存在关系的实体对相隔太远)</p>
+<h3 id="复赛"><a href="#复赛" class="headerlink" title="复赛"></a>复赛</h3><p>实体对关系分类问题<br>数据特点：<br>1) 已知实体对可能关系类别，但未知是否成立<br>2) 数据集标签存在一定噪声(存在关系的实体对相隔太远)</p>
 <p>核心思路<br>0) 实体对两两组合，并将覆盖他们的句子切出进行分类，其中过滤长度大于200的句子<br>1) 覆盖实体对的句子在两端各取一定长度的短句丰富上下文信息</p>
 <blockquote>
 </blockquote>
@@ -561,7 +561,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初赛"><span class="nav-number">2.</span> <span class="nav-text">初赛</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初赛"><span class="nav-number">2.</span> <span class="nav-text">初赛</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#复赛"><span class="nav-number">3.</span> <span class="nav-text">复赛</span></a></li></ol></div>
             
 
           </div>
