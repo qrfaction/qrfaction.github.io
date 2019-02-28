@@ -365,7 +365,7 @@
         
           
             <p>这个小破赛到昨天才答辩，吐槽一波(恩，好像没隔壁oppo惨，hh)</p>
-<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>涨分的应该都说了，但有些具体多少实在忘掉了<br>答辩队友没准备充分，部分答错加答漏，导致被翻盘少了两万，此处拉出来鞭尸<br>复赛2nd,答辩3rd</p>
+<h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>涨分的应该都说了，但有些具体涨多少实在忘掉了<br>答辩队友没准备充分，部分答错加答漏，导致被翻盘少了两万，此处拉出来鞭尸<br>复赛2nd,答辩3rd</p>
 <h3 id="初赛"><a href="#初赛" class="headerlink" title="初赛"></a>初赛</h3><p>命名体识别问题，采用序列标注方式<br>数据特点：数据集脏，句子不易切分，句子长度方差较大，长句严重影响训练调试速度</p>
 <p>我们初期着重点一直在如何加速调试<br>我们初期直接采用了sota：LSTM+CRF(不考虑外部工具及模型)<br>然而这个模型实在训练太慢了<br>0) 预处理一种是按规则切分和按行切分，按行略差3个千<br>1) 改模型LSTM为CuDNNGRU/CuDNNLSTM<br>&emsp;&emsp;速度*5～10具体多少忘了，分数下降10个点(CuDNNGRU/CuDNNLSTM不支持mask zero)<br>2) 由于CuDNNGRU/CuDNNLSTM不支持mask zero<br>&emsp;&emsp;实现伪mask zero(解决循环单元前传，反传无法解决)，上涨8个点<br>3) 解决句子边缘识别太差<br>&emsp;&emsp;sample = [sentence1,sentence2,sentence3]<br>&emsp;&emsp;y = [y1,y2,y3]<br>&emsp;&emsp;输入输出改成窗口为三同时输入三句话的方式，最后结果只取y2<br>&emsp;&emsp;因为中间句sentence2没有边缘信息不足问题<br>&emsp;&emsp;这个方式训练速度下降三倍，不用CuDNNGRU一般是跑不动的。。。<br>&emsp;&emsp;分数上涨2-4个点<br>4) 添加词性词边界特征将其embedding后与字向量拼接<br>&emsp;&emsp;上涨1-2个点<br>5) 将GRU容量压到最小后开始逐层调Spatial Dropout<br>6) 差分学习率，embedding层学习率小十倍，上涨1个点左右<br>7) 按行切分和按规则切分集成分数上涨0.2~0.3个点</p>
 <p><er><br>以上是初赛的解决方案<br>其实线下再加一层CuDNNGRU还可以涨3-4个百分点<br>由于之前实验未控制好变量，得到错误结论故一直没采用<br>CuDNNGRU两层后速度彻底和两层GRU的速度拉开来了超多倍</er></p>
