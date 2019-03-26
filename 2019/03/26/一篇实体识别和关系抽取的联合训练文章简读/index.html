@@ -89,16 +89,16 @@
 <meta property="og:site_name" content="qrfaction的博客">
 <meta property="og:description" content="先附上原文链接，一篇18年4月份的文章，仍然是标准的bilstm+crfJoint entity recognition and relation extraction as a multi-head selection problem 然后大图镇场  Joint model底下三层序列标注的标准方式自然没啥好说的emmm还是要说一下的底部embedding layerword level语义与b">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/model.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/emb.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/s1.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/s2.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/loss.png">
-<meta property="og:updated_time" content="2019-03-26T11:33:02.069Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/model.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/emb.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/s1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/s2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/loss.png">
+<meta property="og:updated_time" content="2019-03-26T14:53:58.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="一篇实体识别和关系抽取的联合训练文章简读">
 <meta name="twitter:description" content="先附上原文链接，一篇18年4月份的文章，仍然是标准的bilstm+crfJoint entity recognition and relation extraction as a multi-head selection problem 然后大图镇场  Joint model底下三层序列标注的标准方式自然没啥好说的emmm还是要说一下的底部embedding layerword level语义与b">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/model.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/model.png">
 
 
 
@@ -376,15 +376,15 @@
 
       
         <p>先附上原文链接，一篇18年4月份的文章，仍然是标准的bilstm+crf<br><a href="https://arxiv.org/pdf/1804.07847.pdf" target="_blank" rel="noopener">Joint entity recognition and relation extraction as a multi-head selection problem</a></p>
-<p>然后大图镇场<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/model.png" alt="这里写图片描述"> </p>
-<h3 id="Joint-model"><a href="#Joint-model" class="headerlink" title="Joint model"></a>Joint model</h3><p>底下三层序列标注的标准方式自然没啥好说的<br>emmm还是要说一下的<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/emb.png" alt="这里写图片描述"><br>底部embedding layer<br>word level语义与bilstm 获得的char level语义拼接<br>不过也算常规操作</p>
+<p>然后大图镇场<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/model.png" alt="这里写图片描述"> </p>
+<h3 id="Joint-model"><a href="#Joint-model" class="headerlink" title="Joint model"></a>Joint model</h3><p>底下三层序列标注的标准方式自然没啥好说的<br>emmm还是要说一下的<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/emb.png" alt="这里写图片描述"><br>底部embedding layer<br>word level语义与bilstm 获得的char level语义拼接<br>不过也算常规操作</p>
 <p>然后CRF获得序列得分进行优化</p>
 <p>不过一个小细节说明一下，在第三层第四层的衔接处<br>CRF后面是不能接layer的，他后续使用维比特算法解码的序列标签也不能求梯度，如何实现呢？</p>
 <ol>
 <li>框架中设置这里的不求梯度就好了</li>
 <li>不过文章里貌似是训练时把正确label传进去，测试时用crf获得的结果去推断</li>
 </ol>
-<h3 id="Relation-extraction-as-multi-head-selection"><a href="#Relation-extraction-as-multi-head-selection" class="headerlink" title="Relation extraction as multi-head selection"></a>Relation extraction as multi-head selection</h3><p>接着是关系抽取部分<br>直接上公式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/s1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/s2.png" alt="这里写图片描述"><br>r是relation，z是word/char在lstm encoding后的向量<br>w是word/char<br>其实很简单，实体标签embedding信息和词经过lstm后的encoding信息<br>句子里的字两两计算关系类别得到一个N*N的矩阵，矩阵的每个元素都是某对字/词的关系分类结果<br>此处使用sigmoid激活，因为可能存在多种关系<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/27/一篇实体识别和关系抽取的联合训练文章简读/loss.png" alt="这里写图片描述"> </p>
+<h3 id="Relation-extraction-as-multi-head-selection"><a href="#Relation-extraction-as-multi-head-selection" class="headerlink" title="Relation extraction as multi-head selection"></a>Relation extraction as multi-head selection</h3><p>接着是关系抽取部分<br>直接上公式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/s1.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/s2.png" alt="这里写图片描述"><br>r是relation，z是word/char在lstm encoding后的向量<br>w是word/char<br>其实很简单，实体标签embedding信息和词经过lstm后的encoding信息<br>句子里的字两两计算关系类别得到一个N*N的矩阵，矩阵的每个元素都是某对字/词的关系分类结果<br>此处使用sigmoid激活，因为可能存在多种关系<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/loss.png" alt="这里写图片描述"> </p>
 <h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>感觉最后的关系分类还是可以试试别的而非sigmoid<br>得分矩阵的每一行都是有序列关系在里面的<br>例如第一行是第一个字和每个词是的关系得分<br>或许可以像序列标注一样套个概率图模型加强约束？</p>
 <p>得分矩阵非每一个都是有效的<br>有些地方是否需要加个mask让他不要产生梯度影响训练？</p>
 
