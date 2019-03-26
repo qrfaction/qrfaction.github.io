@@ -271,6 +271,181 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/12/03/之江视频问答1st比赛总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/12/03/之江视频问答1st比赛总结/" itemprop="url">之江视频问答1st比赛总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-03T13:04:49+08:00">
+                2018-12-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/数据竞赛/" itemprop="url" rel="index">
+                    <span itemprop="name">数据竞赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>由于PPT上都是图，直接发打字比较好</p>
+<p>PPT那么多页其实也就几段字，哪有那么多东西讲</p>
+<ol>
+<li><p>mp4关键帧I帧抽取，抽取I帧至40帧，不足则在I帧之间补足40帧</p>
+</li>
+<li><p>2017vqa冠军的模型 faster rcnn<br> (1) 抽取36个物体，受限于IO效率，物体和帧之间以帧为重<br> (2) attribute特征，把输出bbox的属性词作为特征，一是无io压力，二是视频物体种类变化小，可依据该事实通过频率提高该特征信噪比<br> 无效模型 densecap : image caption + action location<br> 本想用它解决动作类问题，无奈句子不方便通过频率筛选，提高特征质量，以及他本身效果不算特别好<br> 外加句子关键词太少</p>
+</li>
+<li><p>prior mask<br> 各类question答案词表分布很不一致，如颜色类问题，数量类问题<br> 很容易想到希望对每一类问题针对性处理，可通过用一个prior mask实现，将该类问题可能回答出的词标1，否则标0，<br> sigmoid激活后与之相乘，避免常识性错误，以及免去类间干扰(question类别)<br> 如此实现了特征共享，但每类问题针对性处理，且可自由扩展类别数量<br> question类别用最易于区分的关键字作为类，如what color ,how many 以及or类问题的or两边的词</p>
+<p> 很容易有下面的改进方法(我没去做,感兴趣试试)</p>
+<p> (1) 以2中抽取的视频attribute作为视频关键信息，通过这个抽取视频先验词表改进prior mask<br> (2) 减小类内干扰，如深红，浅红，细粒度分类无论在nlp还是cv都是个较难的任务,<br>&emsp;&emsp;但是不用细粒度即可答对，干脆放弃细粒度分类<br>&emsp;&emsp;这个问题可以抽象为用尽可能少的答案覆盖该类问题所有答案</p>
+</li>
+<li><p>问答框架<br> 多问多答，可变长输入<br> 问题不足五个重复补足</p>
+<ol>
+<li>免去冗余的五次io</li>
+<li>带来上下文信息</li>
+<li><p>劣势是偏固定的采样方式使他分数若不使用上下文信息会劣于一般训练方式</p>
+<p>改进方法：用0补，重复会让特征信号加强，然后loss梯度权重加倍。。。<br>用0补的话是常量无信息，输出时可配合mask把梯度屏蔽掉</p>
+</li>
+</ol>
+</li>
+<li><p>针对分镜问题的数据增强方案<br> 找俩视频，各取一半帧数，时间轴拼接<br> 问题的话随便取出5个<br> attribute各取频率最高的一半<br> 一问一答，label直接取逻辑加</p>
+</li>
+<li><p>其他数据增强<br> (1) 训练时抽来的40帧随机取16帧 (帧数取太少的话不会有效果的)<br> (2) 测试时隔帧各采16帧，做test aug</p>
+</li>
+<li><p>模型<br> (1) 注意力使用MLB计算（其实啥注意力都差不多)<br> (2) 注意力集成机制：前几层question和video算出注意力权重后，各个问题生成的权重(16,1,1)取平均<br>&emsp;&emsp;与video(16,36,384)各帧相乘<br> (3) attribute 与 question直接算MLB加权平均<br> (4) encode用conv 1<em>1<br>&emsp;&emsp;用faster rcnn特征劣势是失去了空间局部依赖，又因此间接导致失去了物体级的时间局部依赖<br>&emsp;&emsp;rnn与cnn都不能用，采用self-attention+attention稀疏化解决跨时空依赖的想法<br>&emsp;&emsp;稀疏化方式 relu(w-(max(w)+min(w))/(1+λ)<br>&emsp;&emsp;经过调了半天λ，输出注意力矩阵后发现近乎为对角矩阵，退化为1</em>1conv，故直接用1*1conv<br> (6) video与question压成向量用co-attention(其实都差不多)<br> (7) 多问多答问答框架自带的上下文特征，其他question特征取平均与当前question拼接<br> (8) unit调到最小再调dropout（吐槽一下某人的0.95的dropout)<br> (9) 输入层bn + spatial dropout (bn在前，否则会有些shift)<br>&emsp;&emsp;分类层dropout，计算注意力前加spatial dropout<br> (10) focalloss</p>
+</li>
+<li><p>attention + loss 稀疏化(这部分我没用，分数不稳定，上限高下限低)<br> topk注意力，取权重前k名的取平均<br> loss稀疏化，loss最高的k个answer返回梯度，其他不反回<br> 词表太小，loss稀疏化没效果，语言模型如word2vec这种词表近万或过万的有较大效果<br> 可能物体仍然太少，所以不值得稀疏化</p>
+</li>
+</ol>
+<p>参数也不算特别好，经验上关键的地方动了一下，其他没管</p>
+<p>以前不混天池</p>
+<p>未来几个月可能在这边待一会儿</p>
+<p>希望各位大佬发车的时候带上我</p>
+<p>如上</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/11/20/taggingScheme/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1618,155 +1793,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/10/02/OCnet/" itemprop="url">Object Context Network for Scene Parsing</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-02T22:34:20+08:00">
-                2018-10-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这是一篇应用了attention在图像分割的文章<br>文章本身很简单,感觉工作不多<br>最近在vqa工作中对attention体会很深,也创新了不少东西<br>在结束后再写篇博文吧</p>
-<p>回到正文</p>
-<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/total.jpg" alt="这里写图片描述"> </p>
-<p>恩 … 整体框架还是无特别大的创新</p>
-<h2 id="Object-Context"><a href="#Object-Context" class="headerlink" title="Object Context"></a>Object Context</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/attention.jpg" alt="这里写图片描述"> </p>
-<p>输出的C指context<br>P指Position embedding<br>X+P将位置信息融入feature map<br>再做个很普通的attention<br>就是以像素为单位,以余弦相关性作为相似度度量.<br>获得了context他的使用方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/oc.jpg" alt="这里写图片描述"><br>配合hypercolumn或ASP</p>
-<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实感觉Context插入的很强行<br>self-attention其实有跨大距离依赖效果才比conv强的<br>相比于self-attention<br>分割这种感受野任务,给channel加attention(不同感受野feature map拼接后权重不同)效果更佳<br>效果也只有几个千分点的提升,表示质疑<br>朋友测试下效果也不是很好…</p>
-<p>而且他的注意力是直接用softmax的<br>对于这么多像素做softmax  有效信息被无效信息覆盖的情况一般都很严重…<br>我严重怀疑这个和average效果差不多<br>他可以试试半hard半soft的attention</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1817,7 +1843,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

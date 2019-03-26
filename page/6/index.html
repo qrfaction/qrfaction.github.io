@@ -271,6 +271,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/25/siamfc/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/04/25/siamfc/" itemprop="url">Siamese Networks for Object Tracking 温习</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T22:22:10+08:00">
+                2018-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>tensorflow版的code地址<br><a href="https://github.com/www0wwwjs1/tensorflow-siamese-fc/blob/master/siamese_net.py">https://github.com/www0wwwjs1/tensorflow-siamese-fc/blob/master/siamese_net.py</a><br>由于讨论班的需要<br>重新分析一下这个tracking模型</p>
+<p>整个结构如下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/model.png" alt="这里写图片描述"> </p>
+<p>其实可以看到这个模型是很简单的</p>
+<p>X是搜索区域,Z是目标图像<br>其中$\varphi$是DCNN,在代码中是四个简单的conv+batchnorm+relu</p>
+<p>其中*操作是相关运算(卷积运算)<br>即用(6x6x128)作为卷积权重与(22x22x128)的特征图做卷积运算得到得分图<br>实现了相关滤波的end2end</p>
+<p>下图便是源码的实现方式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/corr.jpg" alt="这里写图片描述"> </p>
+<p>scores = [groupConv(i, k) for i, k in zip(scores, aFeats)]<br>k代表Z<br>i代表X<br>他这种实现方式存疑<br>相关运算与卷积计算位置相反<br>或许这在end2end的DL中影响不大?</p>
+<p>score = 0.001*score + b<br>不采用tanh/sigmoid或许是因为避免梯度消失</p>
+<p>它采用的loss见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/loss.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/f_loss.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/area.png" alt="这里写图片描述"></p>
+<p>避免数值溢出的实现方案<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/losscode.jpg" alt="这里写图片描述"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/22/Thrust简单入门/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1942,7 +2093,7 @@ thrust::reduce(first, last, init, binary_op); // returns tuple(30, &apos;z&apos;
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

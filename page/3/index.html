@@ -271,6 +271,155 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/10/02/OCnet/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/02/OCnet/" itemprop="url">Object Context Network for Scene Parsing</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-02T22:34:20+08:00">
+                2018-10-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>这是一篇应用了attention在图像分割的文章<br>文章本身很简单,感觉工作不多<br>最近在vqa工作中对attention体会很深,也创新了不少东西<br>在结束后再写篇博文吧</p>
+<p>回到正文</p>
+<h2 id="整体架构"><a href="#整体架构" class="headerlink" title="整体架构"></a>整体架构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/total.jpg" alt="这里写图片描述"> </p>
+<p>恩 … 整体框架还是无特别大的创新</p>
+<h2 id="Object-Context"><a href="#Object-Context" class="headerlink" title="Object Context"></a>Object Context</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/attention.jpg" alt="这里写图片描述"> </p>
+<p>输出的C指context<br>P指Position embedding<br>X+P将位置信息融入feature map<br>再做个很普通的attention<br>就是以像素为单位,以余弦相关性作为相似度度量.<br>获得了context他的使用方式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/02/OCnet/oc.jpg" alt="这里写图片描述"><br>配合hypercolumn或ASP</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>其实感觉Context插入的很强行<br>self-attention其实有跨大距离依赖效果才比conv强的<br>相比于self-attention<br>分割这种感受野任务,给channel加attention(不同感受野feature map拼接后权重不同)效果更佳<br>效果也只有几个千分点的提升,表示质疑<br>朋友测试下效果也不是很好…</p>
+<p>而且他的注意力是直接用softmax的<br>对于这么多像素做softmax  有效信息被无效信息覆盖的情况一般都很严重…<br>我严重怀疑这个和average效果差不多<br>他可以试试半hard半soft的attention</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/09/09/trick和创新点的碎碎念/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1703,169 +1852,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/06/21/siameseRPN/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/06/21/siameseRPN/" itemprop="url">2018CVPR之siameseRPN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-21T22:12:22+08:00">
-                2018-06-21
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="模型结构"><a href="#模型结构" class="headerlink" title="模型结构"></a>模型结构</h2><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/21/siameseRPN/model.jpg" alt="这里写图片描述"> </p>
-<h3 id="Siamese-FC"><a href="#Siamese-FC" class="headerlink" title="Siamese FC"></a>Siamese FC</h3><p>使用AlexNet去掉conv2和conv4<br>所有卷积不使用padding</p>
-<h3 id="Region-Proposal-Network"><a href="#Region-Proposal-Network" class="headerlink" title="Region Proposal Network"></a>Region Proposal Network</h3><p>其实看过faster rcnn 和 siamese fc还是一下子就能理明白的</p>
-<ol>
-<li>模板帧用卷积抽成4×4×(2k×256)个代表k个anchor+前背景分类</li>
-<li>模板帧用卷积抽成4×4×(4k×256)个代表k个anchor+坐标回归<br>然后模板帧的特征图与检测帧的做相关运算进行匹配<br>其中anchor比例为[0.33,0.5,1,2,3]</li>
-</ol>
-<p>其中回归分支的需要,一些仿射变换用于做数据增强<br>然后proposed至少筛选16个正例,总共64个样本<br>正例IoU阈值为0.6,负例为0.3</p>
-<p>然后loss照搬faster rcnn </p>
-<h2 id="one-shot-detection"><a href="#one-shot-detection" class="headerlink" title="one-shot detection"></a>one-shot detection</h2><p>检测应用到追踪即为one-shot detection问题</p>
-<h3 id="推断"><a href="#推断" class="headerlink" title="推断"></a>推断</h3><p>模板帧在第一帧推断后就不再更新了</p>
-<ol>
-<li>第一帧的特征更鲁棒</li>
-<li>速度快,nn慢就是因为要迭代bp<br>所以这需要大量的数据进行预训练获得通用化的特征</li>
-</ol>
-<h3 id="proposal-selection"><a href="#proposal-selection" class="headerlink" title="proposal selection"></a>proposal selection</h3><ol>
-<li>不选取中心位置离当帧超过七个像素的anchor</li>
-<li>给模型的分类置信度加penalty,其中k是超参,r和s分别代表了尺寸和面积,衰减尺度面积变化过大的anchor<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/06/21/siameseRPN/penalty.jpg" alt="这里写图片描述"> </li>
-<li>选K个分类置信度最高的,进行NMS抑制</li>
-<li>最终尺度选定后使用线性插值进行平滑改变</li>
-</ol>
-<h2 id="other-details"><a href="#other-details" class="headerlink" title="other details"></a>other details</h2><p>使用VID和Youtube-BB数据进行离线训练<br>每次训练模板帧和检测帧之间的时间间隔不超过100帧</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1916,7 +1902,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

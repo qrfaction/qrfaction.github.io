@@ -271,6 +271,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/14/光流介绍与FlowNet/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/05/14/光流介绍与FlowNet/" itemprop="url">光流介绍与FlowNet</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-14T14:07:56+08:00">
+                2018-05-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/CV/" itemprop="url" rel="index">
+                    <span itemprop="name">CV</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>主要由于需求原因,需要了解一些Optical Flow相关知识<br>于是写下这篇入门介绍文章</p>
+<h2 id="Optical-Flow-光流-介绍"><a href="#Optical-Flow-光流-介绍" class="headerlink" title="Optical Flow(光流) 介绍"></a>Optical Flow(光流) 介绍</h2><p>segmentation &emsp;: 像素级的分类<br>光流估计 &emsp;&emsp;&emsp; : 像素级的回归</p>
+<p>光流估计 &emsp; 预测连续图片序列中每个像素的速度(大小与方向)</p>
+<blockquote>
+</blockquote>
+<p>例如给定第t帧与t+1帧,求每个像素的运动速度与方向<br>I<sub>t</sub>(x<sub>1</sub>,y<sub>1</sub>) = I<sub>t+1</sub>(x<sub>2</sub>,y<sub>2</sub>) = I<sub>t</sub>(x<sub>1</sub> + v<sub>x</sub>,y<sub>1</sub> + v<sub>y</sub>)<br>(v<sub>x</sub>,v<sub>y</sub>)即为我们要预测的</p>
+<p>光流场 (Optical Flow Field) : 整张图片的光流</p>
+<p>光流场是个双通道图像,尺寸与原图相等</p>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/flow.jpg" alt="这里写图片描述"> </p>
+<h2 id="FlowNet"><a href="#FlowNet" class="headerlink" title="FlowNet"></a>FlowNet</h2><h3 id="FlowNetCorr"><a href="#FlowNetCorr" class="headerlink" title="FlowNetCorr"></a>FlowNetCorr</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/corr.jpg" alt="这里写图片描述"> </p>
+<p>如图,网络整体还是很容易理解的<br>灰色箭头是给了一条支路用于concat操作,U-net,densenet等网络中已经屡见不鲜<br>conv_redir是1*1卷积用于压缩至32维</p>
+<p>corr定义如下<br>其实就是拿第二个feature map去卷积 (其实是相关运算) 第一个feature map<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/kernel.jpg" alt="这里写图片描述"><br>f1:第一个特征图&emsp;&emsp;f2:第二个特征图<br>x1,x2是位置<br>卷积核尺寸 : 以x<sub>2</sub>为中心的 (2k+1)*(2k+1) 的区域 , 通道与原feature map一致<br>卷积核个数 : 即x<sub>2</sub>可选位置的个数<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;x<sub>2</sub>可取x<sub>1</sub>为中心周围 (2k+1)*(2k+1) 的所有位置<br>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;论文中k取10,即(2*10+1)*(2*10+1)=441个通道</p>
+<h3 id="refinement"><a href="#refinement" class="headerlink" title="refinement"></a>refinement</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/05/14/光流介绍与FlowNet/refine.jpg" alt="这里写图片描述"> </p>
+<p>主要为堆叠deconv和concat操作<br>其实这部分加上Corr运算之后的部分合起来和Unet没啥区别</p>
+<p>其中 flow5/4/3 等是把concat起来的feature map进行预测光流场(conv成双通道再deconv)<br>再和下一个feature map 进行 concat</p>
+<h3 id="final"><a href="#final" class="headerlink" title="final"></a>final</h3><p>总而言之就是 Corr + U-net + flow<br>模型以实验得出为主<br>也是较早的一个模型,好像flow net 2.0也出来了,主要用于我粗略了解这方面的知识</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/05/12/2018CVPR之RASNet/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1982,157 +2139,6 @@ int main(){
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/04/25/siamfc/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/04/25/siamfc/" itemprop="url">Siamese Networks for Object Tracking 温习</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-25T22:22:10+08:00">
-                2018-04-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>tensorflow版的code地址<br><a href="https://github.com/www0wwwjs1/tensorflow-siamese-fc/blob/master/siamese_net.py">https://github.com/www0wwwjs1/tensorflow-siamese-fc/blob/master/siamese_net.py</a><br>由于讨论班的需要<br>重新分析一下这个tracking模型</p>
-<p>整个结构如下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/model.png" alt="这里写图片描述"> </p>
-<p>其实可以看到这个模型是很简单的</p>
-<p>X是搜索区域,Z是目标图像<br>其中$\varphi$是DCNN,在代码中是四个简单的conv+batchnorm+relu</p>
-<p>其中*操作是相关运算(卷积运算)<br>即用(6x6x128)作为卷积权重与(22x22x128)的特征图做卷积运算得到得分图<br>实现了相关滤波的end2end</p>
-<p>下图便是源码的实现方式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/corr.jpg" alt="这里写图片描述"> </p>
-<p>scores = [groupConv(i, k) for i, k in zip(scores, aFeats)]<br>k代表Z<br>i代表X<br>他这种实现方式存疑<br>相关运算与卷积计算位置相反<br>或许这在end2end的DL中影响不大?</p>
-<p>score = 0.001*score + b<br>不采用tanh/sigmoid或许是因为避免梯度消失</p>
-<p>它采用的loss见下图<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/loss.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/f_loss.png" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/area.png" alt="这里写图片描述"></p>
-<p>避免数值溢出的实现方案<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/04/25/siamfc/losscode.jpg" alt="这里写图片描述"></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2183,7 +2189,7 @@ int main(){
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
