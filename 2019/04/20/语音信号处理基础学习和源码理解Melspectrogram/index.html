@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="语音基础,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="qrfaction的博客" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="最近为了在实习前集满GM的5金去参加了kaggle的语音比赛参加语音比赛除了为了集金更是为了补足对语音方向基础的了解以下源码部分来自kapre 音频数据长啥样？ 如图所示这是一个单声道的语音数据输入维度 (time_steps, channels)channels表示声道个数  以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可 什么是频谱图？频谱图是音频信号的一种传统特征，">
+<meta name="keywords" content="语音基础">
+<meta property="og:type" content="article">
+<meta property="og:title" content="语音信号处理基础学习和源码理解Melspectrogram">
+<meta property="og:url" content="https://github.com/qrfaction/qrfaction.github.io/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/index.html">
+<meta property="og:site_name" content="qrfaction的博客">
+<meta property="og:description" content="最近为了在实习前集满GM的5金去参加了kaggle的语音比赛参加语音比赛除了为了集金更是为了补足对语音方向基础的了解以下源码部分来自kapre 音频数据长啥样？ 如图所示这是一个单声道的语音数据输入维度 (time_steps, channels)channels表示声道个数  以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可 什么是频谱图？频谱图是音频信号的一种传统特征，">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/spectrogram.png">
+<meta property="og:updated_time" content="2019-04-20T09:24:27.574Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="语音信号处理基础学习和源码理解Melspectrogram">
+<meta name="twitter:description" content="最近为了在实习前集满GM的5金去参加了kaggle的语音比赛参加语音比赛除了为了集金更是为了补足对语音方向基础的了解以下源码部分来自kapre 音频数据长啥样？ 如图所示这是一个单声道的语音数据输入维度 (time_steps, channels)channels表示声道个数  以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可 什么是频谱图？频谱图是音频信号的一种传统特征，">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/qrfaction/qrfaction.github.io/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/">
+
+
+
+
+
+  <title>语音信号处理基础学习和源码理解Melspectrogram | qrfaction的博客</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ce10a2762e71d0513ae5a919b9cf34a5";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">qrfaction的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">语音信号处理基础学习和源码理解Melspectrogram</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-20T17:19:50+08:00">
+                2019-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/音频信号处理/" itemprop="url" rel="index">
+                    <span itemprop="name">音频信号处理</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近为了在实习前集满GM的5金去参加了kaggle的语音比赛<br>参加语音比赛除了为了集金更是为了补足对语音方向基础的了解<br>以下源码部分来自kapre</p>
+<h3 id="音频数据长啥样？"><a href="#音频数据长啥样？" class="headerlink" title="音频数据长啥样？"></a>音频数据长啥样？</h3><blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png" alt="这里写图片描述"><br>如图所示<br>这是一个单声道的语音数据<br>输入维度 (time_steps, channels)<br>channels表示声道个数</p>
+</blockquote>
+<p>以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可</p>
+<h3 id="什么是频谱图？"><a href="#什么是频谱图？" class="headerlink" title="什么是频谱图？"></a>什么是频谱图？</h3><p>频谱图是音频信号的一种传统特征，效果不错<br>先上关键源码，再进行分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = input   ##  x -&gt; (batch_size,time_steps,1,1)</span><br><span class="line">subsample = (self.n_hop, 1)</span><br><span class="line">output_real = K.conv2d(x, self.dft_real_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output_imag = K.conv2d(x, self.dft_imag_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output = output_real ** 2 + output_imag ** 2   ## output -&gt; (batch_size,time_steps,1,freq)</span><br></pre></td></tr></table></figure></p>
+<p>总得来说，他是以卷积的方式扩展出了频率轴<br>会有人问：为什么是频率轴不是通道轴<br>因为这里的卷积是傅里叶变换的替代实现，这个轴的物理意义及频率。</p>
+<p>操作如下：</p>
+<ol>
+<li>音频数据分帧定帧长（即卷积的窗口大小）</li>
+<li>各帧进行FFT后计算频域复数的模长(即能量)</li>
+<li>然后通过帧移对各帧(卷积步长)对各帧进行FFT</li>
+<li>以上从而将(time_steps,1)-&gt;(time_steps,freq)<br>由于FFT的频率是按序计算，所以音频数据在频率轴仍然有局部依赖<br>即可使用CNN或ConvLSTM1D之类的结构进行建模</li>
+</ol>
+<p>上一张图吧</p>
+<blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/spectrogram.png" alt="这里写图片描述"></p>
+</blockquote>
+<h3 id="Melspectrogram"><a href="#Melspectrogram" class="headerlink" title="Melspectrogram"></a>Melspectrogram</h3><p>这个Mel频谱其实我也不太理解物理意义<br>但看源码十分简单，就是用一个矩阵对频谱图做线性变换<br>翻阅一些其他人的说法主要是考虑了人耳的声学结构<br>然后在尺度上做一些变换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = K.dot(power_spectrogram, self.freq2mel)</span><br></pre></td></tr></table></figure></p>
+<p>了解到这儿应该够我做这个任务了。。<br>毕竟就算理解了Mel频谱的滤波器设计方式我也大概率优化不好</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>MFCC也不详述了，因为MFCC根据往年比赛方案以及相关总结都是说不适合nn<br>上面讲的特征都是可以e2e实现的，但是一旦设置成可训练效果极差。。。真是NB的手工特征</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/语音基础/" rel="tag"># 语音基础</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/" rel="next" title="一篇实体识别和关系抽取的联合训练文章简读">
+                <i class="fa fa-chevron-left"></i> 一篇实体识别和关系抽取的联合训练文章简读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">qrfaction</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#音频数据长啥样？"><span class="nav-number">1.</span> <span class="nav-text">音频数据长啥样？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#什么是频谱图？"><span class="nav-number">2.</span> <span class="nav-text">什么是频谱图？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Melspectrogram"><span class="nav-number">3.</span> <span class="nav-text">Melspectrogram</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#最后"><span class="nav-number">4.</span> <span class="nav-text">最后</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qrfaction</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i> 访问人数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

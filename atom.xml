@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2019-03-26T14:53:58.220Z</updated>
+  <updated>2019-04-20T09:24:27.574Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>语音信号处理基础学习和源码理解Melspectrogram</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2019/04/20/%E8%AF%AD%E9%9F%B3%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E5%92%8C%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3Melspectrogram/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/</id>
+    <published>2019-04-20T09:19:50.000Z</published>
+    <updated>2019-04-20T09:24:27.574Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近为了在实习前集满GM的5金去参加了kaggle的语音比赛<br>参加语音比赛除了为了集金更是为了补足对语音方向基础的了解<br>以下源码部分来自kapre</p><h3 id="音频数据长啥样？"><a href="#音频数据长啥样？" class="headerlink" title="音频数据长啥样？"></a>音频数据长啥样？</h3><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png" alt="这里写图片描述"><br>如图所示<br>这是一个单声道的语音数据<br>输入维度 (time_steps, channels)<br>channels表示声道个数</p></blockquote><p>以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可</p><h3 id="什么是频谱图？"><a href="#什么是频谱图？" class="headerlink" title="什么是频谱图？"></a>什么是频谱图？</h3><p>频谱图是音频信号的一种传统特征，效果不错<br>先上关键源码，再进行分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = input   ##  x -&gt; (batch_size,time_steps,1,1)</span><br><span class="line">subsample = (self.n_hop, 1)</span><br><span class="line">output_real = K.conv2d(x, self.dft_real_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output_imag = K.conv2d(x, self.dft_imag_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output = output_real ** 2 + output_imag ** 2   ## output -&gt; (batch_size,time_steps,1,freq)</span><br></pre></td></tr></table></figure></p><p>总得来说，他是以卷积的方式扩展出了频率轴<br>会有人问：为什么是频率轴不是通道轴<br>因为这里的卷积是傅里叶变换的替代实现，这个轴的物理意义及频率。</p><p>操作如下：</p><ol><li>音频数据分帧定帧长（即卷积的窗口大小）</li><li>各帧进行FFT后计算频域复数的模长(即能量)</li><li>然后通过帧移对各帧(卷积步长)对各帧进行FFT</li><li>以上从而将(time_steps,1)-&gt;(time_steps,freq)<br>由于FFT的频率是按序计算，所以音频数据在频率轴仍然有局部依赖<br>即可使用CNN或ConvLSTM1D之类的结构进行建模</li></ol><p>上一张图吧</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/spectrogram.png" alt="这里写图片描述"></p></blockquote><h3 id="Melspectrogram"><a href="#Melspectrogram" class="headerlink" title="Melspectrogram"></a>Melspectrogram</h3><p>这个Mel频谱其实我也不太理解物理意义<br>但看源码十分简单，就是用一个矩阵对频谱图做线性变换<br>翻阅一些其他人的说法主要是考虑了人耳的声学结构<br>然后在尺度上做一些变换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = K.dot(power_spectrogram, self.freq2mel)</span><br></pre></td></tr></table></figure></p><p>了解到这儿应该够我做这个任务了。。<br>毕竟就算理解了Mel频谱的滤波器设计方式我也大概率优化不好</p><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>MFCC也不详述了，因为MFCC根据往年比赛方案以及相关总结都是说不适合nn<br>上面讲的特征都是可以e2e实现的，但是一旦设置成可训练效果极差。。。真是NB的手工特征</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近为了在实习前集满GM的5金去参加了kaggle的语音比赛&lt;br&gt;参加语音比赛除了为了集金更是为了补足对语音方向基础的了解&lt;br&gt;以下源码部分来自kapre&lt;/p&gt;
+&lt;h3 id=&quot;音频数据长啥样？&quot;&gt;&lt;a href=&quot;#音频数据长啥样？&quot; class=&quot;headerli
+      
+    
+    </summary>
+    
+      <category term="音频信号处理" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/%E9%9F%B3%E9%A2%91%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86/"/>
+    
+    
+      <category term="语音基础" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E8%AF%AD%E9%9F%B3%E5%9F%BA%E7%A1%80/"/>
+    
+  </entry>
   
   <entry>
     <title>一篇实体识别和关系抽取的联合训练文章简读</title>
@@ -503,34 +529,6 @@
       
         &lt;p&gt;这几天被BERT刷屏了&lt;br&gt;结果是真的好看,刷新了十一项记录,每项都有巨大改进…&lt;br&gt;下面分析一下这篇文章的工作&lt;/p&gt;
 &lt;h3 id=&quot;Input&quot;&gt;&lt;a href=&quot;#Input&quot; class=&quot;headerlink&quot; title=&quot;Input&quot;&gt;&lt;/a&gt;Input
-      
-    
-    </summary>
-    
-      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
-    
-    
-      <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>NAACL2018 best paper ELMo</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/13/elmo/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/13/elmo/</id>
-    <published>2018-10-13T07:23:00.000Z</published>
-    <updated>2018-10-13T08:00:03.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>ELMo 是NAACL2018的best paper<br>早就想读了了,攒着一直没读…</p><p>其实nn的文章看图能识个大概了,接着再细读其中细节<br>但这篇文章没图…</p><p>下面上一张自制的</p><h3 id="ELMo结构与使用方式"><a href="#ELMo结构与使用方式" class="headerlink" title="ELMo结构与使用方式"></a>ELMo结构与使用方式</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/elmo.jpg" alt="这里写图片描述"> </p><p>如图,上面是ELMo的使用方式<br>将模型中word在LSTM中输出的中间态作为他的embedding</p><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/target.jpg" alt="这里写图片描述"><br>他自己则是一个多层双向语言自监督模型<br>正向预测和逆向预测word作为task,进行训练<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/loss.jpg" alt="这里写图片描述"> </p><p>这种设计个人认为有如下几点好处</p><ol><li>word在不同语境有不同意思,使用LSTM中间状态带入了上下文信息解决了语义歧义的问题</li><li>biLSTM相比Glove,word2vec带入了语序信息</li><li>biLSTM能捕捉一定的语法结构信息</li></ol><h3 id="使用方式"><a href="#使用方式" class="headerlink" title="使用方式"></a>使用方式</h3><p>冷冻biLM模型<br>将他各个中间层的信息加权平均,再和普通的词向量concat<br>公式如下<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/13/elmo/w.jpg" alt="这里写图片描述"> </p><p>s<sub>task</sub>是可训练且经过softmax归一化的权重<br>s<sub>task</sub>用于在不同任务下自适应调整高维还是低维的抽象信息<br>γ是缩放因子,对模型影响较大,可训练</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;ELMo 是NAACL2018的best paper&lt;br&gt;早就想读了了,攒着一直没读…&lt;/p&gt;
-&lt;p&gt;其实nn的文章看图能识个大概了,接着再细读其中细节&lt;br&gt;但这篇文章没图…&lt;/p&gt;
-&lt;p&gt;下面上一张自制的&lt;/p&gt;
-&lt;h3 id=&quot;ELMo结构与使用方式&quot;&gt;&lt;a hre
       
     
     </summary>

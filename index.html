@@ -271,6 +271,168 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="qrfaction">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="qrfaction的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/" itemprop="url">语音信号处理基础学习和源码理解Melspectrogram</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-20T17:19:50+08:00">
+                2019-04-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/音频信号处理/" itemprop="url" rel="index">
+                    <span itemprop="name">音频信号处理</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>最近为了在实习前集满GM的5金去参加了kaggle的语音比赛<br>参加语音比赛除了为了集金更是为了补足对语音方向基础的了解<br>以下源码部分来自kapre</p>
+<h3 id="音频数据长啥样？"><a href="#音频数据长啥样？" class="headerlink" title="音频数据长啥样？"></a>音频数据长啥样？</h3><blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png" alt="这里写图片描述"><br>如图所示<br>这是一个单声道的语音数据<br>输入维度 (time_steps, channels)<br>channels表示声道个数</p>
+</blockquote>
+<p>以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可</p>
+<h3 id="什么是频谱图？"><a href="#什么是频谱图？" class="headerlink" title="什么是频谱图？"></a>什么是频谱图？</h3><p>频谱图是音频信号的一种传统特征，效果不错<br>先上关键源码，再进行分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = input   ##  x -&gt; (batch_size,time_steps,1,1)</span><br><span class="line">subsample = (self.n_hop, 1)</span><br><span class="line">output_real = K.conv2d(x, self.dft_real_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output_imag = K.conv2d(x, self.dft_imag_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output = output_real ** 2 + output_imag ** 2   ## output -&gt; (batch_size,time_steps,1,freq)</span><br></pre></td></tr></table></figure></p>
+<p>总得来说，他是以卷积的方式扩展出了频率轴<br>会有人问：为什么是频率轴不是通道轴<br>因为这里的卷积是傅里叶变换的替代实现，这个轴的物理意义及频率。</p>
+<p>操作如下：</p>
+<ol>
+<li>音频数据分帧定帧长（即卷积的窗口大小）</li>
+<li>各帧进行FFT后计算频域复数的模长(即能量)</li>
+<li>然后通过帧移对各帧(卷积步长)对各帧进行FFT</li>
+<li>以上从而将(time_steps,1)-&gt;(time_steps,freq)<br>由于FFT的频率是按序计算，所以音频数据在频率轴仍然有局部依赖<br>即可使用CNN或ConvLSTM1D之类的结构进行建模</li>
+</ol>
+<p>上一张图吧</p>
+<blockquote>
+<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/spectrogram.png" alt="这里写图片描述"></p>
+</blockquote>
+<h3 id="Melspectrogram"><a href="#Melspectrogram" class="headerlink" title="Melspectrogram"></a>Melspectrogram</h3><p>这个Mel频谱其实我也不太理解物理意义<br>但看源码十分简单，就是用一个矩阵对频谱图做线性变换<br>翻阅一些其他人的说法主要是考虑了人耳的声学结构<br>然后在尺度上做一些变换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = K.dot(power_spectrogram, self.freq2mel)</span><br></pre></td></tr></table></figure></p>
+<p>了解到这儿应该够我做这个任务了。。<br>毕竟就算理解了Mel频谱的滤波器设计方式我也大概率优化不好</p>
+<h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>MFCC也不详述了，因为MFCC根据往年比赛方案以及相关总结都是说不适合nn<br>上面讲的特征都是可以e2e实现的，但是一旦设置成可训练效果极差。。。真是NB的手工特征</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2019/03/26/一篇实体识别和关系抽取的联合训练文章简读/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1650,153 +1812,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/qrfaction/qrfaction.github.io/2018/12/04/2017CVPR_RACNN/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="qrfaction">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="qrfaction的博客">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/12/04/2017CVPR_RACNN/" itemprop="url">2017CVPR RACNN</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-12-04T08:32:42+08:00">
-                2018-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/CV/" itemprop="url" rel="index">
-                    <span itemprop="name">CV</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>这篇文章其实是篇比较简单的文章<br>但是其中有个梯度反传的细节很多博客都没纠清楚<br>文章里也没细讲</p>
-<p>这篇文章主要就是利用弱监督定位去做细粒度分类<br>想法还是比较有意思的，上一次见到窗口定位的方式是在local attention</p>
-<p>要弱监督定位需要把梯度传到坐标上，如果坐标进行取整则不能反传梯度<br>坐标的梯度更新是通过他设计的mask传回去的</p>
-<blockquote>
-<p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/04/2017CVPR_RACNN/0001.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/04/2017CVPR_RACNN/0002.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/04/2017CVPR_RACNN/0003.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/04/2017CVPR_RACNN/0004.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/04/2017CVPR_RACNN/0005.jpg" alt="这里写图片描述"><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/12/04/2017CVPR_RACNN/0006.jpg" alt="这里写图片描述"> </p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1847,7 +1862,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-count">58</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1858,7 +1873,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1869,7 +1884,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
