@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://github.com/qrfaction/qrfaction.github.io/"/>
-  <updated>2019-04-20T09:24:27.574Z</updated>
+  <updated>2019-05-06T13:57:28.809Z</updated>
   <id>https://github.com/qrfaction/qrfaction.github.io/</id>
   
   <author>
@@ -17,13 +17,38 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>有趣但鸡肋的e2e对抗样本正则项</title>
+    <link href="https://github.com/qrfaction/qrfaction.github.io/2019/05/06/%E6%9C%89%E8%B6%A3%E4%BD%86%E9%B8%A1%E8%82%8B%E7%9A%84e2e%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC%E6%AD%A3%E5%88%99%E9%A1%B9/"/>
+    <id>https://github.com/qrfaction/qrfaction.github.io/2019/05/06/有趣但鸡肋的e2e对抗样本正则项/</id>
+    <published>2019-05-06T13:55:20.000Z</published>
+    <updated>2019-05-06T13:57:28.809Z</updated>
+    
+    <content type="html"><![CDATA[<p>最近频频在论文中看到计算当前样本的对抗样本作为正则项去训练模型<br>抱着好奇心这个东西究竟有多少收益，在audio tagging的比赛里尝试了一下<br>结论是成本太高，收益较小，很鸡肋<br>成本在于一个batch里每个样本都要计算对抗样本 &lt;=&gt; 调试时间和需求显存加倍 。。。<br>就是bs加了个倍，反正在audio tagging里太浪费了，这么多显存干啥不好。。</p><p>对抗样本的介绍下面一张图带过了，入门可参考<a href="https://zhuanlan.zhihu.com/p/33316527" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/33316527</a><br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/05/06/有趣但鸡肋的e2e对抗样本正则项/img.jpg" alt="这里写图片描述"> </p><p>吐槽归吐槽，下面放出实现方案，以及调试过程中各种形式的收益比较<br>以下结论来自<a href="https://www.kaggle.com/c/freesound-audio-tagging-2019" target="_blank" rel="noopener">https://www.kaggle.com/c/freesound-audio-tagging-2019</a></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">### x_mel_shape  ( time_steps, frequency, channels)</span><br><span class="line"></span><br><span class="line">## 特征抽取</span><br><span class="line">output = backbone(x_mel)  </span><br><span class="line">output = fc_layer(output)</span><br><span class="line"></span><br><span class="line">## 计算loss</span><br><span class="line">logloss = Lambda(lambda x: K.mean(K.binary_crossentropy(x[0], x[1]),axis=-1))([y_in, output]) </span><br><span class="line"></span><br><span class="line">## 计算梯度</span><br><span class="line">g = Lambda(lambda x: tf.stop_gradient(K.gradients(x[0], x[1])[0]),output_shape=x_mel_shape)([logloss, x_mel])</span><br><span class="line">g1 = Lambda(lambda x: cfg.adv_eps * K.sign(x))(g)</span><br><span class="line">g2 = Lambda(lambda x: cfg.adv_eps * x )(g)</span><br><span class="line">因为g2效果好，所以</span><br><span class="line">g = g2</span><br><span class="line"></span><br><span class="line">## 生成对抗样本并获得结果</span><br><span class="line">x_adv = Lambda(lambda x:x[0] + x[1])([x_mel,g])</span><br><span class="line">x_adv_fp = backbone(x_adv)   # 主干网络</span><br><span class="line">adv_output = fc_layer(x_adv)</span><br><span class="line"></span><br><span class="line">## 计算对抗样本的loss</span><br><span class="line">adv_loss1 = Lambda(lambda x: K.mean(K.binary_crossentropy(x[0], x[1]), axis=-1))([y_in, adv_output])</span><br><span class="line">adv_loss2 = Lambda(lambda x: K.mean(K.binary_crossentropy(x[0], x[1]), axis=-1))([output, adv_output])</span><br><span class="line">因为adv_loss2效果好，所以</span><br><span class="line">adv_loss = adv_loss2</span><br><span class="line"></span><br><span class="line">## 和正常样本加权平均</span><br><span class="line">loss = Lambda(lambda x:K.mean(cfg.adv_alpha * x[0] + (1-cfg.adv_alpha) * x[1]))([adv_loss,logloss])</span><br><span class="line"></span><br><span class="line">model.add_loss(loss)</span><br><span class="line">model.compile(</span><br><span class="line">    optimizer=Nadam(lr=cfg.lr),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;最近频频在论文中看到计算当前样本的对抗样本作为正则项去训练模型&lt;br&gt;抱着好奇心这个东西究竟有多少收益，在audio tagging的比赛里尝试了一下&lt;br&gt;结论是成本太高，收益较小，很鸡肋&lt;br&gt;成本在于一个batch里每个样本都要计算对抗样本 &amp;lt;=&amp;gt; 调试时
+      
+    
+    </summary>
+    
+      <category term="ML&amp;DL" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/ML-DL/"/>
+    
+    
+      <category term="对抗样本" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/%E5%AF%B9%E6%8A%97%E6%A0%B7%E6%9C%AC/"/>
+    
+  </entry>
+  
+  <entry>
     <title>语音信号处理基础学习和源码理解Melspectrogram</title>
     <link href="https://github.com/qrfaction/qrfaction.github.io/2019/04/20/%E8%AF%AD%E9%9F%B3%E4%BF%A1%E5%8F%B7%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80%E5%AD%A6%E4%B9%A0%E5%92%8C%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3Melspectrogram/"/>
     <id>https://github.com/qrfaction/qrfaction.github.io/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/</id>
     <published>2019-04-20T09:19:50.000Z</published>
-    <updated>2019-04-20T09:24:27.574Z</updated>
+    <updated>2019-05-06T13:31:41.993Z</updated>
     
-    <content type="html"><![CDATA[<p>最近为了在实习前集满GM的5金去参加了kaggle的语音比赛<br>参加语音比赛除了为了集金更是为了补足对语音方向基础的了解<br>以下源码部分来自kapre</p><h3 id="音频数据长啥样？"><a href="#音频数据长啥样？" class="headerlink" title="音频数据长啥样？"></a>音频数据长啥样？</h3><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png" alt="这里写图片描述"><br>如图所示<br>这是一个单声道的语音数据<br>输入维度 (time_steps, channels)<br>channels表示声道个数</p></blockquote><p>以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可</p><h3 id="什么是频谱图？"><a href="#什么是频谱图？" class="headerlink" title="什么是频谱图？"></a>什么是频谱图？</h3><p>频谱图是音频信号的一种传统特征，效果不错<br>先上关键源码，再进行分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = input   ##  x -&gt; (batch_size,time_steps,1,1)</span><br><span class="line">subsample = (self.n_hop, 1)</span><br><span class="line">output_real = K.conv2d(x, self.dft_real_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output_imag = K.conv2d(x, self.dft_imag_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output = output_real ** 2 + output_imag ** 2   ## output -&gt; (batch_size,time_steps,1,freq)</span><br></pre></td></tr></table></figure></p><p>总得来说，他是以卷积的方式扩展出了频率轴<br>会有人问：为什么是频率轴不是通道轴<br>因为这里的卷积是傅里叶变换的替代实现，这个轴的物理意义及频率。</p><p>操作如下：</p><ol><li>音频数据分帧定帧长（即卷积的窗口大小）</li><li>各帧进行FFT后计算频域复数的模长(即能量)</li><li>然后通过帧移对各帧(卷积步长)对各帧进行FFT</li><li>以上从而将(time_steps,1)-&gt;(time_steps,freq)<br>由于FFT的频率是按序计算，所以音频数据在频率轴仍然有局部依赖<br>即可使用CNN或ConvLSTM1D之类的结构进行建模</li></ol><p>上一张图吧</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/spectrogram.png" alt="这里写图片描述"></p></blockquote><h3 id="Melspectrogram"><a href="#Melspectrogram" class="headerlink" title="Melspectrogram"></a>Melspectrogram</h3><p>这个Mel频谱其实我也不太理解物理意义<br>但看源码十分简单，就是用一个矩阵对频谱图做线性变换<br>翻阅一些其他人的说法主要是考虑了人耳的声学结构<br>然后在尺度上做一些变换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = K.dot(power_spectrogram, self.freq2mel)</span><br></pre></td></tr></table></figure></p><p>了解到这儿应该够我做这个任务了。。<br>毕竟就算理解了Mel频谱的滤波器设计方式我也大概率优化不好</p><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>MFCC也不详述了，因为MFCC根据往年比赛方案以及相关总结都是说不适合nn<br>上面讲的特征都是可以e2e实现的，但是一旦设置成可训练效果极差。。。真是NB的手工特征</p>]]></content>
+    <content type="html"><![CDATA[<p>最近为了在实习前集满GM的5金去参加了kaggle的语音比赛<br>参加语音比赛除了为了集金更是为了补足对语音方向基础的了解<br>以下源码部分来自kapre</p><h3 id="音频数据长啥样？"><a href="#音频数据长啥样？" class="headerlink" title="音频数据长啥样？"></a>音频数据长啥样？</h3><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/audio.png" alt="这里写图片描述"><br>如图所示<br>这是一个单声道的语音数据<br>输入维度 (time_steps, channels)<br>channels表示声道个数</p></blockquote><p>以下讨论都以单声道进行讨论，多声道的话同样的处理方式最后在通道轴拼接即可</p><h3 id="什么是频谱图？"><a href="#什么是频谱图？" class="headerlink" title="什么是频谱图？"></a>什么是频谱图？</h3><p>频谱图是音频信号的一种传统特征，效果不错<br>先上关键源码，再进行分析<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">x = input   ##  x -&gt; (batch_size,time_steps,1,1)</span><br><span class="line">subsample = (self.n_hop, 1)</span><br><span class="line">output_real = K.conv2d(x, self.dft_real_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output_imag = K.conv2d(x, self.dft_imag_kernels,</span><br><span class="line">                       strides=subsample,</span><br><span class="line">                       padding=self.padding,</span><br><span class="line">                       data_format=&apos;channels_last&apos;)</span><br><span class="line">output = output_real ** 2 + output_imag ** 2   ## output -&gt; (batch_size,time_steps,1,freq)</span><br></pre></td></tr></table></figure></p><p>总得来说，他是以卷积的方式扩展出了频率轴<br>会有人问：为什么是频率轴不是通道轴<br>因为这里的卷积是傅里叶变换的替代实现，这个轴的物理意义即频率。</p><p>操作如下：</p><ol><li>音频数据分帧定帧长（即卷积的窗口大小）</li><li>各帧进行FFT后计算频域复数的模长(即能量)</li><li>然后通过帧移对各帧(卷积步长)对各帧进行FFT</li><li>以上从而将(time_steps,1)-&gt;(time_steps,freq)<br>由于FFT的频率是按序计算，所以音频数据在频率轴仍然有局部依赖<br>即可使用CNN或ConvLSTM1D之类的结构进行建模</li></ol><p>上一张图吧</p><blockquote><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2019/04/20/语音信号处理基础学习和源码理解Melspectrogram/spectrogram.png" alt="这里写图片描述"></p></blockquote><h3 id="Melspectrogram"><a href="#Melspectrogram" class="headerlink" title="Melspectrogram"></a>Melspectrogram</h3><p>这个Mel频谱其实我也不太理解物理意义<br>但看源码十分简单，就是用一个矩阵对频谱图做线性变换<br>翻阅一些其他人的说法主要是考虑了人耳的声学结构<br>然后在尺度上做一些变换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">output = K.dot(power_spectrogram, self.freq2mel)</span><br></pre></td></tr></table></figure></p><p>了解到这儿应该够我做这个任务了。。<br>毕竟就算理解了Mel频谱的滤波器设计方式我也大概率优化不好</p><h3 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h3><p>MFCC也不详述了，因为MFCC根据往年比赛方案以及相关总结都是说不适合nn<br>上面讲的特征都是可以e2e实现的，但是一旦设置成可训练效果极差。。。真是NB的手工特征</p>]]></content>
     
     <summary type="html">
     
@@ -511,32 +536,6 @@
     
     
       <category term="attention" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/attention/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>本年爆款... Bidirectional Encoder Representations from Transformers</title>
-    <link href="https://github.com/qrfaction/qrfaction.github.io/2018/10/14/bert/"/>
-    <id>https://github.com/qrfaction/qrfaction.github.io/2018/10/14/bert/</id>
-    <published>2018-10-14T08:11:28.000Z</published>
-    <updated>2018-10-14T08:19:27.000Z</updated>
-    
-    <content type="html"><![CDATA[<p>这几天被BERT刷屏了<br>结果是真的好看,刷新了十一项记录,每项都有巨大改进…<br>下面分析一下这篇文章的工作</p><h3 id="Input"><a href="#Input" class="headerlink" title="Input"></a>Input</h3><p><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/14/bert/input.jpg" alt="这里写图片描述"><br>一个句子对,即两个句子</p><ol><li>WordPiece Embedding<br>&emsp;这个东西是用来解决oov的word的,将部分单词拆成两个字词,如fued拆成fu,ed .<br>&emsp;具体怎么拆,拆哪些,用贪心算法搜索尽可能少的token去覆盖所有单词</li><li>Segment Embedding<br>&emsp;区分是句子一还是句子二</li><li>Position Embedding<br>&emsp;融入位置信息,学习得到</li><li>cls是句子的类别信息,用于task2和其他任务(非分类任务可无视)</li><li>[SEP]是句子的分隔符<br><br></li></ol><p>下面是该论文的自监督任务的两个创新点</p><h3 id="TASK1-MLM-masked-language-model"><a href="#TASK1-MLM-masked-language-model" class="headerlink" title="TASK1 #: MLM(masked language model)"></a>TASK1 #: MLM(masked language model)</h3><p>随机屏蔽batchsize samples中一定量的单词,并去预测他 (完形填空)</p><ol><li>使用bidirectional self-attention<br>&emsp;不使用rnn可能是因为网络很深不好训练.<br>&emsp;作者认为用单项模型然后两向使用再拼接不如直接双向来的自然,能更好的捕捉上下文信息</li><li>每次屏蔽每个句子中15%的单词<br>&emsp;(1)80%的概率将单词换为[mask]标记 , my dog is hairy → my dog is [MASK]<br>&emsp;(2)10%的概率将单词换为字表中其他单词 , my dog is hairy → my dog is apple<br>&emsp;(3)10%的概率不替换 , my dog is hairy → my dog is hairy<br>具体为什么不是很清楚..   (2)可能是加噪缓解过拟合,(3)不知道了…<br><br></li></ol><h3 id="TASK2-NSP-Next-Sentence-Prediction"><a href="#TASK2-NSP-Next-Sentence-Prediction" class="headerlink" title="TASK2 #: NSP(Next Sentence Prediction)"></a>TASK2 #: NSP(Next Sentence Prediction)</h3><p>由于输入的是一个句子对,所以这个任务是去判断句子二是否可作为句子一的下一句<br>这个任务的目的应该是学习句子之间的逻辑关系</p><h3 id="summary"><a href="#summary" class="headerlink" title="summary"></a>summary</h3><p>下图是在其他任务的微调方式<br><img src="https://raw.githubusercontent.com/qrfaction/qrfaction.github.io/master/2018/10/14/bert/fune.jpg" alt="这里写图片描述"> </p><p>由于每次只屏蔽一部分<br>这比left2right收敛慢很多<br>一般来讲自监督的模型一般有比较好的泛化效果<br>然后结果也很惊人…</p><p>最后就是模型好大…用不起用不起…</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;这几天被BERT刷屏了&lt;br&gt;结果是真的好看,刷新了十一项记录,每项都有巨大改进…&lt;br&gt;下面分析一下这篇文章的工作&lt;/p&gt;
-&lt;h3 id=&quot;Input&quot;&gt;&lt;a href=&quot;#Input&quot; class=&quot;headerlink&quot; title=&quot;Input&quot;&gt;&lt;/a&gt;Input
-      
-    
-    </summary>
-    
-      <category term="NLP" scheme="https://github.com/qrfaction/qrfaction.github.io/categories/NLP/"/>
-    
-    
-      <category term="representation learning" scheme="https://github.com/qrfaction/qrfaction.github.io/tags/representation-learning/"/>
     
   </entry>
   
